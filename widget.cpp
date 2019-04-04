@@ -15,5 +15,5 @@ Widget::~Widget()
 
 void Widget::on_pushButton_clicked()
 {
-    qDebug("Hey!!!");
+    qDebug("Hey!!!!");
 }
