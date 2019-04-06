@@ -3,6 +3,7 @@
 #include <QSurfaceFormat>
 #include <QDebug>
 #include <QScreen>
+#include "clientprotocol.h"
 
 int main(int argc, char *argv[])
 {
@@ -26,6 +27,8 @@ int main(int argc, char *argv[])
     Widget window;
     window.setWindowState(Qt::WindowFullScreen);
     window.showMaximized();
+
+    ClientProtocol::connectMainServer();
 
     return a.exec();
 }

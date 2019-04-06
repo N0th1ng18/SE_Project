@@ -26,11 +26,13 @@ CONFIG += c++11
 SOURCES += \
         main.cpp \
         widget.cpp \
-    openglwindow.cpp
+    openglwindow.cpp \
+    clientprotocol.cpp
 
 HEADERS += \
         widget.h \
-    openglwindow.h
+    openglwindow.h \
+    clientprotocol.h
 
 FORMS += \
         widget.ui
