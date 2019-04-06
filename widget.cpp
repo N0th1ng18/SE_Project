@@ -1,6 +1,8 @@
 #include "widget.h"
 #include "ui_widget.h"
 #include "openglwindow.h"
+#include "clientprotocol.h"
+#include <QTcpSocket>
 
 Widget::Widget(QWidget *parent) :
     QWidget(parent),
@@ -24,3 +26,8 @@ void Widget::on_pushButton_clicked()
 
 
 
+
+void Widget::on_pushButton_2_clicked()
+{
+    ClientProtocol::connectMainServer();
+}

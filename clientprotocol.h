@@ -2,14 +2,20 @@
 #define CLIENTPROTOCOL_H
 
 #include <QDebug>
+#include <QObject>
+#include <QTcpSocket>
 
-class ClientProtocol
+
+class ClientProtocol : public QTcpSocket
 {
 public:
     ClientProtocol();
     ~ClientProtocol();
-    static void connectMainServer();
+    static void connectMainServer(QObject *parent = nullptr);
     static void disconnectMainServer();
+
+private:
+
 
 };
 
