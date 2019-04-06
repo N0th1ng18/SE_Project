@@ -8,6 +8,12 @@ int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
 
+
+    QSurfaceFormat format;
+    format.setDepthBufferSize(24);
+    QSurfaceFormat::setDefaultFormat(format);
+
+
     QScreen *screen = QApplication::screens().at(0);
     int screenWidth = screen->availableSize().width();
     int screenHeight = screen->availableSize().height();
@@ -16,13 +22,10 @@ int main(int argc, char *argv[])
     qDebug() << "X = " << screenWidth;
     qDebug() << "Y = " << screenHeight;
 
-    QSurfaceFormat format;
-    format.setDepthBufferSize(24);
-    QSurfaceFormat::setDefaultFormat(format);
 
-    Widget w;
-    w.setGeometry(0,0, screenWidth/8, screenHeight/8);
-    w.show();
+    Widget window;
+    window.setWindowState(Qt::WindowFullScreen);
+    window.showMaximized();
 
     return a.exec();
 }
