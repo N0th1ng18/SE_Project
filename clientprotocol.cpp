@@ -10,10 +10,14 @@ ClientProtocol::~ClientProtocol()
 
 }
 
-void ClientProtocol::connectMainServer(){
+void ClientProtocol::connectMainServer()
+{
     qDebug() << "connectMainServer()";
+
+
 }
 
-void ClientProtocol::disconnectMainServer(){
+void ClientProtocol::disconnectMainServer()
+{
     qDebug() << "disconnectMainServer()";
 }

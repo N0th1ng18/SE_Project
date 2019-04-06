@@ -3,6 +3,7 @@
 
 #include <QOpenGLWidget>
 #include <QOpenGLFunctions>
+#include <QOpenGLShaderProgram>
 
 class OpenGLWindow : public QOpenGLWidget, protected QOpenGLFunctions
 {
@@ -15,8 +16,10 @@ protected:
     void resizeGL(int w, int h);
     void paintGL();
 
-private:
+    void initShaders();
 
+private:
+    QOpenGLShaderProgram program;
 
 };
 
