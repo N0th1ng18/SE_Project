@@ -35,7 +35,7 @@ void OpenGLWindow::initializeGL()
     //OpenGL Settings
     glClearColor(1, 0, 0, 1);
     glEnable(GL_DEPTH_TEST);
-    //glEnable(GL_CULL_FACE);
+    glEnable(GL_CULL_FACE);
 
     initShaders();
 
@@ -96,13 +96,19 @@ void OpenGLWindow::resizeGL(int w, int h)
 {
     qDebug() << "resizeGL";
 
+    glViewport(0,0,w,h);
+
+    float width = static_cast<float>(w);
+    float height = static_cast<float>(h);
+    float aspectRatio = width/height;
+
+
     // Clear color and depth buffer
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    float aspectRatio = static_cast<float>(w)/static_cast<float>(h);
-
     projectionMatrix.setToIdentity();
-    projectionMatrix.ortho(-1.0f, 1.0f, -1.0f, 1.0f, 0.1f, 100.0f);
+    projectionMatrix.perspective(90.0f, aspectRatio, 0.1f, 100.0f);
+
 }
 
 void OpenGLWindow::paintGL()
