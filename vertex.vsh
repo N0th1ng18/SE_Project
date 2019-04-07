@@ -1,10 +1,10 @@
-attribute highp vec4 qt_Vertex;
-attribute highp vec4 qt_MultiTexCoord0;
-uniform highp mat4 qt_ModelViewProjectionMatrix;
-varying highp vec4 qt_TexCoord0;
+in vec3 position;
+
+uniform highp mat4 orthoMatrix;
+uniform highp mat4 viewMatrix;
+uniform highp mat4 transformationMatrix;
 
 void main(void)
 {
-    gl_Position = qt_ModelViewProjectionMatrix * qt_Vertex;
-    qt_TexCoord0 = qt_MultiTexCoord0;
+    gl_Position = orthoMatrix * viewMatrix * transformationMatrix * vec4(position, 1.0);
 }

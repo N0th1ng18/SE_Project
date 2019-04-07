@@ -8,6 +8,7 @@
 
 class ClientProtocol : public QTcpSocket
 {
+
 public:
     ClientProtocol();
     ~ClientProtocol();

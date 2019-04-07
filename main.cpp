@@ -20,15 +20,14 @@ int main(int argc, char *argv[])
     int screenHeight = screen->availableSize().height();
 
     qDebug() << "Window:\n";
-    qDebug() << "X = " << screenWidth;
-    qDebug() << "Y = " << screenHeight;
+    qDebug() << "AvailScreen(" << screenWidth << ", " << screenHeight << ")";
 
 
     Widget window;
-    window.setWindowState(Qt::WindowFullScreen);
-    window.showMaximized();
+    //window.setWindowState(Qt::WindowFullScreen);
+    window.show();
 
-    ClientProtocol::connectMainServer();
+    //ClientProtocol::connectMainServer();
 
     return a.exec();
 }

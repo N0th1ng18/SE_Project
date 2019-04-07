@@ -9,7 +9,7 @@ Widget::Widget(QWidget *parent) :
     ui(new Ui::Widget)
 {
     ui->setupUi(this);
-    //ui->stackedWidget->setCurrentIndex(Pages::LOGIN_PAGE);
+    ui->stackedWidget->setCurrentIndex(Pages::LOGIN_PAGE);
 }
 
 Widget::~Widget()
@@ -20,11 +20,8 @@ Widget::~Widget()
 void Widget::on_pushButton_clicked()
 {
     ui->stackedWidget->setCurrentIndex(1);
+    OpenGLWindow window;
 }
-
-
-
-
 
 
 void Widget::on_pushButton_2_clicked()
