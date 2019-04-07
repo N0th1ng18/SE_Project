@@ -9,14 +9,10 @@ OpenGLWindow::OpenGLWindow(QWidget *parent) :
 OpenGLWindow::~OpenGLWindow()
 {
     makeCurrent();
-    /*Clean Up
-    delete &orthoMatrix;
-    delete &viewMatrix;
-    delete &transformationMatrix;
-    delete &vertex_VBO;
-    delete &vao;
-    delete &program;
-    --------*/
+    /*Clean Up*/
+    vertex_VBO.destroy();
+    vao.destroy();
+    /*-------*/
     doneCurrent();
 }
 
@@ -29,7 +25,7 @@ void OpenGLWindow::timerEvent(QTimerEvent *)
 
 void OpenGLWindow::initializeGL()
 {
-    qDebug() << "initializeGL";
+    //qDebug() << "initializeGL";
     initializeOpenGLFunctions();
 
     //OpenGL Settings
@@ -44,7 +40,7 @@ void OpenGLWindow::initializeGL()
 
 void OpenGLWindow::initShaders()
 {
-    qDebug() << "initShaders";
+    //qDebug() << "initShaders";
     // Compile vertex shader
     if (!program.addShaderFromSourceFile(QOpenGLShader::Vertex, ":/vertex.vsh"))
         close();
@@ -94,7 +90,7 @@ void OpenGLWindow::initShaders()
 
 void OpenGLWindow::resizeGL(int w, int h)
 {
-    qDebug() << "resizeGL";
+    //qDebug() << "resizeGL";
 
     glViewport(0,0,w,h);
 
@@ -113,7 +109,7 @@ void OpenGLWindow::resizeGL(int w, int h)
 
 void OpenGLWindow::paintGL()
 {
-    qDebug() << "paintGL";
+    //qDebug() << "paintGL";
 
     //bind Shader
     program.bind();
