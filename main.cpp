@@ -4,14 +4,17 @@
 #include <QDebug>
 #include <QScreen>
 #include "clientprotocol.h"
+#include "openglwindow.h"
 
 int main(int argc, char *argv[])
 {
-    QApplication a(argc, argv);
+    QApplication app(argc, argv);
 
 
     QSurfaceFormat format;
     format.setDepthBufferSize(24);
+    format.setVersion(3, 0);
+    format.setProfile(QSurfaceFormat::CoreProfile);
     QSurfaceFormat::setDefaultFormat(format);
 
 
@@ -20,14 +23,19 @@ int main(int argc, char *argv[])
     int screenHeight = screen->availableSize().height();
 
     qDebug() << "Window:\n";
-    qDebug() << "AvailScreen(" << screenWidth << ", " << screenHeight << ")";
+    qDebug() << "ScreenRes("<< screenWidth << ", " << screenHeight << ")";
 
 
     Widget window;
     //window.setWindowState(Qt::WindowFullScreen);
     window.show();
+    window.hide();
+
+    OpenGLWindow glWindow;
+    //glWindow.setWindowState(Qt::WindowFullScreen);
+    glWindow.show();
 
     //ClientProtocol::connectMainServer();
 
-    return a.exec();
+    return app.exec();
 }

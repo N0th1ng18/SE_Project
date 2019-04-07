@@ -4,35 +4,47 @@ OpenGLWindow::OpenGLWindow(QWidget *parent) :
     QOpenGLWidget(parent)
 {
     //qDebug("OpenGLWindow Constructor");
-    makeCurrent();
-    initializeGL();
 }
 
 OpenGLWindow::~OpenGLWindow()
 {
     makeCurrent();
-    /*Clean Up*/
-
-    /*--------*/
+    /*Clean Up
+    delete &orthoMatrix;
+    delete &viewMatrix;
+    delete &transformationMatrix;
+    delete &vertex_VBO;
+    delete &vao;
+    delete &program;
+    --------*/
     doneCurrent();
 }
 
 
+void OpenGLWindow::timerEvent(QTimerEvent *)
+{
+
+     //update();
+}
+
 void OpenGLWindow::initializeGL()
 {
-    //qDebug() << "initializeGL";
+    qDebug() << "initializeGL";
     initializeOpenGLFunctions();
 
     //OpenGL Settings
     glClearColor(1, 0, 0, 1);
+    glEnable(GL_DEPTH_TEST);
     //glEnable(GL_CULL_FACE);
 
     initShaders();
 
+    timer.start(12, this);
 }
 
 void OpenGLWindow::initShaders()
 {
+    qDebug() << "initShaders";
     // Compile vertex shader
     if (!program.addShaderFromSourceFile(QOpenGLShader::Vertex, ":/vertex.vsh"))
         close();
@@ -57,9 +69,9 @@ void OpenGLWindow::initShaders()
 
     //Create VAO with all VBOs
     GLfloat vertices[] = {
-           0.0f, 0.707f, 0.0f,
-           -0.5f, -0.5f, 0.0f,
-           0.5f, -0.5f, 0.0f
+           -1.0f, -1.0f, 0.0f,
+           1.0f, -1.0f, 0.0f,
+           0.0f, 1.0f, 0.0f
        };
 
     //Create VAO
@@ -70,15 +82,13 @@ void OpenGLWindow::initShaders()
     vertex_VBO.create();
     vertex_VBO.setUsagePattern(QOpenGLBuffer::StaticDraw);
     vertex_VBO.bind();
-    vertex_VBO.allocate(vertices, 12 * sizeof(float));
+    vertex_VBO.allocate(vertices, 9 * sizeof(GLfloat));
     program.enableAttributeArray("position");
-    program.setAttributeBuffer("position", GL_FLOAT, 0, 3, sizeof(GLfloat));
+    program.setAttributeBuffer("position", GL_FLOAT, 0, 3, sizeof(GLfloat) * 3);    //Stride is size to next set of attributes
 
-    //Unbind VBOs and VAO
+    //Unbind VBOs and VAO and Shader Program
     vertex_VBO.release();
     vao.release();
-
-    //Unbind Shader Program
     program.release();
 }
 
@@ -91,8 +101,8 @@ void OpenGLWindow::resizeGL(int w, int h)
 
     float aspectRatio = static_cast<float>(w)/static_cast<float>(h);
 
-    orthoMatrix.setToIdentity();
-    orthoMatrix.ortho(-aspectRatio, aspectRatio, -1.0f, 1.0f, 0.1f, 100.0f);
+    projectionMatrix.setToIdentity();
+    projectionMatrix.ortho(-1.0f, 1.0f, -1.0f, 1.0f, 0.1f, 100.0f);
 }
 
 void OpenGLWindow::paintGL()
@@ -111,11 +121,11 @@ void OpenGLWindow::paintGL()
 
     //Transformation
     viewMatrix.setToIdentity();
-    viewMatrix.translate(0.0f, 0.0f, 0.0f);
+    viewMatrix.translate(0.0f, 0.0f, -2.0f);
     transformationMatrix.setToIdentity();
 
     //Uniforms
-    program.setUniformValue("orthoMatrix", orthoMatrix);
+    program.setUniformValue("projectionMatrix", projectionMatrix);
     program.setUniformValue("viewMatrix", viewMatrix);
     program.setUniformValue("transformationMatrix", transformationMatrix);
 

@@ -20,7 +20,7 @@ Widget::~Widget()
 void Widget::on_pushButton_clicked()
 {
     ui->stackedWidget->setCurrentIndex(1);
-    OpenGLWindow window;
+    this->hide();
 }
 
 
@@ -28,3 +28,4 @@ void Widget::on_pushButton_2_clicked()
 {
     ClientProtocol::connectMainServer();
 }
+

@@ -1,3 +1,4 @@
+#version 100
 //uniform sampler2D qt_Texture0;
 //varying highp vec4 qt_TexCoord0;
 

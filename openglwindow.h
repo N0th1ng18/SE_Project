@@ -6,6 +6,7 @@
 #include <QOpenGLShaderProgram>
 #include <QOpenGLVertexArrayObject>
 #include <QOpenGLBuffer>
+#include <QBasicTimer>
 
 class OpenGLWindow : public QOpenGLWidget, protected QOpenGLFunctions
 {
@@ -15,20 +16,24 @@ public:
     ~OpenGLWindow();
 
 protected:
-    void initializeGL();
-    void resizeGL(int w, int h);
-    void paintGL();
+    void timerEvent(QTimerEvent *e) override;
+
+    void initializeGL() override;
+    void resizeGL(int w, int h) override;
+    void paintGL() override;
 
     void loadObjects();
     void initShaders();
 
 private:
+    QBasicTimer timer;
+
     QOpenGLShaderProgram program;
 
     QOpenGLVertexArrayObject vao;   //Buffer to store all VBOs
     QOpenGLBuffer vertex_VBO;       //Buffer for verticies
 
-    QMatrix4x4 orthoMatrix;
+    QMatrix4x4 projectionMatrix;
     QMatrix4x4 viewMatrix;
     QMatrix4x4 transformationMatrix;
 
