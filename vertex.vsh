@@ -1,11 +1,17 @@
-#version 100
-attribute highp vec3 position;
+#version 120
 
-uniform highp mat4 projectionMatrix;
-uniform highp mat4 viewMatrix;
-uniform highp mat4 transformationMatrix;
+attribute vec3 position;
+attribute vec2 texCoords;
+
+uniform mat4 projectionMatrix;
+uniform mat4 viewMatrix;
+uniform mat4 transformationMatrix;
+
+varying vec2 texCoords_FS;
 
 void main(void)
 {
     gl_Position = projectionMatrix * viewMatrix * transformationMatrix * vec4(position, 1.0);
+
+    texCoords_FS = texCoords;
 }

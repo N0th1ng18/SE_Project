@@ -7,6 +7,7 @@
 #include <QOpenGLVertexArrayObject>
 #include <QOpenGLBuffer>
 #include <QBasicTimer>
+#include <QOpenGLTexture>
 
 class OpenGLWindow : public QOpenGLWidget, protected QOpenGLFunctions
 {
@@ -24,6 +25,7 @@ protected:
 
     void loadObjects();
     void initShaders();
+    void initTextures();
 
 private:
     QBasicTimer timer;
@@ -32,12 +34,13 @@ private:
 
     QOpenGLVertexArrayObject vao;   //Buffer to store all VBOs
     QOpenGLBuffer vertex_VBO;       //Buffer for verticies
+    QOpenGLBuffer texCoords_VBO;    //Buffer for Texture Coordinates
 
     QMatrix4x4 projectionMatrix;
     QMatrix4x4 viewMatrix;
     QMatrix4x4 transformationMatrix;
 
-
+    QOpenGLTexture *textures[5];
 
 };
 

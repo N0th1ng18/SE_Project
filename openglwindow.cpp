@@ -11,7 +11,9 @@ OpenGLWindow::~OpenGLWindow()
     makeCurrent();
     /*Clean Up*/
     vertex_VBO.destroy();
+    texCoords_VBO.destroy();
     vao.destroy();
+    delete *textures;
     /*-------*/
     doneCurrent();
 }
@@ -20,7 +22,7 @@ OpenGLWindow::~OpenGLWindow()
 void OpenGLWindow::timerEvent(QTimerEvent *)
 {
 
-     //update();
+
 }
 
 void OpenGLWindow::initializeGL()
@@ -34,13 +36,33 @@ void OpenGLWindow::initializeGL()
     glEnable(GL_CULL_FACE);
 
     initShaders();
+    initTextures();
+    //loadObjects(QOpenGLShaderProgram program)
 
     timer.start(12, this);
+}
+
+void OpenGLWindow::initTextures()
+{
+
+    // Load Wood Texture
+    QImage *image = new QImage(":textures/wood.png");
+    if(image->isNull()){
+        qDebug() << "Failed to load image0.";
+        return;
+    }
+    textures[0] = new QOpenGLTexture(image->mirrored());
+    textures[0]->setMinificationFilter(QOpenGLTexture::Nearest);
+    textures[0]->setMagnificationFilter(QOpenGLTexture::Linear);
+    textures[0]->setWrapMode(QOpenGLTexture::Repeat);
+    /*******************************************************************/
+
 }
 
 void OpenGLWindow::initShaders()
 {
     //qDebug() << "initShaders";
+
     // Compile vertex shader
     if (!program.addShaderFromSourceFile(QOpenGLShader::Vertex, ":/vertex.vsh"))
         close();
@@ -63,14 +85,24 @@ void OpenGLWindow::initShaders()
         close();
     }
 
-    //Create VAO with all VBOs
+    /*******************************************************************/
+
+    //Vertex Positions
     GLfloat vertices[] = {
            -1.0f, -1.0f, 0.0f,
            1.0f, -1.0f, 0.0f,
            0.0f, 1.0f, 0.0f
        };
 
-    //Create VAO
+    //Vertex Texture Coords
+    GLfloat texCoords[] = {
+           0.0f, 0.0f,
+           1.0f, 0.0f,
+           0.5f, 1.0f,
+       };
+    /*******************************************************************/
+
+    //Create VAO with all VBOs
     vao.create();
     vao.bind();
 
@@ -82,10 +114,23 @@ void OpenGLWindow::initShaders()
     program.enableAttributeArray("position");
     program.setAttributeBuffer("position", GL_FLOAT, 0, 3, sizeof(GLfloat) * 3);    //Stride is size to next set of attributes
 
-    //Unbind VBOs and VAO and Shader Program
+    //Create VBO for Textures
+    texCoords_VBO.create();
+    texCoords_VBO.setUsagePattern(QOpenGLBuffer::StaticDraw);
+    texCoords_VBO.bind();
+    texCoords_VBO.allocate(texCoords, 6 * sizeof(GLfloat));
+    program.enableAttributeArray("texCoords");
+    program.setAttributeBuffer("texCoords", GL_FLOAT, 0, 2, sizeof(GLfloat) * 2);    //Stride is size to next set of attributes
+
+
+    //Unbind VBOs
     vertex_VBO.release();
+    texCoords_VBO.release();
+    //Unbind VAO
     vao.release();
+    //Unbind Shader Program
     program.release();
+    /*******************************************************************/
 }
 
 void OpenGLWindow::resizeGL(int w, int h)
@@ -111,13 +156,12 @@ void OpenGLWindow::paintGL()
 {
     //qDebug() << "paintGL";
 
-    //bind Shader
+    //Bind Shader
     program.bind();
-
     //Bind VAO
     vao.bind();
-
     //Bind Textures
+    textures[0]->bind();
 
     //Interpolate
 
@@ -130,6 +174,7 @@ void OpenGLWindow::paintGL()
     program.setUniformValue("projectionMatrix", projectionMatrix);
     program.setUniformValue("viewMatrix", viewMatrix);
     program.setUniformValue("transformationMatrix", transformationMatrix);
+    program.setUniformValue("texture", 0);
 
     //Draw
     glDrawArrays(GL_TRIANGLES, 0, 3);
