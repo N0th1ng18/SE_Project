@@ -198,8 +198,8 @@ void OpenGLWindow::paintGL()
     /*******************************************************************/
 
     //Render Text
-    int textPosX = 0.0f;
-    int textPosY = -130.0f;
+    int textPosX = 0;
+    int textPosY = -130;
     int fontSize = 20;
     std::string str = "Software Engineering Project";
     QString text = QString::fromStdString(str);
