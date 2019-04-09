@@ -46,7 +46,7 @@ void OpenGLWindow::initTextures()
 {
 
     // Load Wood Texture
-    QImage *image = new QImage(":textures/wood.png");
+    QImage *image = new QImage(":wood.png");
     if(image->isNull()){
         qDebug() << "Failed to load image0.";
         return;
@@ -63,12 +63,16 @@ void OpenGLWindow::initShaders()
 {
     //qDebug() << "initShaders";
 
+    /* Desktop Version
+     * Compile vertex_Desktop & frag_Desktop
+     */
+
     // Compile vertex shader
-    if (!program.addShaderFromSourceFile(QOpenGLShader::Vertex, ":/vertex.vsh"))
+    if (!program.addShaderFromSourceFile(QOpenGLShader::Vertex, ":/vertex_Android.vsh"))
         close();
 
     // Compile fragment shader
-    if (!program.addShaderFromSourceFile(QOpenGLShader::Fragment, ":/frag.fsh"))
+    if (!program.addShaderFromSourceFile(QOpenGLShader::Fragment, ":/frag_Android.fsh"))
         close();
 
     // Link shader pipeline

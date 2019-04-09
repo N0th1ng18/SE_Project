@@ -1,6 +1,8 @@
 <RCC>
     <qresource prefix="/">
-        <file>vertex.vsh</file>
-        <file>frag.fsh</file>
+        <file>vertex_Android.vsh</file>
+        <file>frag_Android.fsh</file>
+        <file>frag_Desktop.fsh</file>
+        <file>vertex_Desktop.vsh</file>
     </qresource>
 </RCC>
