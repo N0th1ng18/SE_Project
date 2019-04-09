@@ -4,8 +4,10 @@
 #
 #-------------------------------------------------
 
-QT       += core gui\
-            network\
+QT  += core gui
+QT  += network
+QT  += quick
+QT  += sql
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -26,17 +28,18 @@ CONFIG += c++11
 
 SOURCES += \
         main.cpp \
-        widget.cpp \
     openglwindow.cpp \
-    clientprotocol.cpp
+    clientprotocol.cpp \
+    playerinfo.cpp \
+    queryhandler.cpp
 
 HEADERS += \
-        widget.h \
     openglwindow.h \
-    clientprotocol.h
+    clientprotocol.h \
+    playerinfo.h \
+    queryhandler.h
 
-FORMS += \
-        widget.ui
+FORMS +=
 
 CONFIG += mobility
 MOBILITY = 
@@ -50,4 +53,5 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 DISTFILES +=
 
 RESOURCES += \
-    shaders.qrc
+    shaders.qrc \
+    qml.qrc

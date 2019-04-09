@@ -1,8 +1,14 @@
-#include "widget.h"
+
+
 #include <QApplication>
+#include <QGuiApplication>
+#include <QQmlApplicationEngine>
+#include <QQmlComponent>
+#include <QQmlContext>
+#include <QtDebug>
 #include <QSurfaceFormat>
-#include <QDebug>
 #include <QScreen>
+#include "playerinfo.h"
 #include "clientprotocol.h"
 #include "openglwindow.h"
 
@@ -18,21 +24,28 @@ int main(int argc, char *argv[])
     QSurfaceFormat::setDefaultFormat(format);
     /*************************************************************************/
 
-    //UI Window
-    Widget window;
-    //window.setWindowState(Qt::WindowFullScreen);
-    window.show();
-    window.hide();
-    /*************************************************************************/
+    PlayerInfo player;
+
+    QQmlEngine engine;
+    QQmlComponent *component = new QQmlComponent(&engine);
+    QQmlContext *ctx = engine.rootContext();
+    ctx->setContextProperty("playerinfo", &player);
+
+    component->loadUrl(QStringLiteral("qrc:/main.qml"));
+
+    QObject * topLevel = component->create();
+
+    int r = app.exec();
+    qDebug() << player.getUsername() << " " << player.getPassword() << endl;
 
     //OpenGL Window
     OpenGLWindow glWindow;
     //glWindow.setWindowState(Qt::WindowFullScreen);
-    glWindow.show();
+   // glWindow.show();
     /*************************************************************************/
 
 
     //ClientProtocol::connectMainServer();
 
-    return app.exec();
+    return 0;
 }
