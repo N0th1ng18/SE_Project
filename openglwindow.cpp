@@ -71,11 +71,11 @@ void OpenGLWindow::initShaders()
      */
 
     // Compile vertex shader
-    if (!program.addShaderFromSourceFile(QOpenGLShader::Vertex, ":/vertex_Android.vsh"))
+    if (!program.addShaderFromSourceFile(QOpenGLShader::Vertex, ":/vertex_Desktop.vsh"))
         close();
 
     // Compile fragment shader
-    if (!program.addShaderFromSourceFile(QOpenGLShader::Fragment, ":/frag_Android.fsh"))
+    if (!program.addShaderFromSourceFile(QOpenGLShader::Fragment, ":/frag_Desktop.fsh"))
         close();
 
     // Link shader pipeline
@@ -143,19 +143,21 @@ void OpenGLWindow::initShaders()
 void OpenGLWindow::resizeGL(int w, int h)
 {
     //qDebug() << "resizeGL";
+    g_width = w;
+    g_height = h;
 
     glViewport(0,0,w,h);
 
     float width = static_cast<float>(w);
     float height = static_cast<float>(h);
-    float aspectRatio = width/height;
+    g_aspectRatio = width/height;
 
 
     // Clear color and depth buffer
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     projectionMatrix.setToIdentity();
-    projectionMatrix.perspective(90.0f, aspectRatio, 0.1f, 100.0f);
+    projectionMatrix.perspective(90.0f, g_aspectRatio, 0.1f, 100.0f);
 
 }
 
@@ -163,6 +165,10 @@ void OpenGLWindow::paintGL()
 {
     //qDebug() << "paintGL";
 
+    // Clear color and depth buffer
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+    //Render Entities
     //Bind Shader
     program.bind();
     //Bind VAO
@@ -189,6 +195,29 @@ void OpenGLWindow::paintGL()
     //Unbind
     vao.release();
     program.release();
+    /*******************************************************************/
+
+    //Render Text
+    int textPosX = 0.0f;
+    int textPosY = -130.0f;
+    int fontSize = 20;
+    std::string str = "Software Engineering Project";
+    QString text = QString::fromStdString(str);
+
+    //Set up Painter
+    QPainter painter(this);
+    painter.setPen(Qt::blue);
+    painter.setFont(QFont("Helvetica", fontSize));
+    painter.setRenderHints(QPainter::Antialiasing | QPainter::TextAntialiasing);
+    //Font Metrics
+    QFontMetrics metrics = painter.fontMetrics();
+    //Text Position
+    textPosX = textPosX - metrics.width(text)/2 + g_width / 2;
+    textPosY = textPosY + g_height / 2;
+    //Draw Text
+    painter.drawText(textPosX, textPosY, text);
+    painter.end();
+    /*******************************************************************/
 }
 
 

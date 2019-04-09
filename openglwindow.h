@@ -8,6 +8,8 @@
 #include <QOpenGLBuffer>
 #include <QBasicTimer>
 #include <QOpenGLTexture>
+#include <QPainter>
+#include <QFontMetrics>
 
 class OpenGLWindow : public QOpenGLWidget, protected QOpenGLFunctions
 {
@@ -28,6 +30,9 @@ protected:
     void initTextures();
 
 private:
+    int g_width, g_height;
+    float g_aspectRatio;
+
     QBasicTimer timer;
 
     QOpenGLShaderProgram program;
