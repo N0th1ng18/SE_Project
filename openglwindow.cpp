@@ -63,8 +63,11 @@ void OpenGLWindow::initShaders()
 {
     //qDebug() << "initShaders";
 
-    /* Desktop Version
+    /* Desktop Version:
      * Compile vertex_Desktop & frag_Desktop
+     *
+     * Android Version:
+     * Compile vertex_Android & frag_Android
      */
 
     // Compile vertex shader
