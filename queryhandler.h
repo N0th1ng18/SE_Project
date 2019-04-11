@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QtSql>
+#include "playerinfo.h"
 
 class QueryHandler : public QObject
 {
@@ -16,6 +17,9 @@ signals:
 
 
 public slots:
+   bool queryUsername(QString name);
+   bool queryPassword(QString pass);
+
 
 private:
     QSqlDatabase *m_DataBase;

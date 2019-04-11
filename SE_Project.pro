@@ -31,13 +31,15 @@ SOURCES += \
     openglwindow.cpp \
     clientprotocol.cpp \
     playerinfo.cpp \
-    queryhandler.cpp
+    queryhandler.cpp \
+    gamerenderer.cpp
 
 HEADERS += \
     openglwindow.h \
     clientprotocol.h \
     playerinfo.h \
-    queryhandler.h
+    queryhandler.h \
+    gamerenderer.h
 
 FORMS +=
 

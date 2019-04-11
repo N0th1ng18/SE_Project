@@ -7,8 +7,7 @@
 class PlayerInfo : public QObject
 {
     Q_OBJECT
-    Q_PROPERTY(QString username READ getUsername WRITE setUsername NOTIFY usernameEdited)
-    Q_PROPERTY(QString password READ getPassword WRITE setPassword NOTIFY passwordEdited)
+
 public:
     explicit PlayerInfo(QObject *parent = nullptr);
 
@@ -18,16 +17,14 @@ public:
     void setPassword(QString newPass);
 
 signals:
-    void sendUsername(QString item);
-    void sendPassword(QString item);
     void usernameEdited();
     void passwordEdited();
-   // void sendPlayerInfo(PlayerInfo* item);
 
 public slots:
+   PlayerInfo* sendPlayeInfo();
    void receiveUsername(QString item);
    void receivePassword(QString item);
-   //void receivePlayerInfo(PlayerInfo* item);
+
 
 private:
    QString m_name;

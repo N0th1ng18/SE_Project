@@ -11,6 +11,7 @@
 #include "playerinfo.h"
 #include "clientprotocol.h"
 #include "openglwindow.h"
+#include "gamerenderer.h"
 
 int main(int argc, char *argv[])
 {
@@ -25,23 +26,27 @@ int main(int argc, char *argv[])
     /*************************************************************************/
 
     PlayerInfo player;
+    //OpenGL Window
+    OpenGLWindow glWindow;
+
+
 
     QQmlEngine engine;
     QQmlComponent *component = new QQmlComponent(&engine);
     QQmlContext *ctx = engine.rootContext();
+    QObject * topLevel;
+    GameRenderer *gameView = new GameRenderer(nullptr,&glWindow);
     ctx->setContextProperty("playerinfo", &player);
+    ctx->setContextProperty("GameRenderer", gameView);
 
     component->loadUrl(QStringLiteral("qrc:/main.qml"));
 
-    QObject * topLevel = component->create();
+    topLevel = component->create();
 
     int r = app.exec();
     qDebug() << player.getUsername() << " " << player.getPassword() << endl;
 
-    //OpenGL Window
-    OpenGLWindow glWindow;
-    //glWindow.setWindowState(Qt::WindowFullScreen);
-   // glWindow.show();
+
     /*************************************************************************/
 
 

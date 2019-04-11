@@ -29,3 +29,6 @@ void PlayerInfo::receivePassword(QString item){
     m_pass = item;
 }
 
+PlayerInfo* PlayerInfo::sendPlayeInfo(){
+    return this;
+}
