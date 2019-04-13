@@ -46,6 +46,15 @@ void Shader::unbind()
     program.release();
 }
 
+void Shader::setAttributePointer(const char *name, GLenum type, int offset, int vectorSize, int bytesToNextVector)
+{
+    //const char *name, GLenum type, int offset, int tupleSize, int stride = 0
+    program.enableAttributeArray(name);
+    program.setAttributeBuffer(name, type, offset, vectorSize, bytesToNextVector);
+}
+
+
+
 QOpenGLShaderProgram* Shader::getProgram()
 {
     return &program;

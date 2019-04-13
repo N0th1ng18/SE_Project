@@ -16,7 +16,7 @@ public:
 protected:
 
 private:
-    QOpenGLTexture texture;
+    QOpenGLTexture* texture;
 };
 
 #endif // TEXTURE_H

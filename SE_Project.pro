@@ -31,7 +31,9 @@ SOURCES += \
     clientprotocol.cpp \
     model.cpp \
     shader.cpp \
-    texture.cpp
+    texture.cpp \
+    vao.cpp \
+    vbo.cpp
 
 HEADERS += \
         widget.h \
@@ -39,7 +41,9 @@ HEADERS += \
     clientprotocol.h \
     model.h \
     shader.h \
-    texture.h
+    texture.h \
+    vao.h \
+    vbo.h
 
 FORMS += \
         widget.ui

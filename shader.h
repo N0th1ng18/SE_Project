@@ -12,6 +12,11 @@ public:
     void link();
     void bind();
     void unbind();
+    void setAttributePointer(const char *name
+                             , GLenum type
+                             , int offset
+                             , int vectorSize
+                             , int bytesToNextVector);
     QOpenGLShaderProgram* getProgram();
 
 protected:
