@@ -47,6 +47,34 @@ private:
 
     QOpenGLTexture *textures[5];
 
+    //Needs to be classes
+        //Holds all the OpenGL structures needed for the Renderer
+        struct Materials {
+            //Models
+            //Shaders
+            //Textures
+            //VAOs
+            //VBOs
+        };
+
+        //Holds the ServerState that is sent to the renderer
+        struct ClientState {
+            //Cameras
+            //Players
+            //Objects
+            //Maps
+            //Texts
+            //Sounds
+        };
+
+        //Holds the Actions the User has taken to be sent to the Server's Game Thread
+        //Action State Resets before every update.
+        struct ActionState {
+            //bool used_PowerUp1
+            //bool used_PowerUp2
+            //bool rolled
+        };
+
 };
 
 #endif // OPENGLWINDOW_H

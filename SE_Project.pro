@@ -28,12 +28,16 @@ SOURCES += \
         main.cpp \
         widget.cpp \
     openglwindow.cpp \
-    clientprotocol.cpp
+    clientprotocol.cpp \
+    model.cpp \
+    shader.cpp
 
 HEADERS += \
         widget.h \
     openglwindow.h \
-    clientprotocol.h
+    clientprotocol.h \
+    model.h \
+    shader.h
 
 FORMS += \
         widget.ui

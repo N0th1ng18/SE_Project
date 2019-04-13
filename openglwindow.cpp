@@ -31,7 +31,7 @@ void OpenGLWindow::initializeGL()
     initializeOpenGLFunctions();
 
     //OpenGL Settings
-    glClearColor(1, 0, 0, 1);
+    glClearColor(0, 0, 0, 1);
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_CULL_FACE);
 
@@ -96,16 +96,24 @@ void OpenGLWindow::initShaders()
 
     //Vertex Positions
     GLfloat vertices[] = {
-           -1.0f, -1.0f, 0.0f,
-           1.0f, -1.0f, 0.0f,
-           0.0f, 1.0f, 0.0f
+           -0.5f, -0.5f, 0.0f,
+           0.5f, -0.5f, 0.0f,
+           0.5f, 0.5f, 0.0f,
+
+           0.5f, 0.5f, 0.0f,
+           -0.5f, 0.5f, 0.0f,
+           -0.5f, -0.5f, 0.0f
        };
 
     //Vertex Texture Coords
     GLfloat texCoords[] = {
            0.0f, 0.0f,
            1.0f, 0.0f,
-           0.5f, 1.0f,
+           1.0f, 1.0f,
+
+           1.0f, 1.0f,
+           0.0f, 1.0f,
+           0.0f, 0.0f
        };
     /*******************************************************************/
 
@@ -117,7 +125,7 @@ void OpenGLWindow::initShaders()
     vertex_VBO.create();
     vertex_VBO.setUsagePattern(QOpenGLBuffer::StaticDraw);
     vertex_VBO.bind();
-    vertex_VBO.allocate(vertices, 9 * sizeof(GLfloat));
+    vertex_VBO.allocate(vertices, 18 * sizeof(GLfloat));
     program.enableAttributeArray("position");
     program.setAttributeBuffer("position", GL_FLOAT, 0, 3, sizeof(GLfloat) * 3);    //Stride is size to next set of attributes
 
@@ -125,7 +133,7 @@ void OpenGLWindow::initShaders()
     texCoords_VBO.create();
     texCoords_VBO.setUsagePattern(QOpenGLBuffer::StaticDraw);
     texCoords_VBO.bind();
-    texCoords_VBO.allocate(texCoords, 6 * sizeof(GLfloat));
+    texCoords_VBO.allocate(texCoords, 12 * sizeof(GLfloat));
     program.enableAttributeArray("texCoords");
     program.setAttributeBuffer("texCoords", GL_FLOAT, 0, 2, sizeof(GLfloat) * 2);    //Stride is size to next set of attributes
 
@@ -190,7 +198,7 @@ void OpenGLWindow::paintGL()
     program.setUniformValue("texture", 0);
 
     //Draw
-    glDrawArrays(GL_TRIANGLES, 0, 3);
+    glDrawArrays(GL_TRIANGLES, 0, 6); //num of verticies
 
     //Unbind
     vao.release();
