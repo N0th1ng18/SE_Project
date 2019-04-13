@@ -1,5 +1,9 @@
 #include "texture.h"
 
+Texture::Texture()
+{
+
+}
 Texture::Texture(const QString filePath)
 {
     // Load Texture

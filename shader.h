@@ -7,6 +7,7 @@
 class Shader
 {
 public:
+    Shader();
     Shader(const QString vertexShaderPath, const QString fragmentShaderPath);
     ~Shader();
     void link();

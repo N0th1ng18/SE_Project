@@ -1,5 +1,10 @@
 #include "shader.h"
 
+Shader::Shader()
+{
+
+}
+
 Shader::Shader(const QString vertexShaderPath, const QString fragmentShaderPath)
 {
     // Compile vertex shader

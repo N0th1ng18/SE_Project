@@ -33,7 +33,8 @@ SOURCES += \
     shader.cpp \
     texture.cpp \
     vao.cpp \
-    vbo.cpp
+    vbo.cpp \
+    materials.cpp
 
 HEADERS += \
         widget.h \
@@ -43,7 +44,8 @@ HEADERS += \
     shader.h \
     texture.h \
     vao.h \
-    vbo.h
+    vbo.h \
+    materials.h
 
 FORMS += \
         widget.ui
