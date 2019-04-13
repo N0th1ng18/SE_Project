@@ -38,108 +38,37 @@ void OpenGLWindow::initializeGL()
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glEnable(GL_BLEND);
 
-    initShaders();
-    initTextures();
-    //loadObjects(QOpenGLShaderProgram program)
+    //Load Materials
 
     timer.start(12, this);
 }
 
-void OpenGLWindow::initTextures()
-{
+void OpenGLWindow::loadMaterials(){
+    //Textures
+    Texture *texture0 = new Texture(":test.png");
+    texture0->setMiniFilter(QOpenGLTexture::Nearest);
+    texture0->setMagFilter(QOpenGLTexture::Linear);
+    texture0->setWrapMode(QOpenGLTexture::Repeat);
+    materials->addTexture(texture0);
+    delete texture0;
 
-    // Load Wood Texture
-    QImage *image = new QImage(":test.png");
-    if(image->isNull()){
-        qDebug() << "Failed to load image0.";
-        return;
-    }
-    textures[0] = new QOpenGLTexture(image->mirrored());
-    textures[0]->setMinificationFilter(QOpenGLTexture::Nearest);
-    textures[0]->setMagnificationFilter(QOpenGLTexture::Linear);
-    textures[0]->setWrapMode(QOpenGLTexture::Repeat);
-    /*******************************************************************/
+    //Shaders
+    Shader *shader = new Shader(":/vertex_Desktop.vsh", ":/frag_Desktop.fsh");
+    materials->addShader(shader);
+    delete shader;
 
+    //Models
+    Model *model = new Model();
+    materials->addModel(model);
+    delete model;
+
+    //VAOs
+    DO VAO AND VBOS AND WE DONE!!
 }
+
 
 void OpenGLWindow::initShaders()
 {
-    //qDebug() << "initShaders";
-
-    /* Desktop Version:
-     * Compile vertex_Desktop & frag_Desktop
-     *
-     * Android Version:
-     * Compile vertex_Android & frag_Android
-     */
-
-    // Compile vertex shader
-    if (!program.addShaderFromSourceFile(QOpenGLShader::Vertex, ":/vertex_Desktop.vsh"))
-        close();
-
-    // Compile fragment shader
-    if (!program.addShaderFromSourceFile(QOpenGLShader::Fragment, ":/frag_Desktop.fsh"))
-        close();
-
-    // Link shader pipeline
-    if (!program.link())
-    {
-        qDebug() << "Failed to link shader program";
-        close();
-    }
-
-    // Bind shader pipeline for use
-    if (!program.bind())
-    {
-        qDebug() << "Failed to bind shader program";
-        close();
-    }
-
-    /*******************************************************************/
-
-    //Vertex Positions
-    GLfloat verts[] = {
-           -0.5f, -0.5f, 0.0f,
-           0.5f, -0.5f, 0.0f,
-           0.5f, 0.5f, 0.0f,
-
-           0.5f, 0.5f, 0.0f,
-           -0.5f, 0.5f, 0.0f,
-           -0.5f, -0.5f, 0.0f
-       };
-
-    //Vertex Texture Coords
-    GLfloat texCs[] = {
-           0.0f, 0.0f,
-           1.0f, 0.0f,
-           1.0f, 1.0f,
-
-           1.0f, 1.0f,
-           0.0f, 1.0f,
-           0.0f, 0.0f
-       };
-
-    //Vector for vertices
-    std::vector<GLfloat> vertices{
-        -0.5f, -0.5f, 0.0f,
-        0.5f, -0.5f, 0.0f,
-        0.5f, 0.5f, 0.0f,
-
-        0.5f, 0.5f, 0.0f,
-        -0.5f, 0.5f, 0.0f,
-        -0.5f, -0.5f, 0.0f
-    };
-
-    //Vector for vertices
-    std::vector<GLfloat> texCoords {
-        0.0f, 0.0f,
-        1.0f, 0.0f,
-        1.0f, 1.0f,
-
-        1.0f, 1.0f,
-        0.0f, 1.0f,
-        0.0f, 0.0f
-    };
 
     /*******************************************************************/
 

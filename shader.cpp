@@ -21,6 +21,20 @@ Shader::Shader(const QString vertexShaderPath, const QString fragmentShaderPath)
     {
         qDebug("Failed To Compile FragmentShader");
     }
+
+    // Link shader pipeline
+    if (!program.link())
+    {
+        qDebug("Failed To Link Shader Program");
+    }
+
+    // Bind shader pipeline for use
+    if (!program.bind())
+    {
+        qDebug("Failed To Bind Shader Program");
+    }
+
+    program.release();
 }
 
 Shader::~Shader()

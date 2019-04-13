@@ -12,6 +12,9 @@ public:
     ~Texture();
     void bind();
     void unbind();
+    void setMiniFilter(QOpenGLTexture::Filter type);
+    void setMagFilter(QOpenGLTexture::Filter type);
+    void setWrapMode(QOpenGLTexture::WrapMode mode);
     QOpenGLTexture* getTexture();
 
 protected:

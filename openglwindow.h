@@ -12,6 +12,14 @@
 #include <QFontMetrics>
 #include <vector>
 
+#include "materials.h"
+#include "texture.h"
+#include "shader.h"
+#include "model.h"
+#include "vao.h"
+#include "vbo.h"
+
+
 class OpenGLWindow : public QOpenGLWidget, protected QOpenGLFunctions
 {
 
@@ -26,9 +34,7 @@ protected:
     void resizeGL(int w, int h) override;
     void paintGL() override;
 
-    void loadObjects();
-    void initShaders();
-    void initTextures();
+    void loadMaterials();
 
 private:
     int g_width, g_height;
@@ -48,33 +54,34 @@ private:
 
     QOpenGLTexture *textures[5];
 
+    Materials *materials = new Materials();
     //Needs to be classes
         //Holds all the OpenGL structures needed for the Renderer
-        struct Materials {
+        //struct Materials {
             //Models
             //Shaders
             //Textures
             //VAOs
             //VBOs
-        };
+        //};
 
         //Holds the ServerState that is sent to the renderer
-        struct ClientState {
+        //struct ClientState {
             //Cameras
             //Players
             //Objects
             //Maps
             //Texts
             //Sounds
-        };
+       // };
 
         //Holds the Actions the User has taken to be sent to the Server's Game Thread
         //Action State Resets before every update.
-        struct ActionState {
+        //struct ActionState {
             //bool used_PowerUp1
             //bool used_PowerUp2
             //bool rolled
-        };
+        //};
 
 };
 
