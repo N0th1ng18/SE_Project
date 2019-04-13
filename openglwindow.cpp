@@ -31,9 +31,11 @@ void OpenGLWindow::initializeGL()
     initializeOpenGLFunctions();
 
     //OpenGL Settings
-    glClearColor(0, 0, 0, 1);
+    glClearColor(0, 1, 0, 1);
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_CULL_FACE);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glEnable(GL_BLEND);
 
     initShaders();
     initTextures();
@@ -46,7 +48,7 @@ void OpenGLWindow::initTextures()
 {
 
     // Load Wood Texture
-    QImage *image = new QImage(":wood.png");
+    QImage *image = new QImage(":test.png");
     if(image->isNull()){
         qDebug() << "Failed to load image0.";
         return;
@@ -71,11 +73,11 @@ void OpenGLWindow::initShaders()
      */
 
     // Compile vertex shader
-    if (!program.addShaderFromSourceFile(QOpenGLShader::Vertex, ":/vertex_Desktop.vsh"))
+    if (!program.addShaderFromSourceFile(QOpenGLShader::Vertex, ":/vertex_Android.vsh"))
         close();
 
     // Compile fragment shader
-    if (!program.addShaderFromSourceFile(QOpenGLShader::Fragment, ":/frag_Desktop.fsh"))
+    if (!program.addShaderFromSourceFile(QOpenGLShader::Fragment, ":/frag_Android.fsh"))
         close();
 
     // Link shader pipeline
@@ -189,6 +191,7 @@ void OpenGLWindow::paintGL()
     //Transformation
     viewMatrix.setToIdentity();
     viewMatrix.translate(0.0f, 0.0f, -2.0f);
+
     transformationMatrix.setToIdentity();
 
     //Uniforms
@@ -201,9 +204,11 @@ void OpenGLWindow::paintGL()
     glDrawArrays(GL_TRIANGLES, 0, 6); //num of verticies
 
     //Unbind
+    textures[0]->release();
     vao.release();
     program.release();
     /*******************************************************************/
+
 
     //Render Text
     int textPosX = 0;
