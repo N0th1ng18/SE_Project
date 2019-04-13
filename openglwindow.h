@@ -10,6 +10,7 @@
 #include <QOpenGLTexture>
 #include <QPainter>
 #include <QFontMetrics>
+#include <vector>
 
 class OpenGLWindow : public QOpenGLWidget, protected QOpenGLFunctions
 {

@@ -2,25 +2,25 @@
 #define MODEL_H
 
 #include <QOpenGLFunctions>
-#include <string>
+
+using namespace std;
 
 class Model
 {
 public:
     Model();
-    Model(std::string path);
+    Model(const QString filePath);
     ~Model();
-    GLfloat* getVerticies();
-    GLfloat* getTexCoords();
-    void setVerticies(GLfloat* verticies);
-    void setTexCoords(GLfloat* texCoords);
+    vector<GLfloat> getVertices();
+    vector<GLfloat> getTexCoords();
+    int getNumVertices();
 
 protected:
 
 private:
-    GLfloat *verticies;
-    GLfloat *texCoords;
-
+    vector<GLfloat> vertices;
+    vector<GLfloat> texCoords;
+    int numOfVertices;
 };
 
 #endif // MODEL_H

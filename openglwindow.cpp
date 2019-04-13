@@ -1,4 +1,5 @@
- #include "openglwindow.h"
+#include "openglwindow.h"
+
 
 OpenGLWindow::OpenGLWindow(QWidget *parent) :
     QOpenGLWidget(parent)
@@ -73,11 +74,11 @@ void OpenGLWindow::initShaders()
      */
 
     // Compile vertex shader
-    if (!program.addShaderFromSourceFile(QOpenGLShader::Vertex, ":/vertex_Android.vsh"))
+    if (!program.addShaderFromSourceFile(QOpenGLShader::Vertex, ":/vertex_Desktop.vsh"))
         close();
 
     // Compile fragment shader
-    if (!program.addShaderFromSourceFile(QOpenGLShader::Fragment, ":/frag_Android.fsh"))
+    if (!program.addShaderFromSourceFile(QOpenGLShader::Fragment, ":/frag_Desktop.fsh"))
         close();
 
     // Link shader pipeline
@@ -97,7 +98,7 @@ void OpenGLWindow::initShaders()
     /*******************************************************************/
 
     //Vertex Positions
-    GLfloat vertices[] = {
+    GLfloat verts[] = {
            -0.5f, -0.5f, 0.0f,
            0.5f, -0.5f, 0.0f,
            0.5f, 0.5f, 0.0f,
@@ -108,7 +109,7 @@ void OpenGLWindow::initShaders()
        };
 
     //Vertex Texture Coords
-    GLfloat texCoords[] = {
+    GLfloat texCs[] = {
            0.0f, 0.0f,
            1.0f, 0.0f,
            1.0f, 1.0f,
@@ -117,6 +118,29 @@ void OpenGLWindow::initShaders()
            0.0f, 1.0f,
            0.0f, 0.0f
        };
+
+    //Vector for vertices
+    std::vector<GLfloat> vertices{
+        -0.5f, -0.5f, 0.0f,
+        0.5f, -0.5f, 0.0f,
+        0.5f, 0.5f, 0.0f,
+
+        0.5f, 0.5f, 0.0f,
+        -0.5f, 0.5f, 0.0f,
+        -0.5f, -0.5f, 0.0f
+    };
+
+    //Vector for vertices
+    std::vector<GLfloat> texCoords {
+        0.0f, 0.0f,
+        1.0f, 0.0f,
+        1.0f, 1.0f,
+
+        1.0f, 1.0f,
+        0.0f, 1.0f,
+        0.0f, 0.0f
+    };
+
     /*******************************************************************/
 
     //Create VAO with all VBOs
@@ -127,7 +151,7 @@ void OpenGLWindow::initShaders()
     vertex_VBO.create();
     vertex_VBO.setUsagePattern(QOpenGLBuffer::StaticDraw);
     vertex_VBO.bind();
-    vertex_VBO.allocate(vertices, 18 * sizeof(GLfloat));
+    vertex_VBO.allocate(&vertices[0], 18 * sizeof(GLfloat));
     program.enableAttributeArray("position");
     program.setAttributeBuffer("position", GL_FLOAT, 0, 3, sizeof(GLfloat) * 3);    //Stride is size to next set of attributes
 
@@ -135,7 +159,7 @@ void OpenGLWindow::initShaders()
     texCoords_VBO.create();
     texCoords_VBO.setUsagePattern(QOpenGLBuffer::StaticDraw);
     texCoords_VBO.bind();
-    texCoords_VBO.allocate(texCoords, 12 * sizeof(GLfloat));
+    texCoords_VBO.allocate(&texCoords[0], 12 * sizeof(GLfloat));
     program.enableAttributeArray("texCoords");
     program.setAttributeBuffer("texCoords", GL_FLOAT, 0, 2, sizeof(GLfloat) * 2);    //Stride is size to next set of attributes
 

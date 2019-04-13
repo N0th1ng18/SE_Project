@@ -3,7 +3,6 @@
 
 #include <QOpenGLShaderProgram>
 #include <QOpenGLFunctions>
-#include <string>
 
 class Shader
 {

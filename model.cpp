@@ -2,34 +2,77 @@
 
 Model::Model()
 {
-    //Default Square model
+    /*Default Square Model*/
+    numOfVertices = 0;
+    //Vertices
+    vertices.push_back(-0.5f);
+    vertices.push_back(-0.5f);
+    vertices.push_back(0.0f);
 
+    vertices.push_back(0.5f);
+    vertices.push_back(-0.5f);
+    vertices.push_back(0.0f);
+
+    vertices.push_back(0.5f);
+    vertices.push_back(0.5f);
+    vertices.push_back(0.0f);
+
+    vertices.push_back(0.5f);
+    vertices.push_back(0.5f);
+    vertices.push_back(0.0f);
+
+    vertices.push_back(-0.5f);
+    vertices.push_back(0.5f);
+    vertices.push_back(0.0f);
+
+    vertices.push_back(-0.5f);
+    vertices.push_back(-0.5f);
+    vertices.push_back(0.0f);
+    numOfVertices = 6;
+
+    //Texture Coords
+    texCoords.push_back(0.0f);
+    texCoords.push_back(0.0f);
+
+    texCoords.push_back(1.0f);
+    texCoords.push_back(0.0f);
+
+    texCoords.push_back(1.0f);
+    texCoords.push_back(1.0f);
+
+    texCoords.push_back(1.0f);
+    texCoords.push_back(1.0f);
+
+    texCoords.push_back(0.0f);
+    texCoords.push_back(1.0f);
+
+    texCoords.push_back(0.0f);
+    texCoords.push_back(0.0f);
 }
-Model::Model(std::string)
+
+Model::Model(const QString filePath)
 {
     //Load vertcies and texture coordinates from path
 }
 
 Model::~Model()
 {
-
+    //Correctly de-allocate vectors
+    vector<GLfloat>().swap(vertices);
+    vector<GLfloat>().swap(texCoords);
 }
 
-GLfloat* Model::getVerticies()
+vector<GLfloat> Model::getVertices()
 {
-    return verticies;
+    return vertices;
 }
-GLfloat* Model::getTexCoords()
+
+vector<GLfloat> Model::getTexCoords()
 {
     return texCoords;
 }
 
-void Model::setVerticies(GLfloat* verticies)
-{
-    this->verticies = verticies;
-}
-void Model::setTexCoords(GLfloat* texCoords)
-{
-    this->texCoords = texCoords;
+int Model::getNumVertices(){
+    return numOfVertices;
 }
 

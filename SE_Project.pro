@@ -30,14 +30,16 @@ SOURCES += \
     openglwindow.cpp \
     clientprotocol.cpp \
     model.cpp \
-    shader.cpp
+    shader.cpp \
+    texture.cpp
 
 HEADERS += \
         widget.h \
     openglwindow.h \
     clientprotocol.h \
     model.h \
-    shader.h
+    shader.h \
+    texture.h
 
 FORMS += \
         widget.ui
