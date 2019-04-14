@@ -13,12 +13,13 @@ public:
     void bind();
     void unbind();
     QOpenGLVertexArrayObject* getVAO();
-
+    void setNumVertices(int numVertices);
+    int getNumVertices();
 protected:
 
 private:
-    QOpenGLVertexArrayObject* vao;
-
+    QOpenGLVertexArrayObject* vao = new QOpenGLVertexArrayObject();
+    int numVertices = 0;
 };
 
 #endif // VAO_H

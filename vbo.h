@@ -16,7 +16,7 @@ public:
 protected:
 
 private:
-    QOpenGLBuffer* vbo;
+    QOpenGLBuffer* vbo = new QOpenGLBuffer();
 };
 
 #endif // VBO_H

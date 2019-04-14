@@ -7,7 +7,6 @@
 class Shader
 {
 public:
-    Shader();
     Shader(const QString vertexShaderPath, const QString fragmentShaderPath);
     ~Shader();
     void link();
@@ -18,12 +17,12 @@ public:
                              , int offset
                              , int vectorSize
                              , int bytesToNextVector);
-    QOpenGLShaderProgram* getProgram();
+    QOpenGLShaderProgram* getShader();
 
 protected:
 
 private:
-    QOpenGLShaderProgram program;
+    QOpenGLShaderProgram *program = new QOpenGLShaderProgram();
 
 };
 

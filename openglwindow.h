@@ -42,29 +42,13 @@ private:
 
     QBasicTimer timer;
 
-    QOpenGLShaderProgram program;
-
-    QOpenGLVertexArrayObject vao;   //Buffer to store all VBOs
-    QOpenGLBuffer vertex_VBO;       //Buffer for verticies
-    QOpenGLBuffer texCoords_VBO;    //Buffer for Texture Coordinates
-
     QMatrix4x4 projectionMatrix;
     QMatrix4x4 viewMatrix;
     QMatrix4x4 transformationMatrix;
 
-    QOpenGLTexture *textures[5];
-
     Materials *materials = new Materials();
-    //Needs to be classes
-        //Holds all the OpenGL structures needed for the Renderer
-        //struct Materials {
-            //Models
-            //Shaders
-            //Textures
-            //VAOs
-            //VBOs
-        //};
 
+    //Needs to be classes
         //Holds the ServerState that is sent to the renderer
         //struct ClientState {
             //Cameras
@@ -82,6 +66,7 @@ private:
             //bool used_PowerUp2
             //bool rolled
         //};
+
 
 };
 

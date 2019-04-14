@@ -39,7 +39,7 @@ void Texture::setMiniFilter(QOpenGLTexture::Filter type)
 }
 void Texture::setMagFilter(QOpenGLTexture::Filter type)
 {
-    texture->setMagnificationFilter(QOpenGLTexture::Linear);
+    texture->setMagnificationFilter(type);
 }
 void Texture::setWrapMode(QOpenGLTexture::WrapMode mode)
 {
