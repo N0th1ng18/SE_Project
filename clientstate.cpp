@@ -20,10 +20,10 @@ void ClientState::update()
     }
 }
 
-void ClientState::render()
+void ClientState::render(QOpenGLFunctions *gl)
 {
     for(size_t i=0; i < objects.size(); i++){
-        objects.at(i).render();
+        objects.at(i).render(gl);
     }
 }
 

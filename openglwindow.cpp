@@ -23,6 +23,7 @@ void OpenGLWindow::initializeGL()
 {
     //qDebug() << "initializeGL";
     initializeOpenGLFunctions();
+    gl = QOpenGLContext::currentContext()->functions();
 
     //OpenGL Settings
     glClearColor(0, 1, 0, 1);
@@ -33,6 +34,7 @@ void OpenGLWindow::initializeGL()
 
     //Load Materials
     loadMaterials();
+    loadEntities();
 
     //timer.start(12, this);
     timer.start(1000, this);
@@ -146,7 +148,7 @@ void OpenGLWindow::paintGL()
     materials->getShader(0)->unbind();
 
     //Render clientState
-    clientState->render();
+    clientState->render(gl);
 
     //Render Text
     int textPosX = 0;

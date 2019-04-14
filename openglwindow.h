@@ -18,7 +18,7 @@
 #include "model.h"
 #include "vao.h"
 #include "vbo.h"
-#include "clientState.h"
+#include "clientstate.h"
 
 
 class OpenGLWindow : public QOpenGLWidget, protected QOpenGLFunctions
@@ -39,6 +39,7 @@ protected:
     void loadEntities();
 
 private:
+    QOpenGLFunctions *gl;
     int g_width, g_height;
     float g_aspectRatio;
 

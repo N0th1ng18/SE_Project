@@ -1,6 +1,7 @@
 #ifndef OBJECT_H
 #define OBJECT_H
 
+#include <QOpenGLWidget>
 #include <QOpenGLFunctions>
 #include <QOpenGLShaderProgram>
 #include <QOpenGLVertexArrayObject>
@@ -15,7 +16,7 @@ public:
     Object(Materials *materials, unsigned int shaderID, unsigned int vaoID, unsigned int textureID);
     ~Object();
     void update();
-    void render();
+    void render(QOpenGLFunctions *gl);
 protected:
 
 private:

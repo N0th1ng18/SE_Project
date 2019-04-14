@@ -1,4 +1,5 @@
 #include "object.h"
+#include <QOpenGLFunctions>
 
 Object::Object(Materials *materials, unsigned int shaderID, unsigned int vaoID, unsigned int textureID)
 {
@@ -6,17 +7,20 @@ Object::Object(Materials *materials, unsigned int shaderID, unsigned int vaoID, 
     this->shaderID = shaderID;
     this->vaoID = vaoID;
     this->textureID = textureID;
+
 }
 
 Object::~Object()
 {
 
 }
+
 void Object::update()
 {
 
 }
-void Object::render()
+
+void Object::render(QOpenGLFunctions *gl)
 {
     //Bind Shader
     materials->getShader(shaderID)->bind();
@@ -34,7 +38,7 @@ void Object::render()
     materials->getShader(shaderID)->getShader()->setUniformValue("texture", 0);
 
     //Draw
-    glDrawArrays(GL_TRIANGLES, 0, materials->getVAO(vaoID)->getNumVertices()); //num of verticies
+    gl->glDrawArrays(GL_TRIANGLES, 0, materials->getVAO(vaoID)->getNumVertices()); //num of verticies
 
     //Unbind
     materials->getVAO(vaoID)->unbind();
