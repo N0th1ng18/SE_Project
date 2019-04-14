@@ -15,13 +15,13 @@ public:
     void update();
     void render(QOpenGLFunctions *gl);
 
-    void addObject(Materials *materials, unsigned int shaderID, unsigned int vaoID, unsigned int textureID);
+    void addObject(Object *obj);
 
 protected:
 
 private:
     int numOfObjects;
-    vector<Object> objects;
+    vector<Object*> objects;
 
 };
 

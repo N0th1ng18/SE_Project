@@ -27,13 +27,13 @@ public:
 protected:
 
 private:
-    vector<VAO> vaos;
+    vector<VAO*> vaos;
     unsigned int numOfVAOs;
 
-    vector<Shader> shaders;
+    vector<Shader*> shaders;
     unsigned int numOfShaders;
 
-    vector<Texture> textures;
+    vector<Texture*> textures;
     unsigned int numOfTextures;
 };
 

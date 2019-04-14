@@ -25,6 +25,7 @@ void Object::update()
 
 void Object::render(QOpenGLFunctions *gl)
 {
+
     //Bind Shader
     materials->getShader(shaderID)->bind();
     //Bind VAO
@@ -42,7 +43,6 @@ void Object::render(QOpenGLFunctions *gl)
 
     //Draw
     gl->glDrawArrays(GL_TRIANGLES, 0, materials->getVAO(vaoID)->getNumVertices()); //num of verticies
-
     //Unbind
     materials->getVAO(vaoID)->unbind();
     materials->getTexture(textureID)->unbind();

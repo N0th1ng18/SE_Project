@@ -55,6 +55,12 @@ void OpenGLWindow::loadMaterials()
     texture0->setWrapMode(QOpenGLTexture::Repeat);
     materials->addTexture(texture0);
 
+    Texture *texture1 = new Texture(":wood.png");
+    texture1->setMiniFilter(QOpenGLTexture::Nearest);
+    texture1->setMagFilter(QOpenGLTexture::Linear);
+    texture1->setWrapMode(QOpenGLTexture::Repeat);
+    materials->addTexture(texture1);
+
     //Shaders
     Shader *shader = new Shader(":/vertex_Desktop.vsh", ":/frag_Desktop.fsh");
     //Shader *shader = new Shader(":/vertex_Android.vsh", ":/frag_Android.fsh");
@@ -104,7 +110,10 @@ void OpenGLWindow::loadEntities()
     //Server should do this and send it to client.
     //This is only useful for miniGames.
 
-    clientState->addObject(materials, 0, 0, 0);
+    Object *obj = new Object(materials, 0, 0, 1);
+    clientState->addObject(obj);
+    Object *obj2 = new Object(materials, 0, 0, 0);
+    clientState->addObject(obj2);
 }
 
 void OpenGLWindow::timerEvent(QTimerEvent *)

@@ -11,14 +11,25 @@ Materials::Materials()
 
 Materials::~Materials(){
     //Correctly deallocate Vectors
-    vector<Shader>().swap(shaders);
-    vector<Texture>().swap(textures);
-    vector<VAO>().swap(vaos);
+    for(size_t i=0; i < shaders.size(); i++){
+        delete (shaders.at(0));
+    }
+    vector<Shader*>().swap(shaders);
+
+    for(size_t i=0; i < textures.size(); i++){
+        delete (textures.at(0));
+    }
+    vector<Texture*>().swap(textures);
+
+    for(size_t i=0; i < vaos.size(); i++){
+        delete (vaos.at(0));
+    }
+    vector<VAO*>().swap(vaos);
 }
 
 unsigned int Materials::addVAO(VAO *vao)
 {
-    vaos.push_back(*vao);
+    vaos.push_back(vao);
     numOfVAOs++;
     return numOfVAOs-1;
 }
@@ -30,12 +41,12 @@ void Materials::removeVAO(int index)
 
 VAO* Materials::getVAO(unsigned int index)
 {
-    return &vaos.at(index);
+    return vaos.at(index);
 }
 
 unsigned int Materials::addShader(Shader *shader)
 {
-    shaders.push_back(*shader);
+    shaders.push_back(shader);
     numOfShaders++;
     return numOfShaders-1;
 }
@@ -48,13 +59,13 @@ void Materials::removeShader(int index)
 
 Shader* Materials::getShader(unsigned int index)
 {
-    return &shaders.at(index);
+    return shaders.at(index);
 }
 
 unsigned int Materials::addTexture(Texture *texture)
 
 {
-    textures.push_back(*texture);
+    textures.push_back(texture);
     numOfTextures++;
     return numOfTextures-1;
 }
@@ -67,6 +78,6 @@ void Materials::removeTexture(int index)
 
 Texture* Materials::getTexture(unsigned int index)
 {
-    return &textures.at(index);
+    return textures.at(index);
 }
 
