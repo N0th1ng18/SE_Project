@@ -11,10 +11,13 @@ OpenGLWindow::~OpenGLWindow()
 {
     makeCurrent();
     /*Clean Up*/
+
     delete materials;
     materials = nullptr;
+
     delete clientState;
     clientState = nullptr;
+
     /*-------*/
     doneCurrent();
 }

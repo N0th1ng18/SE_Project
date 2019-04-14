@@ -1,7 +1,10 @@
 #include "object.h"
 #include <QOpenGLFunctions>
 
-Object::Object(Materials *materials, unsigned int shaderID, unsigned int vaoID, unsigned int textureID)
+Object::Object(Materials *materials
+               , unsigned int shaderID
+               , unsigned int vaoID
+               , unsigned int textureID)
 {
     this->materials = materials;
     this->shaderID = shaderID;

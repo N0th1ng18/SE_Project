@@ -13,7 +13,10 @@
 class Object
 {
 public:
-    Object(Materials *materials, unsigned int shaderID, unsigned int vaoID, unsigned int textureID);
+    Object(Materials *materials
+           , unsigned int shaderID
+           , unsigned int vaoID
+           , unsigned int textureID);
     ~Object();
     void update();
     void render(QOpenGLFunctions *gl);
