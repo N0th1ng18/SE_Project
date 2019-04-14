@@ -55,8 +55,8 @@ void OpenGLWindow::loadMaterials()
     materials->addTexture(texture0);
 
     //Shaders
-    //Shader *shader = new Shader(":/vertex_Desktop.vsh", ":/frag_Desktop.fsh");
-    Shader *shader = new Shader(":/vertex_Android.vsh", ":/frag_Android.fsh");
+    Shader *shader = new Shader(":/vertex_Desktop.vsh", ":/frag_Desktop.fsh");
+    //Shader *shader = new Shader(":/vertex_Android.vsh", ":/frag_Android.fsh");
     unsigned int defaultShader = materials->addShader(shader);
 
     //VAOs
