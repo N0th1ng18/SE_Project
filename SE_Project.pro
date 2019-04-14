@@ -34,7 +34,9 @@ SOURCES += \
     texture.cpp \
     vao.cpp \
     vbo.cpp \
-    materials.cpp
+    materials.cpp \
+    clientstate.cpp \
+    object.cpp
 
 HEADERS += \
         widget.h \
@@ -45,7 +47,9 @@ HEADERS += \
     texture.h \
     vao.h \
     vbo.h \
-    materials.h
+    materials.h \
+    clientstate.h \
+    object.h
 
 FORMS += \
         widget.ui

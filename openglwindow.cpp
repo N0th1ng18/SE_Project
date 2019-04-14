@@ -13,15 +13,10 @@ OpenGLWindow::~OpenGLWindow()
     /*Clean Up*/
     delete materials;
     materials = nullptr;
+    delete clientState;
+    clientState = nullptr;
     /*-------*/
     doneCurrent();
-}
-
-
-void OpenGLWindow::timerEvent(QTimerEvent *)
-{
-
-
 }
 
 void OpenGLWindow::initializeGL()
@@ -40,6 +35,7 @@ void OpenGLWindow::initializeGL()
     loadMaterials();
 
     //timer.start(12, this);
+    timer.start(1000, this);
 }
 
 void OpenGLWindow::loadMaterials()
@@ -97,6 +93,22 @@ void OpenGLWindow::loadMaterials()
     delete model;
 }
 
+void OpenGLWindow::loadEntities()
+{
+    //Create Objects, Players, Sounds, etc.
+    //Server should do this and send it to client.
+    //This is only useful for miniGames.
+
+    clientState->addObject(materials, 0, 0, 0);
+}
+
+void OpenGLWindow::timerEvent(QTimerEvent *)
+{
+
+    clientState->update();
+
+}
+
 void OpenGLWindow::resizeGL(int w, int h)
 {
     //qDebug() << "resizeGL";
@@ -125,36 +137,16 @@ void OpenGLWindow::paintGL()
     // Clear color and depth buffer
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    //Render Entities
-    //Bind Shader
+    //Camera
     materials->getShader(0)->bind();
-    //Bind VAO
-    materials->getVAO(0)->bind();
-    //Bind Textures
-    materials->getTexture(0)->bind();
-    //Interpolate
-
-    //Transformation
     viewMatrix.setToIdentity();
     viewMatrix.translate(0.0f, 0.0f, -2.0f);
-
-    transformationMatrix.setToIdentity();
-
-    //Uniforms
     materials->getShader(0)->getShader()->setUniformValue("projectionMatrix", projectionMatrix);
     materials->getShader(0)->getShader()->setUniformValue("viewMatrix", viewMatrix);
-    materials->getShader(0)->getShader()->setUniformValue("transformationMatrix", transformationMatrix);
-    materials->getShader(0)->getShader()->setUniformValue("texture", 0);
-
-    //Draw
-    glDrawArrays(GL_TRIANGLES, 0, materials->getVAO(0)->getNumVertices()); //num of verticies
-
-    //Unbind
-    materials->getVAO(0)->unbind();
-    materials->getTexture(0)->unbind();
     materials->getShader(0)->unbind();
-    /*******************************************************************/
 
+    //Render clientState
+    clientState->render();
 
     //Render Text
     int textPosX = 0;

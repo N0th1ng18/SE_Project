@@ -18,6 +18,7 @@
 #include "model.h"
 #include "vao.h"
 #include "vbo.h"
+#include "clientState.h"
 
 
 class OpenGLWindow : public QOpenGLWidget, protected QOpenGLFunctions
@@ -25,7 +26,7 @@ class OpenGLWindow : public QOpenGLWidget, protected QOpenGLFunctions
 
 public:
     OpenGLWindow(QWidget *parent = nullptr);
-    ~OpenGLWindow();
+    ~OpenGLWindow() override;
 
 protected:
     void timerEvent(QTimerEvent *e) override;
@@ -35,6 +36,7 @@ protected:
     void paintGL() override;
 
     void loadMaterials();
+    void loadEntities();
 
 private:
     int g_width, g_height;
@@ -42,11 +44,11 @@ private:
 
     QBasicTimer timer;
 
+    ClientState *clientState = new ClientState();
+    Materials *materials = new Materials();
+
     QMatrix4x4 projectionMatrix;
     QMatrix4x4 viewMatrix;
-    QMatrix4x4 transformationMatrix;
-
-    Materials *materials = new Materials();
 
     //Needs to be classes
         //Holds the ServerState that is sent to the renderer
