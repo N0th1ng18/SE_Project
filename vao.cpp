@@ -30,3 +30,12 @@ QOpenGLVertexArrayObject* VAO::getVAO()
 {
     return vao;
 }
+
+void VAO::setNumVertices(int numVertices)
+{
+    this->numVertices = numVertices;
+}
+int VAO::getNumVertices()
+{
+    return this->numVertices;
+}

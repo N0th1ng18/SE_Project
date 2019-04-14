@@ -11,10 +11,8 @@ OpenGLWindow::~OpenGLWindow()
 {
     makeCurrent();
     /*Clean Up*/
-    vertex_VBO.destroy();
-    texCoords_VBO.destroy();
-    vao.destroy();
-    delete *textures;
+    delete materials;
+    materials = nullptr;
     /*-------*/
     doneCurrent();
 }
@@ -38,140 +36,65 @@ void OpenGLWindow::initializeGL()
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glEnable(GL_BLEND);
 
-    initShaders();
-    initTextures();
-    //loadObjects(QOpenGLShaderProgram program)
+    //Load Materials
+    loadMaterials();
 
-    timer.start(12, this);
+    //timer.start(12, this);
 }
 
-void OpenGLWindow::initTextures()
+void OpenGLWindow::loadMaterials()
 {
+    //Models
+    Model *model = new Model();
 
-    // Load Wood Texture
-    QImage *image = new QImage(":test.png");
-    if(image->isNull()){
-        qDebug() << "Failed to load image0.";
-        return;
-    }
-    textures[0] = new QOpenGLTexture(image->mirrored());
-    textures[0]->setMinificationFilter(QOpenGLTexture::Nearest);
-    textures[0]->setMagnificationFilter(QOpenGLTexture::Linear);
-    textures[0]->setWrapMode(QOpenGLTexture::Repeat);
-    /*******************************************************************/
+    //Textures
+    Texture *texture0 = new Texture(":test.png");
+    texture0->setMiniFilter(QOpenGLTexture::Nearest);
+    texture0->setMagFilter(QOpenGLTexture::Linear);
+    texture0->setWrapMode(QOpenGLTexture::Repeat);
+    materials->addTexture(texture0);
 
-}
+    //Shaders
+    Shader *shader = new Shader(":/vertex_Desktop.vsh", ":/frag_Desktop.fsh");
+    //Shader *shader = new Shader(":/vertex_Android.vsh", ":/frag_Android.fsh");
+    unsigned int defaultShader = materials->addShader(shader);
 
-void OpenGLWindow::initShaders()
-{
-    //qDebug() << "initShaders";
-
-    /* Desktop Version:
-     * Compile vertex_Desktop & frag_Desktop
-     *
-     * Android Version:
-     * Compile vertex_Android & frag_Android
-     */
-
-    // Compile vertex shader
-    if (!program.addShaderFromSourceFile(QOpenGLShader::Vertex, ":/vertex_Android.vsh"))
-        close();
-
-    // Compile fragment shader
-    if (!program.addShaderFromSourceFile(QOpenGLShader::Fragment, ":/frag_Android.fsh"))
-        close();
-
-    // Link shader pipeline
-    if (!program.link())
-    {
-        qDebug() << "Failed to link shader program";
-        close();
-    }
-
-    // Bind shader pipeline for use
-    if (!program.bind())
-    {
-        qDebug() << "Failed to bind shader program";
-        close();
-    }
-
-    /*******************************************************************/
-
-    //Vertex Positions
-    GLfloat verts[] = {
-           -0.5f, -0.5f, 0.0f,
-           0.5f, -0.5f, 0.0f,
-           0.5f, 0.5f, 0.0f,
-
-           0.5f, 0.5f, 0.0f,
-           -0.5f, 0.5f, 0.0f,
-           -0.5f, -0.5f, 0.0f
-       };
-
-    //Vertex Texture Coords
-    GLfloat texCs[] = {
-           0.0f, 0.0f,
-           1.0f, 0.0f,
-           1.0f, 1.0f,
-
-           1.0f, 1.0f,
-           0.0f, 1.0f,
-           0.0f, 0.0f
-       };
-
-    //Vector for vertices
-    std::vector<GLfloat> vertices{
-        -0.5f, -0.5f, 0.0f,
-        0.5f, -0.5f, 0.0f,
-        0.5f, 0.5f, 0.0f,
-
-        0.5f, 0.5f, 0.0f,
-        -0.5f, 0.5f, 0.0f,
-        -0.5f, -0.5f, 0.0f
-    };
-
-    //Vector for vertices
-    std::vector<GLfloat> texCoords {
-        0.0f, 0.0f,
-        1.0f, 0.0f,
-        1.0f, 1.0f,
-
-        1.0f, 1.0f,
-        0.0f, 1.0f,
-        0.0f, 0.0f
-    };
-
-    /*******************************************************************/
-
-    //Create VAO with all VBOs
-    vao.create();
-    vao.bind();
-
-    //Create VBO for Vertices
-    vertex_VBO.create();
-    vertex_VBO.setUsagePattern(QOpenGLBuffer::StaticDraw);
-    vertex_VBO.bind();
-    vertex_VBO.allocate(&vertices[0], 18 * sizeof(GLfloat));
-    program.enableAttributeArray("position");
-    program.setAttributeBuffer("position", GL_FLOAT, 0, 3, sizeof(GLfloat) * 3);    //Stride is size to next set of attributes
-
-    //Create VBO for Textures
-    texCoords_VBO.create();
-    texCoords_VBO.setUsagePattern(QOpenGLBuffer::StaticDraw);
-    texCoords_VBO.bind();
-    texCoords_VBO.allocate(&texCoords[0], 12 * sizeof(GLfloat));
-    program.enableAttributeArray("texCoords");
-    program.setAttributeBuffer("texCoords", GL_FLOAT, 0, 2, sizeof(GLfloat) * 2);    //Stride is size to next set of attributes
+    //VAOs
+    VAO *vao = new VAO();
+    unsigned int squareVAO = materials->addVAO(vao);
 
 
-    //Unbind VBOs
-    vertex_VBO.release();
-    texCoords_VBO.release();
-    //Unbind VAO
-    vao.release();
-    //Unbind Shader Program
-    program.release();
-    /*******************************************************************/
+    /*Setup Square VAO*/
+    materials->getShader(defaultShader)->bind();
+    materials->getVAO(squareVAO)->bind();
+    materials->getVAO(squareVAO)->setNumVertices(model->getNumVertices());
+    /*Setup Square VBOs*/
+        //Vertices Buffer
+        VBO *vbo_Vertices = new VBO(&model->getVertices()[0]
+                , model->getNumVertices() * 3 * static_cast<int>(sizeof(GLfloat))
+                , QOpenGLBuffer::StaticDraw);
+        vbo_Vertices->bind();
+        materials->getShader(defaultShader)->setAttributePointer("position", GL_FLOAT, 0, 3, sizeof(GLfloat) * 3);
+        //Texture Coordinates Buffer
+        VBO *vbo_texCoords  = new VBO(&model->getTexCoords()[0]
+                , model->getNumVertices() * 2 * static_cast<int>(sizeof(GLfloat))
+                , QOpenGLBuffer::StaticDraw);
+        vbo_texCoords->bind();
+        materials->getShader(defaultShader)->setAttributePointer("texCoords", GL_FLOAT, 0, 2, sizeof(GLfloat) * 2);
+
+
+    //unbind VBOs
+    vbo_Vertices->unbind();
+    vbo_texCoords->unbind();
+    //unbind VAO
+    materials->getVAO(squareVAO)->unbind();
+    //unbind Shader Program
+    materials->getShader(defaultShader)->unbind();
+
+    //Clean UP
+    delete vbo_Vertices;
+    delete vbo_texCoords;
+    delete model;
 }
 
 void OpenGLWindow::resizeGL(int w, int h)
@@ -204,12 +127,11 @@ void OpenGLWindow::paintGL()
 
     //Render Entities
     //Bind Shader
-    program.bind();
+    materials->getShader(0)->bind();
     //Bind VAO
-    vao.bind();
+    materials->getVAO(0)->bind();
     //Bind Textures
-    textures[0]->bind();
-
+    materials->getTexture(0)->bind();
     //Interpolate
 
     //Transformation
@@ -219,18 +141,18 @@ void OpenGLWindow::paintGL()
     transformationMatrix.setToIdentity();
 
     //Uniforms
-    program.setUniformValue("projectionMatrix", projectionMatrix);
-    program.setUniformValue("viewMatrix", viewMatrix);
-    program.setUniformValue("transformationMatrix", transformationMatrix);
-    program.setUniformValue("texture", 0);
+    materials->getShader(0)->getShader()->setUniformValue("projectionMatrix", projectionMatrix);
+    materials->getShader(0)->getShader()->setUniformValue("viewMatrix", viewMatrix);
+    materials->getShader(0)->getShader()->setUniformValue("transformationMatrix", transformationMatrix);
+    materials->getShader(0)->getShader()->setUniformValue("texture", 0);
 
     //Draw
-    glDrawArrays(GL_TRIANGLES, 0, 6); //num of verticies
+    glDrawArrays(GL_TRIANGLES, 0, materials->getVAO(0)->getNumVertices()); //num of verticies
 
     //Unbind
-    textures[0]->release();
-    vao.release();
-    program.release();
+    materials->getVAO(0)->unbind();
+    materials->getTexture(0)->unbind();
+    materials->getShader(0)->unbind();
     /*******************************************************************/
 
 
