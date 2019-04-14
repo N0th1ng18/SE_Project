@@ -74,11 +74,11 @@ void OpenGLWindow::initShaders()
      */
 
     // Compile vertex shader
-    if (!program.addShaderFromSourceFile(QOpenGLShader::Vertex, ":/vertex_Desktop.vsh"))
+    if (!program.addShaderFromSourceFile(QOpenGLShader::Vertex, ":/vertex_Android.vsh"))
         close();
 
     // Compile fragment shader
-    if (!program.addShaderFromSourceFile(QOpenGLShader::Fragment, ":/frag_Desktop.fsh"))
+    if (!program.addShaderFromSourceFile(QOpenGLShader::Fragment, ":/frag_Android.fsh"))
         close();
 
     // Link shader pipeline
