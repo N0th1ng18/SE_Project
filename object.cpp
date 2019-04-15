@@ -4,18 +4,22 @@
 Object::Object(Materials *materials
                , unsigned int shaderID
                , unsigned int vaoID
-               , unsigned int textureID)
+               , unsigned int textureID
+               , QVector3D *pos)
 {
     this->materials = materials;
     this->shaderID = shaderID;
     this->vaoID = vaoID;
     this->textureID = textureID;
+    this->pos = pos;
 
 }
 
 Object::~Object()
 {
-
+    delete acc;
+    delete vel;
+    delete pos;
 }
 
 void Object::update()
@@ -36,6 +40,7 @@ void Object::render(QOpenGLFunctions *gl)
 
     //Transformation
     transformationMatrix.setToIdentity();
+    transformationMatrix.translate(pos->x(), pos->y(), pos->z());
 
     //Uniforms
     materials->getShader(shaderID)->getShader()->setUniformValue("transformationMatrix", transformationMatrix);

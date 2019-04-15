@@ -49,13 +49,13 @@ void OpenGLWindow::loadMaterials()
     Model *model = new Model();
 
     //Textures
-    Texture *texture0 = new Texture(":test.png");
+    Texture *texture0 = new Texture(":guy1.png");
     texture0->setMiniFilter(QOpenGLTexture::Nearest);
     texture0->setMagFilter(QOpenGLTexture::Linear);
     texture0->setWrapMode(QOpenGLTexture::Repeat);
     materials->addTexture(texture0);
 
-    Texture *texture1 = new Texture(":wood.png");
+    Texture *texture1 = new Texture(":guy2.png");
     texture1->setMiniFilter(QOpenGLTexture::Nearest);
     texture1->setMagFilter(QOpenGLTexture::Linear);
     texture1->setWrapMode(QOpenGLTexture::Repeat);
@@ -110,9 +110,9 @@ void OpenGLWindow::loadEntities()
     //Server should do this and send it to client.
     //This is only useful for miniGames.
 
-    Object *obj = new Object(materials, 0, 0, 1);
+    Object *obj = new Object(materials, 0, 0, 1, new QVector3D(-1.0f, 0.0f, 0.0f));
     clientState->addObject(obj);
-    Object *obj2 = new Object(materials, 0, 0, 0);
+    Object *obj2 = new Object(materials, 0, 0, 0, new QVector3D(1.0f, 0.0f, 0.0f));
     clientState->addObject(obj2);
 }
 

@@ -16,7 +16,8 @@ public:
     Object(Materials *materials
            , unsigned int shaderID
            , unsigned int vaoID
-           , unsigned int textureID);
+           , unsigned int textureID
+           , QVector3D *pos);
     ~Object();
     void update();
     void render(QOpenGLFunctions *gl);
@@ -30,7 +31,9 @@ private:
 
     QMatrix4x4 transformationMatrix;
 
-
+    QVector3D *pos;
+    QVector3D *vel;
+    QVector3D *acc;
 };
 
 #endif // OBJECT_H
