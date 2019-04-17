@@ -5,8 +5,7 @@ GameRenderer::GameRenderer(QObject *parent) : QObject(parent)
 
 }
 
-GameRenderer::GameRenderer(QObject* parent, OpenGLWindow *glWindow):
-        QObject(parent), m_gameView(glWindow)
+GameRenderer::GameRenderer(OpenGLWindow *glWindow): m_gameView(glWindow)
 {
 
 }

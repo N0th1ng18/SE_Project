@@ -35,7 +35,7 @@ int main(int argc, char *argv[])
     QQmlComponent *component = new QQmlComponent(&engine);
     QQmlContext *ctx = engine.rootContext();
     QObject * topLevel;
-    GameRenderer *gameView = new GameRenderer(nullptr,&glWindow);
+    GameRenderer *gameView = new GameRenderer(&glWindow);
     ctx->setContextProperty("playerinfo", &player);
     ctx->setContextProperty("GameRenderer", gameView);
 

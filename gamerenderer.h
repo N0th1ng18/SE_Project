@@ -9,7 +9,7 @@ class GameRenderer : public QObject
     Q_OBJECT
 public:
     explicit GameRenderer(QObject *parent = nullptr);
-    explicit GameRenderer(QObject* parent = nullptr, OpenGLWindow *glWindow = nullptr);
+    explicit GameRenderer(OpenGLWindow *glWindow = nullptr);
 
     void setRenderView(OpenGLWindow * newGameView);
 signals:

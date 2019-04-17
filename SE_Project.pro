@@ -40,7 +40,8 @@ SOURCES += \
     materials.cpp \
     clientstate.cpp \
     object.cpp \
-    text.cpp
+    text.cpp \
+    gamerenderer.cpp
     gamerenderer.cpp
 
 HEADERS += \
