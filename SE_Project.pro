@@ -29,9 +29,18 @@ CONFIG += c++11
 SOURCES += \
         main.cpp \
     openglwindow.cpp \
+    model.cpp \
     clientprotocol.cpp \
     playerinfo.cpp \
+    shader.cpp \
     queryhandler.cpp \
+    texture.cpp \
+    vao.cpp \
+    vbo.cpp \
+    materials.cpp \
+    clientstate.cpp \
+    object.cpp \
+    text.cpp
     gamerenderer.cpp
 
 HEADERS += \
@@ -39,6 +48,15 @@ HEADERS += \
     clientprotocol.h \
     playerinfo.h \
     queryhandler.h \
+    model.h \
+    shader.h \
+    texture.h \
+    vao.h \
+    vbo.h \
+    materials.h \
+    clientstate.h \
+    object.h \
+    text.h \
     gamerenderer.h
 
 FORMS +=
@@ -56,4 +74,6 @@ DISTFILES +=
 
 RESOURCES += \
     shaders.qrc \
+    textures.qrc \
     qml.qrc
+

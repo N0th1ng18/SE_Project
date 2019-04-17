@@ -1,5 +1,6 @@
 #include "openglwindow.h"
 
+
 OpenGLWindow::OpenGLWindow(QWidget *parent) :
     QOpenGLWidget(parent)
 {
@@ -10,100 +11,150 @@ OpenGLWindow::~OpenGLWindow()
 {
     makeCurrent();
     /*Clean Up*/
-    vertex_VBO.destroy();
-    vao.destroy();
+
+    delete materials;
+    materials = nullptr;
+
+    delete clientState;
+    clientState = nullptr;
+
     /*-------*/
     doneCurrent();
-}
-
-
-void OpenGLWindow::timerEvent(QTimerEvent *)
-{
-
-     //update();
 }
 
 void OpenGLWindow::initializeGL()
 {
     //qDebug() << "initializeGL";
     initializeOpenGLFunctions();
+    gl = QOpenGLContext::currentContext()->functions();
 
     //OpenGL Settings
-    glClearColor(1, 0, 0, 1);
+    glClearColor(0, 1, 0, 1);
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_CULL_FACE);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glEnable(GL_BLEND);
 
-    initShaders();
+    //Load Materials
+    loadMaterials();
+    loadEntities();
 
-    timer.start(12, this);
+    //timer.start(12, this);
+    timer.start(1000, this);
 }
 
-void OpenGLWindow::initShaders()
+void OpenGLWindow::loadMaterials()
 {
-    //qDebug() << "initShaders";
-    // Compile vertex shader
-    if (!program.addShaderFromSourceFile(QOpenGLShader::Vertex, ":/vertex.vsh"))
-        close();
+    //Models
+    Model *model = new Model();
 
-    // Compile fragment shader
-    if (!program.addShaderFromSourceFile(QOpenGLShader::Fragment, ":/frag.fsh"))
-        close();
+    //Textures
+    Texture *texture0 = new Texture(":guy1.png");
+    texture0->setMiniFilter(QOpenGLTexture::Nearest);
+    texture0->setMagFilter(QOpenGLTexture::Linear);
+    texture0->setWrapMode(QOpenGLTexture::Repeat);
+    materials->addTexture(texture0);
 
-    // Link shader pipeline
-    if (!program.link())
-    {
-        qDebug() << "Failed to link shader program";
-        close();
-    }
+    Texture *texture1 = new Texture(":guy2.png");
+    texture1->setMiniFilter(QOpenGLTexture::Nearest);
+    texture1->setMagFilter(QOpenGLTexture::Linear);
+    texture1->setWrapMode(QOpenGLTexture::Repeat);
+    materials->addTexture(texture1);
 
-    // Bind shader pipeline for use
-    if (!program.bind())
-    {
-        qDebug() << "Failed to bind shader program";
-        close();
-    }
+    //Shaders
+    //Shader *shader = new Shader(":/vertex_Desktop.vsh", ":/frag_Desktop.fsh");
+    Shader *shader = new Shader(":/vertex_Android.vsh", ":/frag_Android.fsh");
+    unsigned int defaultShader = materials->addShader(shader);
 
-    //Create VAO with all VBOs
-    GLfloat vertices[] = {
-           -1.0f, -1.0f, 0.0f,
-           1.0f, -1.0f, 0.0f,
-           0.0f, 1.0f, 0.0f
-       };
+    //VAOs
+    VAO *vao = new VAO();
+    unsigned int squareVAO = materials->addVAO(vao);
 
-    //Create VAO
-    vao.create();
-    vao.bind();
 
-    //Create VBO for Vertices
-    vertex_VBO.create();
-    vertex_VBO.setUsagePattern(QOpenGLBuffer::StaticDraw);
-    vertex_VBO.bind();
-    vertex_VBO.allocate(vertices, 9 * sizeof(GLfloat));
-    program.enableAttributeArray("position");
-    program.setAttributeBuffer("position", GL_FLOAT, 0, 3, sizeof(GLfloat) * 3);    //Stride is size to next set of attributes
+    /*Setup Square VAO*/
+    materials->getShader(defaultShader)->bind();
+    materials->getVAO(squareVAO)->bind();
+    materials->getVAO(squareVAO)->setNumVertices(model->getNumVertices());
+    /*Setup Square VBOs*/
+        //Vertices Buffer
+        VBO *vbo_Vertices = new VBO(&model->getVertices()[0]
+                , model->getNumVertices() * 3 * static_cast<int>(sizeof(GLfloat))
+                , QOpenGLBuffer::StaticDraw);
+        vbo_Vertices->bind();
+        materials->getShader(defaultShader)->setAttributePointer("position", GL_FLOAT, 0, 3, sizeof(GLfloat) * 3);
+        //Texture Coordinates Buffer
+        VBO *vbo_texCoords  = new VBO(&model->getTexCoords()[0]
+                , model->getNumVertices() * 2 * static_cast<int>(sizeof(GLfloat))
+                , QOpenGLBuffer::StaticDraw);
+        vbo_texCoords->bind();
+        materials->getShader(defaultShader)->setAttributePointer("texCoords", GL_FLOAT, 0, 2, sizeof(GLfloat) * 2);
 
-    //Unbind VBOs and VAO and Shader Program
-    vertex_VBO.release();
-    vao.release();
-    program.release();
+
+    //unbind VBOs
+    vbo_Vertices->unbind();
+    vbo_texCoords->unbind();
+    //unbind VAO
+    materials->getVAO(squareVAO)->unbind();
+    //unbind Shader Program
+    materials->getShader(defaultShader)->unbind();
+
+    //Clean UP
+    delete vbo_Vertices;
+    delete vbo_texCoords;
+    delete model;
+}
+
+void OpenGLWindow::loadEntities()
+{
+    //Create Objects, Players, Sounds, etc.
+    //Server should do this and send it to client.
+    //This is only useful for miniGames.
+
+    Object *obj = new Object(materials, 0, 0, 1, new QVector3D(-1.0f, 0.0f, 0.0f));
+    clientState->addObject(obj);
+    Object *obj2 = new Object(materials, 0, 0, 0, new QVector3D(1.0f, 0.0f, 0.0f));
+    clientState->addObject(obj2);
+
+    //Text
+
+    /*
+     * Need to change this to the traditional Opengl text rendering
+     * for it to work on android. will need shaders, etc...
+    */
+
+    clientState->addText(new Text("Jungle Escape", this->width()/2, this->height()/2, 0, "Helvetica", 20));
+    clientState->addText(new Text("Some Text", this->width()/2, this->height()/2 + 20, 0, "Helvetica", 20));
+    clientState->addText(new Text("Some More Text", this->width()/2, this->height()/2+40, 0, "Helvetica", 20));
+
+
+
+}
+
+void OpenGLWindow::timerEvent(QTimerEvent *)
+{
+
+    clientState->update();
+
 }
 
 void OpenGLWindow::resizeGL(int w, int h)
 {
     //qDebug() << "resizeGL";
+    g_width = w;
+    g_height = h;
 
     glViewport(0,0,w,h);
 
     float width = static_cast<float>(w);
     float height = static_cast<float>(h);
-    float aspectRatio = width/height;
+    g_aspectRatio = width/height;
 
 
     // Clear color and depth buffer
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     projectionMatrix.setToIdentity();
-    projectionMatrix.perspective(90.0f, aspectRatio, 0.1f, 100.0f);
+    projectionMatrix.perspective(90.0f, g_aspectRatio, 0.1f, 100.0f);
 
 }
 
@@ -111,32 +162,24 @@ void OpenGLWindow::paintGL()
 {
     //qDebug() << "paintGL";
 
-    //bind Shader
-    program.bind();
+    // Clear color and depth buffer
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    //Bind VAO
-    vao.bind();
-
-    //Bind Textures
-
-    //Interpolate
-
-    //Transformation
+    //Camera
+    materials->getShader(0)->bind();
     viewMatrix.setToIdentity();
     viewMatrix.translate(0.0f, 0.0f, -2.0f);
-    transformationMatrix.setToIdentity();
+    materials->getShader(0)->getShader()->setUniformValue("projectionMatrix", projectionMatrix);
+    materials->getShader(0)->getShader()->setUniformValue("viewMatrix", viewMatrix);
+    materials->getShader(0)->unbind();
 
-    //Uniforms
-    program.setUniformValue("projectionMatrix", projectionMatrix);
-    program.setUniformValue("viewMatrix", viewMatrix);
-    program.setUniformValue("transformationMatrix", transformationMatrix);
+    //Text
+    QPainter painter(this);
 
-    //Draw
-    glDrawArrays(GL_TRIANGLES, 0, 3);
+    //Render clientState
+    clientState->render(gl, &painter);
 
-    //Unbind
-    vao.release();
-    program.release();
+
 }
 
 
