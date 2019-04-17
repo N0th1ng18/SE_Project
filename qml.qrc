@@ -4,5 +4,9 @@
         <file>loginpage.qml</file>
         <file>register.qml</file>
         <file>menu.qml</file>
+        <file>home.qml</file>
+        <file>hostgame.qml</file>
+        <file>joingame.qml</file>
+        <file>resumegame.qml</file>
     </qresource>
 </RCC>

@@ -1,6 +1,7 @@
 #ifndef OPENGLWINDOW_H
 #define OPENGLWINDOW_H
 
+#include <QObject>
 #include <QOpenGLWidget>
 #include <QOpenGLFunctions>
 #include <QOpenGLShaderProgram>
@@ -8,8 +9,11 @@
 #include <QOpenGLBuffer>
 #include <QBasicTimer>
 
+
+
 class OpenGLWindow : public QOpenGLWidget, protected QOpenGLFunctions
 {
+
 
 public:
     OpenGLWindow(QWidget *parent = nullptr);
@@ -24,6 +28,11 @@ protected:
 
     void loadObjects();
     void initShaders();
+
+ signals:
+    void gameLaunched();
+
+
 
 private:
     QBasicTimer timer;
