@@ -2,7 +2,7 @@
 
 ClientState::ClientState()
 {
-    numOfObjects = 0;
+
 }
 
 ClientState::~ClientState()
@@ -11,6 +11,8 @@ ClientState::~ClientState()
         delete (objects.at(0));
     }
     vector<Object*>().swap(objects);
+
+    //Delete Text
 }
 
 void ClientState::update()
@@ -18,12 +20,20 @@ void ClientState::update()
     for(size_t i=0; i < objects.size(); i++){
         (*objects.at(i)).update();
     }
+
+    for(size_t i=0; i < texts.size(); i++){
+        (*texts.at(i)).update();
+    }
 }
 
-void ClientState::render(QOpenGLFunctions *gl)
+void ClientState::render(QOpenGLFunctions* gl, QPainter* painter)
 {
     for(size_t i=0; i < objects.size(); i++){
         (*objects.at(i)).render(gl);
+    }
+
+    for(size_t i=0; i < texts.size(); i++){
+        (*texts.at(i)).render(painter);
     }
 }
 
@@ -31,6 +41,9 @@ void ClientState::render(QOpenGLFunctions *gl)
 void ClientState::addObject(Object *obj)
 {
     objects.push_back(obj);
-    numOfObjects++;
 }
 
+void ClientState::addText(Text *txt)
+{
+    texts.push_back(txt);
+}

@@ -36,7 +36,8 @@ SOURCES += \
     vbo.cpp \
     materials.cpp \
     clientstate.cpp \
-    object.cpp
+    object.cpp \
+    text.cpp
 
 HEADERS += \
         widget.h \
@@ -49,7 +50,8 @@ HEADERS += \
     vbo.h \
     materials.h \
     clientstate.h \
-    object.h
+    object.h \
+    text.h
 
 FORMS += \
         widget.ui

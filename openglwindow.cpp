@@ -62,8 +62,8 @@ void OpenGLWindow::loadMaterials()
     materials->addTexture(texture1);
 
     //Shaders
-    Shader *shader = new Shader(":/vertex_Desktop.vsh", ":/frag_Desktop.fsh");
-    //Shader *shader = new Shader(":/vertex_Android.vsh", ":/frag_Android.fsh");
+    //Shader *shader = new Shader(":/vertex_Desktop.vsh", ":/frag_Desktop.fsh");
+    Shader *shader = new Shader(":/vertex_Android.vsh", ":/frag_Android.fsh");
     unsigned int defaultShader = materials->addShader(shader);
 
     //VAOs
@@ -114,6 +114,20 @@ void OpenGLWindow::loadEntities()
     clientState->addObject(obj);
     Object *obj2 = new Object(materials, 0, 0, 0, new QVector3D(1.0f, 0.0f, 0.0f));
     clientState->addObject(obj2);
+
+    //Text
+
+    /*
+     * Need to change this to the traditional Opengl text rendering
+     * for it to work on android. will need shaders, etc...
+    */
+
+    clientState->addText(new Text("Jungle Escape", this->width()/2, this->height()/2, 0, "Helvetica", 20));
+    clientState->addText(new Text("Some Text", this->width()/2, this->height()/2 + 20, 0, "Helvetica", 20));
+    clientState->addText(new Text("Some More Text", this->width()/2, this->height()/2+40, 0, "Helvetica", 20));
+
+
+
 }
 
 void OpenGLWindow::timerEvent(QTimerEvent *)
@@ -159,30 +173,13 @@ void OpenGLWindow::paintGL()
     materials->getShader(0)->getShader()->setUniformValue("viewMatrix", viewMatrix);
     materials->getShader(0)->unbind();
 
-    //Render clientState
-    clientState->render(gl);
-
-    //Render Text
-    int textPosX = 0;
-    int textPosY = -130;
-    int fontSize = 20;
-    std::string str = "Software Engineering Project";
-    QString text = QString::fromStdString(str);
-
-    //Set up Painter
+    //Text
     QPainter painter(this);
-    painter.setPen(Qt::blue);
-    painter.setFont(QFont("Helvetica", fontSize));
-    painter.setRenderHints(QPainter::Antialiasing | QPainter::TextAntialiasing);
-    //Font Metrics
-    QFontMetrics metrics = painter.fontMetrics();
-    //Text Position
-    textPosX = textPosX - metrics.width(text)/2 + g_width / 2;
-    textPosY = textPosY + g_height / 2;
-    //Draw Text
-    painter.drawText(textPosX, textPosY, text);
-    painter.end();
-    /*******************************************************************/
+
+    //Render clientState
+    clientState->render(gl, &painter);
+
+
 }
 
 
