@@ -1,45 +1,60 @@
 #include "clientprotocol.h"
-#include <QTcpServer>
 
-ClientProtocol::ClientProtocol()
-{
 
-}
-
-ClientProtocol::~ClientProtocol()
-{
+ClientProtocol::ClientProtocol(){
 
 }
 
 
-void ClientProtocol::connectMainServer(QObject *parent)
+void ClientProtocol::forwardMsg(){
+    QByteArray data;
+   // data.setNum(type);
+    m_socket->write(data);
+    m_socket->flush();
+}
+
+void ClientProtocol::sendUsername(QString name){
+    QByteArray data;
+    data.append(name + '\n');
+    m_socket->write(data);
+    m_socket->flush();
+}
+
+
+void ClientProtocol::sendPassword(QString pass){
+    QByteArray data;
+    data.append(pass + '\n');
+    m_socket->write(data);
+    m_socket->flush();
+}
+
+void ClientProtocol::sendPlayerInfo(QString name, QString pass){
+    QByteArray data;
+    data.setNum(USERLOGIN);
+    data.append('|' + name + '|' + pass);
+    m_socket->write(data);
+    m_socket->flush();
+}
+
+
+bool ClientProtocol::connectToServer()
 {
     qDebug() << "connectMainServer()";
-    QByteArray data;
-    data = "Hello World";
-    QTcpSocket *tcpSocket = new QTcpSocket(parent);
-    tcpSocket->connectToHost(QHostAddress::LocalHost, 1234);
+    m_socket= new QTcpSocket();
+    m_socket->connectToHost(QHostAddress::LocalHost, 1234);
 
-    if(!tcpSocket->waitForConnected(5000)){
+    if(!m_socket->waitForConnected(5000)){
         qDebug() << "Failed to Connect to main server" << endl;
+        return false;
+
     }
     else{
 
-        tcpSocket->write(data);
-        tcpSocket->flush();
+        qDebug() << "Connected to main server" << endl;
+        return true;
+
     }
 
 }
 
-void ClientProtocol::disconnectMainServer()
-{
-    /*
-     * Socket->disconnectFromHost();
-     * if socket->state() == Qabstractsocket::unnconnectedstate ||
-     *  socket->waitfordisconnect(1000)){
-     *      qDebug() << "Disconnected";
-     * }
 
-    */
-    qDebug() << "disconnectMainServer()";
-}
