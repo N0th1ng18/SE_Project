@@ -12,6 +12,7 @@
 #include <QPainter>
 #include <QFontMetrics>
 #include <vector>
+#include <QSysInfo>
 
 #include "materials.h"
 #include "texture.h"

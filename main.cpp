@@ -13,9 +13,11 @@
 #include "openglwindow.h"
 #include "gamerenderer.h"
 
+
 int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
+
 
     //QSurfaceFormat for opengl context
     QSurfaceFormat format;
@@ -28,8 +30,6 @@ int main(int argc, char *argv[])
     PlayerInfo player;
     //OpenGL Window
     OpenGLWindow glWindow;
-
-
 
     QQmlEngine engine;
     QQmlComponent *component = new QQmlComponent(&engine);

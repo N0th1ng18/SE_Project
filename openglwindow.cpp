@@ -48,6 +48,7 @@ void OpenGLWindow::loadMaterials()
     //Models
     Model *model = new Model();
 
+
     //Textures
     Texture *texture0 = new Texture(":guy1.png");
     texture0->setMiniFilter(QOpenGLTexture::Nearest);
@@ -61,10 +62,19 @@ void OpenGLWindow::loadMaterials()
     texture1->setWrapMode(QOpenGLTexture::Repeat);
     materials->addTexture(texture1);
 
+
     //Shaders
-    //Shader *shader = new Shader(":/vertex_Desktop.vsh", ":/frag_Desktop.fsh");
-    Shader *shader = new Shader(":/vertex_Android.vsh", ":/frag_Android.fsh");
+    Shader *shader = nullptr;
+    if(QSysInfo::currentCpuArchitecture().compare("x86_64") == 0)
+    {
+        shader= new Shader(":/vertex_Desktop.vsh", ":/frag_Desktop.fsh");
+    }else if(QSysInfo::currentCpuArchitecture().compare("arm64") == 0){
+        shader = new Shader(":/vertex_Android.vsh", ":/frag_Android.fsh");
+    }else{
+        shader = new Shader(":/vertex_Android.vsh", ":/frag_Android.fsh");
+    }
     unsigned int defaultShader = materials->addShader(shader);
+
 
     //VAOs
     VAO *vao = new VAO();
