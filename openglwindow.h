@@ -20,6 +20,7 @@
 #include "vao.h"
 #include "vbo.h"
 #include "clientstate.h"
+#include "sound.h"
 
 
 
@@ -48,7 +49,7 @@ protected:
 
 
 private:
-    QOpenGLFunctions *gl;
+    QOpenGLFunctions *gl = nullptr;
     int g_width, g_height;
     float g_aspectRatio;
 
@@ -56,9 +57,6 @@ private:
 
     ClientState *clientState = new ClientState();
     Materials *materials = new Materials();
-
-    QMatrix4x4 projectionMatrix;
-    QMatrix4x4 viewMatrix;
 
     //Needs to be classes
         //Holds the ServerState that is sent to the renderer

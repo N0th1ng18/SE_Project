@@ -20,7 +20,7 @@ public slots:
     void exitGame();
 
 private:
-    OpenGLWindow * m_gameView;
+    OpenGLWindow * m_gameView = nullptr;
 
 };
 

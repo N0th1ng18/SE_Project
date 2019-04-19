@@ -110,6 +110,18 @@ void OpenGLWindow::loadEntities()
     //Server should do this and send it to client.
     //This is only useful for miniGames.
 
+    //Sounds
+    Sound* backgroundMusic = new Sound();
+    backgroundMusic->load("qrc:/sounds/lobby_song.mp3");
+    backgroundMusic->setVolume(90);
+    backgroundMusic->play(0);
+
+    //Cameras
+    Camera *cam = new Camera(materials, 0, new QVector3D(0.0f, 0.0f, -2.0f));
+    clientState->addCamera(cam);
+    clientState->setActiveCamera(0);
+
+    //Objects
     Object *obj = new Object(materials, 0, 0, 1, new QVector3D(-1.0f, 0.0f, 0.0f));
     clientState->addObject(obj);
     Object *obj2 = new Object(materials, 0, 0, 0, new QVector3D(1.0f, 0.0f, 0.0f));
@@ -122,9 +134,9 @@ void OpenGLWindow::loadEntities()
      * for it to work on android. will need shaders, etc...
     */
 
-    clientState->addText(new Text("Jungle Escape", this->width()/2, this->height()/2, 0, "Helvetica", 20));
-    clientState->addText(new Text("Some Text", this->width()/2, this->height()/2 + 20, 0, "Helvetica", 20));
-    clientState->addText(new Text("Some More Text", this->width()/2, this->height()/2+40, 0, "Helvetica", 20));
+    //clientState->addText(new Text("Jungle Escape", this->width()/2, this->height()/2, 0, "Helvetica", 20));
+    //clientState->addText(new Text("Some Text", this->width()/2, this->height()/2 + 20, 0, "Helvetica", 20));
+    //clientState->addText(new Text("Some More Text", this->width()/2, this->height()/2+40, 0, "Helvetica", 20));
 
 
 
@@ -151,35 +163,20 @@ void OpenGLWindow::resizeGL(int w, int h)
 
 
     // Clear color and depth buffer
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    //glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    projectionMatrix.setToIdentity();
-    projectionMatrix.perspective(90.0f, g_aspectRatio, 0.1f, 100.0f);
+    clientState->getProjection()->setToIdentity();
+    clientState->getProjection()->perspective(90.0f, g_aspectRatio, 0.1f, 100.0f);
 
 }
 
 void OpenGLWindow::paintGL()
 {
     //qDebug() << "paintGL";
-
     // Clear color and depth buffer
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-    //Camera
-    materials->getShader(0)->bind();
-    viewMatrix.setToIdentity();
-    viewMatrix.translate(0.0f, 0.0f, -2.0f);
-    materials->getShader(0)->getShader()->setUniformValue("projectionMatrix", projectionMatrix);
-    materials->getShader(0)->getShader()->setUniformValue("viewMatrix", viewMatrix);
-    materials->getShader(0)->unbind();
-
-    //Text
-    QPainter painter(this);
-
     //Render clientState
-    clientState->render(gl, &painter);
-
-
+    clientState->render(gl);
 }
 
 

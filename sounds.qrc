@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/sounds">
+        <file>lobby_song.mp3</file>
+    </qresource>
+</RCC>

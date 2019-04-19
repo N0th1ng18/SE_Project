@@ -2,8 +2,8 @@
 #define CLIENTSTATE_H
 
 #include "object.h"
+#include "camera.h"
 #include "vector"
-#include "text.h"
 
 using namespace std;
 
@@ -14,16 +14,28 @@ public:
     ~ClientState();
 
     void update();
-    void render(QOpenGLFunctions* gl, QPainter* painter);
+    void render(QOpenGLFunctions* gl);
+
+    QMatrix4x4* getProjection();
+
+    void addCamera(Camera *cam);
+    void removeCamera(int index);
+    void setActiveCamera(int activeCamID);
 
     void addObject(Object *obj);
-    void addText(Text *txt);
+    void removeObject(int index);
+
+
 
 protected:
 
 private:
+    QMatrix4x4 projectionMatrix;
+
+    int activeCameraID = 0;
+    vector<Camera*> cameras;
     vector<Object*> objects;
-    vector<Text*> texts;
+
 
 };
 

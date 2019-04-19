@@ -43,7 +43,7 @@ int main(int argc, char *argv[])
 
     topLevel = component->create();
 
-    int r = app.exec();
+    app.exec();
     qDebug() << player.getUsername() << " " << player.getPassword() << endl;
 
 

@@ -20,7 +20,7 @@ public:
 protected:
 
 private:
-    QOpenGLTexture *texture;
+    QOpenGLTexture *texture = nullptr;;
 };
 
 #endif // TEXTURE_H

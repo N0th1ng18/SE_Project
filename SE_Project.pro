@@ -8,6 +8,7 @@ QT  += core gui
 QT  += network
 QT  += quick
 QT  += sql
+QT += multimedia
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -40,8 +41,9 @@ SOURCES += \
     materials.cpp \
     clientstate.cpp \
     object.cpp \
-    text.cpp \
-    gamerenderer.cpp
+    gamerenderer.cpp \
+    camera.cpp \
+    sound.cpp
     gamerenderer.cpp
 
 HEADERS += \
@@ -57,8 +59,9 @@ HEADERS += \
     materials.h \
     clientstate.h \
     object.h \
-    text.h \
-    gamerenderer.h
+    gamerenderer.h \
+    camera.h \
+    sound.h
 
 FORMS +=
 
@@ -76,5 +79,6 @@ DISTFILES +=
 RESOURCES += \
     shaders.qrc \
     textures.qrc \
-    qml.qrc
+    qml.qrc \
+    sounds.qrc
 
