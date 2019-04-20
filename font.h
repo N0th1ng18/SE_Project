@@ -15,7 +15,11 @@ using namespace std;
 class Font
 {
 public:
-    Font(QString fontPath, Materials* materials, unsigned int textureID, unsigned int shaderID);
+    Font(QString fontPath
+         , Materials* materials
+         , unsigned int textureID
+         , unsigned int shaderID
+         , float fontSize);
     ~Font();
     void update();
     void render(QOpenGLFunctions *gl);
@@ -61,6 +65,8 @@ private:
     int charCount = 0;
     //Keeps track of all set of Strings in this Font type
     vector<StringSet*> strSets;
+    //Font Size
+    float fontScale;
 };
 
 #endif // TEXT_H

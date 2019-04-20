@@ -12,7 +12,7 @@ Object::Object(Materials *materials
     this->vaoID = vaoID;
     this->textureID = textureID;
     this->pos = pos;
-
+    this->vel = new QVector3D(0.0f, 0.0f, 0.0f);
 }
 
 Object::~Object()
@@ -24,7 +24,9 @@ Object::~Object()
 
 void Object::update()
 {
-
+    pos->setX(pos->x() + vel->x());
+    pos->setY(pos->y() + vel->y());
+    pos->setZ(pos->z() + vel->z());
 }
 
 void Object::render(QOpenGLFunctions *gl)

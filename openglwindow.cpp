@@ -31,7 +31,7 @@ void OpenGLWindow::initializeGL()
     //OpenGL Settings
     glClearColor(0, 0, 1, 1);
     glEnable(GL_DEPTH_TEST);
-    //glEnable(GL_CULL_FACE);
+    glEnable(GL_CULL_FACE);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glEnable(GL_BLEND);
 
@@ -39,8 +39,7 @@ void OpenGLWindow::initializeGL()
     loadMaterials();
     loadEntities();
 
-    //timer.start(12, this);
-    timer.start(1000, this);
+    timer.start(12, this);
 }
 
 void OpenGLWindow::loadMaterials()
@@ -50,19 +49,19 @@ void OpenGLWindow::loadMaterials()
 
 
     //Textures
-    Texture *texture0 = new Texture(":guy1.png");
+    Texture *texture0 = new Texture(":guy1.png", false, true);
     texture0->setMiniFilter(QOpenGLTexture::Nearest);
     texture0->setMagFilter(QOpenGLTexture::Linear);
     texture0->setWrapMode(QOpenGLTexture::Repeat);
     materials->addTexture(texture0);
 
-    Texture *texture1 = new Texture(":guy2.png");
+    Texture *texture1 = new Texture(":guy2.png", false, true);
     texture1->setMiniFilter(QOpenGLTexture::Nearest);
     texture1->setMagFilter(QOpenGLTexture::Linear);
     texture1->setWrapMode(QOpenGLTexture::Repeat);
     materials->addTexture(texture1);
 
-    Texture *texture2 = new Texture(":/Fonts/Fonts/Arial/Arial.png");
+    Texture *texture2 = new Texture(":/Fonts/Fonts/Arial/Arial.png", false, false);
     texture2->setMiniFilter(QOpenGLTexture::Nearest);
     texture2->setMagFilter(QOpenGLTexture::Linear);
     texture2->setWrapMode(QOpenGLTexture::Repeat);
@@ -143,8 +142,9 @@ void OpenGLWindow::loadEntities()
     backgroundMusic->play(0);
 
     //Text
-    Font* arial = new Font(":/Fonts/Fonts/Arial/Arial.fnt", materials, 2, 1);
-    arial->addString("(", 0.0f, 0.0f);
+    Font* arial = new Font(":/Fonts/Fonts/Arial/Arial.fnt", materials, 2, 1, 0.5f);
+    arial->addString("What Up!", 0.0f, 0.0f);
+    arial->addString("Text!", 0.0f, 0.5f);
     clientState->addText(arial);
 
     //Cameras
@@ -164,36 +164,31 @@ void OpenGLWindow::timerEvent(QTimerEvent *)
 
     clientState->update();
 
+    //Request an update
+    update();
+
 }
 
 void OpenGLWindow::resizeGL(int w, int h)
 {
-    //qDebug() << "resizeGL";
     g_width = w;
     g_height = h;
-
-    glViewport(0,0,w,h);
 
     float width = static_cast<float>(w);
     float height = static_cast<float>(h);
     g_aspectRatio = width/height;
 
-
-    // Clear color and depth buffer
-    //glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
     clientState->getProjection()->setToIdentity();
     clientState->getProjection()->perspective(90.0f, g_aspectRatio, 0.1f, 100.0f);
-
 }
 
 void OpenGLWindow::paintGL()
 {
-    //qDebug() << "paintGL";
     // Clear color and depth buffer
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     //Render clientState
     clientState->render(gl);
+
 }
 
 

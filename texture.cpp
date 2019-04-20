@@ -4,7 +4,7 @@ Texture::Texture()
 {
 
 }
-Texture::Texture(const QString filePath)
+Texture::Texture(const QString filePath, bool mirroredX, bool mirroredY)
 {
     // Load Texture
     QImage *image = new QImage(filePath);
@@ -13,7 +13,7 @@ Texture::Texture(const QString filePath)
         return;
     }
 
-    this->texture = new QOpenGLTexture(image->mirrored());
+    this->texture = new QOpenGLTexture(image->mirrored(mirroredX, mirroredY));
 }
 
 Texture::~Texture()

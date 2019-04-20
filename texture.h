@@ -8,7 +8,7 @@ class Texture
 {
 public:
     Texture();
-    Texture(const QString filePath);
+    Texture(const QString filePath, bool mirroredX, bool mirroredY);
     ~Texture();
     void bind();
     void unbind();

@@ -1,10 +1,15 @@
 #include "font.h"
 
-Font::Font(QString fontPath, Materials* materials, unsigned int textureID, unsigned int shaderID)
+Font::Font(QString fontPath
+           , Materials* materials
+           , unsigned int textureID
+           , unsigned int shaderID
+           , float fontScale)
 {
     this->materials = materials;
     this->textureID = textureID;
     this->shaderID = shaderID;
+    this->fontScale = fontScale;
     loadFont(fontPath);
 }
 
@@ -31,7 +36,7 @@ void Font::render(QOpenGLFunctions *gl)
 
         //Transformation
         transformationMatrix.setToIdentity();
-        transformationMatrix.scale(1.0f, 1.0f, 1.0f);
+        transformationMatrix.scale(fontScale, fontScale, 1.0f);
         transformationMatrix.translate(strSets.at(i)->xPos, strSets.at(i)->yPos, 0.0f);
 
         //Uniforms
@@ -46,15 +51,14 @@ void Font::render(QOpenGLFunctions *gl)
         materials->getShader(shaderID)->unbind();
     }
 
-
 }
 
 
 void Font::addString(QString str, float xPos, float yPos)
 {
     //Converts string to verticies and texture coordinates.
-    int cursorX = 0;
-    int cursorY = 0;
+    float cursorX = 0;
+    float cursorY = 0;
 
     vector<GLfloat> vertices;
     vector<GLfloat> texCoords;
@@ -65,19 +69,22 @@ void Font::addString(QString str, float xPos, float yPos)
     {
 
         //Iterate through chars to find font info for character
-        for(int j = 0; j < charCount; j++){
+        for(int j = 0; j < charCount; j++)
+        {
 
 
 
             //Found font info for character
-            if(str.at(i).unicode() == chars[j].id){
+            if(str.at(i).unicode() == chars[j].id)
+            {
 
-                qDebug() << "--------------------";
-                qDebug() << "ID: " << chars[j].id;
-                qDebug() << "V: " << chars[j].xoffset_vert << "," << chars[j].yoffset_vert;
-                qDebug() << "UV: " << chars[j].x_tex << "," << chars[j].y_tex;
-                qDebug() << "PAD: " << padX << "," << padY;
-                qDebug() << "xAdv: " << chars[j].xadvance_vert;
+                //qDebug() << "--------------------";
+                //qDebug() << "ID: " << chars[j].id;
+                //qDebug() << "V: " << chars[j].xoffset_vert << "," << chars[j].yoffset_vert;
+                //qDebug() << "UV: " << chars[j].x_tex << "," << chars[j].y_tex;
+                //qDebug() << "PAD: " << padX << "," << padY;
+                //qDebug() << "xAdv: " << chars[j].xadvance_vert;
+
 
                 //Top Left Vertex
                 vertices.push_back(cursorX + chars[j].xoffset_vert);
@@ -86,7 +93,7 @@ void Font::addString(QString str, float xPos, float yPos)
                 texCoords.push_back(chars[j].y_tex + padY);
                 //Bottom Left Vertex
                 vertices.push_back(cursorX + chars[j].xoffset_vert);
-                vertices.push_back(cursorY - chars[j].yoffset_vert + chars[j].char_height_vert);
+                vertices.push_back(cursorY - chars[j].yoffset_vert - chars[j].char_height_vert);
                 texCoords.push_back(chars[j].x_tex + padX);
                 texCoords.push_back(chars[j].y_tex + padY + chars[j].char_height_tex);
                 //Top Right Vertex
@@ -102,17 +109,17 @@ void Font::addString(QString str, float xPos, float yPos)
                 texCoords.push_back(chars[j].y_tex + padY);
                 //Bottom Left Vertex
                 vertices.push_back(cursorX + chars[j].xoffset_vert);
-                vertices.push_back(cursorY - chars[j].yoffset_vert + chars[j].char_height_vert);
+                vertices.push_back(cursorY - chars[j].yoffset_vert - chars[j].char_height_vert);
                 texCoords.push_back(chars[j].x_tex + padX);
                 texCoords.push_back(chars[j].y_tex + padY + chars[j].char_height_tex);
                 //Bottom Right Vertex
                 vertices.push_back(cursorX + chars[j].xoffset_vert + chars[j].char_width_vert);
-                vertices.push_back(cursorY - chars[j].yoffset_vert + chars[j].char_height_vert);
+                vertices.push_back(cursorY - chars[j].yoffset_vert - chars[j].char_height_vert);
                 texCoords.push_back(chars[j].x_tex + padX + chars[j].char_width_tex);
-                texCoords.push_back(chars[j].x_tex + padY + chars[j].char_height_tex);
+                texCoords.push_back(chars[j].y_tex + padY + chars[j].char_height_tex);
 
                 numVertices += 12;
-                cursorX += chars[j].xadvance_vert;
+                cursorX = cursorX + chars[j].xadvance_vert;
 
                 //break out of for loop to go to next character
                 break;
@@ -166,7 +173,8 @@ void Font::addString(QString str, float xPos, float yPos)
 
 void Font::loadFont(QString fontPath)
 {
-    float size = 200.0f;
+
+    float size = 500.0f;
 
     //Load FontFile from path
     QFile fontFile(fontPath);

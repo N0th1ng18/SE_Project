@@ -28,10 +28,9 @@ void ClientState::update()
     }
 
     //Texts
-    for(size_t i=0; i < objects.size(); i++){
-        (*objects.at(i)).update();
+    for(size_t i=0; i < texts.size(); i++){
+        (*texts.at(i)).update();
     }
-
 }
 
 void ClientState::render(QOpenGLFunctions* gl)
