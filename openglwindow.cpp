@@ -81,11 +81,15 @@ void OpenGLWindow::loadMaterials()
     {
         //Android
         shader0 = new Shader(":/vertex_Android.vsh", ":/frag_Android.fsh");
+        shader1= new Shader(":/vertex_Text_Android.vsh", ":/frag_Text_Android.fsh");
+
     }
     else
     {
         //Unknown
         shader0 = new Shader(":/vertex_Android.vsh", ":/frag_Android.fsh");
+        shader1= new Shader(":/vertex_Text_Android.vsh", ":/frag_Text_Android.fsh");
+
     }
     unsigned int defaultShader = materials->addShader(shader0);
     materials->addShader(shader1);
@@ -114,12 +118,11 @@ void OpenGLWindow::loadMaterials()
         vbo_texCoords->bind();
         materials->getShader(defaultShader)->setAttributePointer("texCoords", GL_FLOAT, 0, 2, sizeof(GLfloat) * 2);
 
-
+    //unbind VAO
+    materials->getVAO(squareVAO)->unbind();
     //unbind VBOs
     vbo_Vertices->unbind();
     vbo_texCoords->unbind();
-    //unbind VAO
-    materials->getVAO(squareVAO)->unbind();
     //unbind Shader Program
     materials->getShader(defaultShader)->unbind();
 
@@ -142,10 +145,12 @@ void OpenGLWindow::loadEntities()
     backgroundMusic->play(0);
 
     //Text
+    qDebug() << "before Init Text";
     Font* arial = new Font(":/Fonts/Fonts/Arial/Arial.fnt", materials, 2, 1, 0.5f);
     arial->addString("What Up!", 0.0f, 0.0f);
     arial->addString("Text!", 0.0f, 0.5f);
     clientState->addText(arial);
+    qDebug() << "After Init Text";
 
     //Cameras
     Camera* cam = new Camera(materials, 0, new QVector3D(0.0f, 0.0f, -2.0f));

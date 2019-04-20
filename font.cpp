@@ -50,7 +50,6 @@ void Font::render(QOpenGLFunctions *gl)
         materials->getTexture(textureID)->unbind();
         materials->getShader(shaderID)->unbind();
     }
-
 }
 
 
@@ -71,7 +70,6 @@ void Font::addString(QString str, float xPos, float yPos)
         //Iterate through chars to find font info for character
         for(int j = 0; j < charCount; j++)
         {
-
 
 
             //Found font info for character
@@ -129,7 +127,6 @@ void Font::addString(QString str, float xPos, float yPos)
     }
     /*****************************************************************************/
 
-
     //Creates VAO with vertices and texture coordinates
     //Create VAO
     VAO* vao = new VAO();
@@ -150,12 +147,11 @@ void Font::addString(QString str, float xPos, float yPos)
                 , QOpenGLBuffer::StaticDraw);
         stringVBO_texCoords->bind();
         materials->getShader(shaderID)->setAttributePointer("texCoords", GL_FLOAT, 0, 2, sizeof(GLfloat) * 2);
-
+    //unbind VAO
+    materials->getVAO(stringVAO)->unbind();
     //unbind VBOs
     stringVBO_Vertices->unbind();
     stringVBO_texCoords->unbind();
-    //unbind VAO
-    materials->getVAO(stringVAO)->unbind();
     //unbind Shader Program
     materials->getShader(shaderID)->unbind();
     /*****************************************************************************/
@@ -173,7 +169,6 @@ void Font::addString(QString str, float xPos, float yPos)
 
 void Font::loadFont(QString fontPath)
 {
-
     float size = 500.0f;
 
     //Load FontFile from path
@@ -294,5 +289,4 @@ void Font::loadFont(QString fontPath)
 
     fontFile.close();
     /*****************************************************************************/
-
 }

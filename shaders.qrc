@@ -6,5 +6,7 @@
         <file>vertex_Desktop.vsh</file>
         <file>vertex_Text_Desktop.vsh</file>
         <file>frag_Text_Desktop.fsh</file>
+        <file>frag_Text_Android.fsh</file>
+        <file>vertex_Text_Android.vsh</file>
     </qresource>
 </RCC>
