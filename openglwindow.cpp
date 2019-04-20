@@ -126,6 +126,10 @@ void OpenGLWindow::loadEntities()
     backgroundMusic->setVolume(90);
     backgroundMusic->play(0);
 
+    //Text
+    Font* arial = new Font();
+    arial->loadFont(":/Fonts/Fonts/Arial/Arial.fnt");
+
     //Cameras
     Camera *cam = new Camera(materials, 0, new QVector3D(0.0f, 0.0f, -2.0f));
     clientState->addCamera(cam);

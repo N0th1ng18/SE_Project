@@ -3,6 +3,16 @@
 Model::Model()
 {
     /*Default Square Model*/
+
+    /*
+     *  ___________
+     * |\          |
+     * | \         |
+     * |  \        |
+     * |   \       |
+     * |____\______|
+     *
+     */
     numOfVertices = 0;
     //Vertices
     vertices.push_back(-0.5f);

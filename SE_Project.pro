@@ -43,7 +43,8 @@ SOURCES += \
     object.cpp \
     gamerenderer.cpp \
     camera.cpp \
-    sound.cpp
+    sound.cpp \
+    font.cpp
     gamerenderer.cpp
 
 HEADERS += \
@@ -61,7 +62,8 @@ HEADERS += \
     object.h \
     gamerenderer.h \
     camera.h \
-    sound.h
+    sound.h \
+    font.h
 
 FORMS +=
 
@@ -80,5 +82,6 @@ RESOURCES += \
     shaders.qrc \
     textures.qrc \
     qml.qrc \
-    sounds.qrc
+    sounds.qrc \
+    text.qrc
 

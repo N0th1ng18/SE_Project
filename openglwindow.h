@@ -22,6 +22,7 @@
 #include "vbo.h"
 #include "clientstate.h"
 #include "sound.h"
+#include "font.h"
 
 
 

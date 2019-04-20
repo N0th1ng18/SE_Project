@@ -13,10 +13,8 @@ Sound::~Sound()
 
 void Sound::load(string path)
 {
-    qDebug("1");
     // Creates playlist and adds the media from string
     playlist -> addMedia(QUrl(path.c_str()));
-    qDebug("2");
 }
 
 void Sound::play(int index)
