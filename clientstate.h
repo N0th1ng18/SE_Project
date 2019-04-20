@@ -4,6 +4,7 @@
 #include "object.h"
 #include "camera.h"
 #include "vector"
+#include "font.h"
 
 using namespace std;
 
@@ -18,13 +19,15 @@ public:
 
     QMatrix4x4* getProjection();
 
-    void addCamera(Camera *cam);
+    void addCamera(Camera* cam);
     void removeCamera(int index);
     void setActiveCamera(int activeCamID);
 
-    void addObject(Object *obj);
+    void addObject(Object* obj);
     void removeObject(int index);
 
+    void addText(Font* font);
+    void removeText(int index);
 
 
 protected:
@@ -35,6 +38,7 @@ private:
     int activeCameraID = 0;
     vector<Camera*> cameras;
     vector<Object*> objects;
+    vector<Font*> texts;
 
 
 };

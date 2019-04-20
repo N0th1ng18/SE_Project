@@ -17,13 +17,17 @@ ClientState::~ClientState()
 
 void ClientState::update()
 {
-    //Camera update
-
+    //Cameras
     for(size_t i=0; i < cameras.size(); i++){
         (*cameras.at(i)).update();
     }
 
+    //Objects
+    for(size_t i=0; i < objects.size(); i++){
+        (*objects.at(i)).update();
+    }
 
+    //Texts
     for(size_t i=0; i < objects.size(); i++){
         (*objects.at(i)).update();
     }
@@ -32,17 +36,24 @@ void ClientState::update()
 
 void ClientState::render(QOpenGLFunctions* gl)
 {
+    //Cameras
     for(size_t i=0; i < cameras.size(); i++){
         (*cameras.at(i)).render(gl, &projectionMatrix);
     }
 
+    //Objects
     for(size_t i=0; i < objects.size(); i++){
         (*objects.at(i)).render(gl);
+    }
+
+    //Text
+    for(size_t i=0; i < texts.size(); i++){
+        (*texts.at(i)).render(gl);
     }
 }
 
 /***************Objects***************/
-void ClientState::addCamera(Camera *cam)
+void ClientState::addCamera(Camera* cam)
 {
     cameras.push_back(cam);
 }
@@ -52,9 +63,14 @@ void ClientState::setActiveCamera(int activeCamID)
     this->activeCameraID = activeCamID;
 }
 
-void ClientState::addObject(Object *obj)
+void ClientState::addObject(Object* obj)
 {
     objects.push_back(obj);
+}
+
+void ClientState::addText(Font* font)
+{
+    texts.push_back(font);
 }
 
 /************Projection**************/

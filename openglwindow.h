@@ -51,6 +51,13 @@ protected:
 
 
 private:
+    enum Textures{
+
+    };
+    enum Shaders{
+
+    };
+
     QOpenGLFunctions *gl = nullptr;
     int g_width, g_height;
     float g_aspectRatio;

@@ -29,9 +29,9 @@ void OpenGLWindow::initializeGL()
     gl = QOpenGLContext::currentContext()->functions();
 
     //OpenGL Settings
-    glClearColor(0, 1, 0, 1);
+    glClearColor(0, 0, 1, 1);
     glEnable(GL_DEPTH_TEST);
-    glEnable(GL_CULL_FACE);
+    //glEnable(GL_CULL_FACE);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glEnable(GL_BLEND);
 
@@ -62,18 +62,34 @@ void OpenGLWindow::loadMaterials()
     texture1->setWrapMode(QOpenGLTexture::Repeat);
     materials->addTexture(texture1);
 
+    Texture *texture2 = new Texture(":/Fonts/Fonts/Arial/Arial.png");
+    texture2->setMiniFilter(QOpenGLTexture::Nearest);
+    texture2->setMagFilter(QOpenGLTexture::Linear);
+    texture2->setWrapMode(QOpenGLTexture::Repeat);
+    materials->addTexture(texture2);
+
 
     //Shaders
-    Shader *shader = nullptr;
+    Shader* shader0 = nullptr;
+    Shader* shader1 = nullptr;
     if(QSysInfo::currentCpuArchitecture().compare("x86_64") == 0)
     {
-        shader= new Shader(":/vertex_Desktop.vsh", ":/frag_Desktop.fsh");
-    }else if(QSysInfo::currentCpuArchitecture().compare("arm64") == 0){
-        shader = new Shader(":/vertex_Android.vsh", ":/frag_Android.fsh");
-    }else{
-        shader = new Shader(":/vertex_Android.vsh", ":/frag_Android.fsh");
+        //PC
+        shader0= new Shader(":/vertex_Desktop.vsh", ":/frag_Desktop.fsh");
+        shader1= new Shader(":/vertex_Text_Desktop.vsh", ":/frag_Text_Desktop.fsh");
     }
-    unsigned int defaultShader = materials->addShader(shader);
+    else if(QSysInfo::currentCpuArchitecture().compare("arm64") == 0)
+    {
+        //Android
+        shader0 = new Shader(":/vertex_Android.vsh", ":/frag_Android.fsh");
+    }
+    else
+    {
+        //Unknown
+        shader0 = new Shader(":/vertex_Android.vsh", ":/frag_Android.fsh");
+    }
+    unsigned int defaultShader = materials->addShader(shader0);
+    materials->addShader(shader1);
 
 
     //VAOs
@@ -127,33 +143,20 @@ void OpenGLWindow::loadEntities()
     backgroundMusic->play(0);
 
     //Text
-    Font* arial = new Font();
-    arial->loadFont(":/Fonts/Fonts/Arial/Arial.fnt");
+    Font* arial = new Font(":/Fonts/Fonts/Arial/Arial.fnt", materials, 2, 1);
+    arial->addString("(", 0.0f, 0.0f);
+    clientState->addText(arial);
 
     //Cameras
-    Camera *cam = new Camera(materials, 0, new QVector3D(0.0f, 0.0f, -2.0f));
+    Camera* cam = new Camera(materials, 0, new QVector3D(0.0f, 0.0f, -2.0f));
     clientState->addCamera(cam);
     clientState->setActiveCamera(0);
 
     //Objects
-    Object *obj = new Object(materials, 0, 0, 1, new QVector3D(-1.0f, 0.0f, 0.0f));
+    Object* obj = new Object(materials, 0, 0, 1, new QVector3D(-1.0f, 0.0f, 0.0f));
     clientState->addObject(obj);
-    Object *obj2 = new Object(materials, 0, 0, 0, new QVector3D(1.0f, 0.0f, 0.0f));
+    Object* obj2 = new Object(materials, 0, 0, 0, new QVector3D(1.0f, 0.0f, 0.0f));
     clientState->addObject(obj2);
-
-    //Text
-
-    /*
-     * Need to change this to the traditional Opengl text rendering
-     * for it to work on android. will need shaders, etc...
-    */
-
-    //clientState->addText(new Text("Jungle Escape", this->width()/2, this->height()/2, 0, "Helvetica", 20));
-    //clientState->addText(new Text("Some Text", this->width()/2, this->height()/2 + 20, 0, "Helvetica", 20));
-    //clientState->addText(new Text("Some More Text", this->width()/2, this->height()/2+40, 0, "Helvetica", 20));
-
-
-
 }
 
 void OpenGLWindow::timerEvent(QTimerEvent *)

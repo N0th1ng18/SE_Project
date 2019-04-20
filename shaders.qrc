@@ -4,5 +4,7 @@
         <file>frag_Android.fsh</file>
         <file>frag_Desktop.fsh</file>
         <file>vertex_Desktop.vsh</file>
+        <file>vertex_Text_Desktop.vsh</file>
+        <file>frag_Text_Desktop.fsh</file>
     </qresource>
 </RCC>

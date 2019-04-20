@@ -5,12 +5,12 @@ Model::Model()
     /*Default Square Model*/
 
     /*
-     *  ___________
-     * |\          |
-     * | \         |
-     * |  \        |
-     * |   \       |
-     * |____\______|
+     *  _________
+     * |        /|
+     * |      /  |
+     * |    /    |
+     * |  /      |
+     * |/________|
      *
      */
     numOfVertices = 0;
@@ -67,7 +67,7 @@ Model::Model(const QString filePath)
 
 Model::~Model()
 {
-    //Correctly de-allocate vectors
+    //De-allocate vectors
     vector<GLfloat>().swap(vertices);
     vector<GLfloat>().swap(texCoords);
 }
