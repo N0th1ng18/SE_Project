@@ -4,6 +4,7 @@ import QtQuick.Controls 2.5
 Item {
     id: resumeGamePg
 
+
     Column{
         id: roomCodeContainer
         anchors.centerIn: parent
@@ -16,6 +17,7 @@ Item {
             Label{
                 anchors.horizontalCenter: roomCodeContainer.horizontalCenter
                 text:  qsTr("Fetched room code")
+                font.pixelSize: 30 + (15 * resumeGamePg.width/ resumeGamePg.height)
             }
         }
 

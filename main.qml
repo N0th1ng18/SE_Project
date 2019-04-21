@@ -1,13 +1,13 @@
 import QtQuick 2.9
 import QtQuick.Window 2.2
 import QtQuick.Controls 2.5
-//import "loginpage.qml"
+
 
 ApplicationWindow{
     id: mainView
     visible: true
-    width: 640
-    height: 480
+    width: 720
+    height: 1080
 
     /******************
 
@@ -18,6 +18,13 @@ ApplicationWindow{
     ******************/
 
     // Abstact Data Type Connections
+
+    Connections{
+        // Connects client protocol class
+        id: clientConn
+        target: clientprotocol
+    }
+
 
     Connections{
         // Connects PlayerInfo Class
@@ -102,6 +109,8 @@ ApplicationWindow{
         }
     }
 
+
+
     Rectangle{
         // background color
         id: background
@@ -109,12 +118,10 @@ ApplicationWindow{
         anchors.fill: parent
     }
 
-
-
-
     StackView{
         id: stack
         initialItem: "home.qml"
         anchors.fill: parent
+
     }
 }

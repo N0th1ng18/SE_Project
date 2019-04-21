@@ -2,7 +2,7 @@ import QtQuick 2.0
 import QtQuick.Controls 2.5
 
 Item {
-
+    id: homePg
 
     Column{
         id: homeFocus
@@ -16,7 +16,7 @@ Item {
             anchors.horizontalCenter: parent.horizontalCenter
             text: "Home Screen"
             font.bold: true
-            font.pixelSize: 30
+            font.pixelSize: 30 + (15 * homePg.width/ homePg.height)
         }
 
         Row{
@@ -27,8 +27,8 @@ Item {
             Button{
                 id: loginButton
 
-                width: 150
-                height: 75
+                width: implicitWidth + (implicitWidth * homePg.width/ homePg.height)
+                height: implicitHeight + (implicitHeight * homePg.height/homePg.width)
                 text: "Login Menu"
                 font.pixelSize: 20
 
@@ -41,8 +41,8 @@ Item {
             Button{
                 id: gameButton
 
-                width: 150
-                height: 75
+                width: loginButton.width
+                height: loginButton.height
                 text: "Game Menu"
                 font.pixelSize: 20
 

@@ -4,6 +4,7 @@ import QtQuick.Controls 2.5
 Item {
     id: hostGamePg
 
+
      Column{
          anchors.centerIn: parent
          spacing: 30
@@ -13,11 +14,9 @@ Item {
          Label{
              // Will receive a valid room code from database
              text: qsTr("XXXX")
-             font.pixelSize: 35
+             font.pixelSize: 30 + (15 * hostGamePg.width/ hostGamePg.height)
              font.bold: true
              anchors.horizontalCenter: parent.horizontalCenter
          }
-
-
      }
 }
