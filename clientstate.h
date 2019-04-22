@@ -29,6 +29,8 @@ public:
     void addText(Font* font);
     void removeText(int index);
 
+    void setAspectRatio(float aspectRatio);
+    float getAspectRatio();
 
 protected:
 
@@ -39,6 +41,8 @@ private:
     vector<Camera*> cameras;
     vector<Object*> objects;
     vector<Font*> texts;
+
+    float aspectRatio = 0;
 
 
 };

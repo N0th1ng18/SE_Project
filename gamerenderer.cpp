@@ -16,7 +16,7 @@ void GameRenderer::setRenderView(OpenGLWindow * newGameView){
 }
 
 void GameRenderer::launchGame(){
-    m_gameView->show();
+    m_gameView->showFullScreen();
 }
 
 void GameRenderer::exitGame(){

@@ -145,12 +145,10 @@ void OpenGLWindow::loadEntities()
     backgroundMusic->play(0);
 
     //Text
-    qDebug() << "before Init Text";
     Font* arial = new Font(":/Fonts/Fonts/Arial/Arial.fnt", materials, 2, 1, 0.5f);
     arial->addString("What Up!", 0.0f, 0.0f);
     arial->addString("Text!", 0.0f, 0.5f);
     clientState->addText(arial);
-    qDebug() << "After Init Text";
 
     //Cameras
     Camera* cam = new Camera(materials, 0, new QVector3D(0.0f, 0.0f, -2.0f));
@@ -183,8 +181,14 @@ void OpenGLWindow::resizeGL(int w, int h)
     float height = static_cast<float>(h);
     g_aspectRatio = width/height;
 
+    //set Aspect Ratio
+    clientState->setAspectRatio(g_aspectRatio);
+
+    //set Projection Matrix
     clientState->getProjection()->setToIdentity();
     clientState->getProjection()->perspective(90.0f, g_aspectRatio, 0.1f, 100.0f);
+
+
 }
 
 void OpenGLWindow::paintGL()

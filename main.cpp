@@ -30,6 +30,7 @@ int main(int argc, char *argv[])
     PlayerInfo player;
     //OpenGL Window
     OpenGLWindow glWindow;
+    //glWindow.setWindowFlags(Qt::FramelessWindowHint);
 
     QQmlEngine engine;
     QQmlComponent *component = new QQmlComponent(&engine);

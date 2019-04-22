@@ -22,7 +22,7 @@ public:
          , float fontSize);
     ~Font();
     void update();
-    void render(QOpenGLFunctions *gl);
+    void render(QOpenGLFunctions *gl, float aspectRatio);
     void addString(QString str, float xPos, float yPos);
 
 private:
@@ -45,6 +45,8 @@ private:
         int numVertices;
         float xPos;
         float yPos;
+        float width;
+        float height;
     };
 
     Materials* materials = nullptr;
@@ -67,6 +69,8 @@ private:
     vector<StringSet*> strSets;
     //Font Size
     float fontScale;
+
+    QVector3D *scale;
 };
 
 #endif // TEXT_H
