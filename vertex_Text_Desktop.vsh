@@ -3,6 +3,7 @@
 attribute vec2 position;
 attribute vec2 texCoords;
 
+uniform mat4 orthographicMatrix;
 uniform mat4 transformationMatrix;
 
 varying vec2 texCoords_FS;

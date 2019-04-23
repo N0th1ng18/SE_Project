@@ -13,6 +13,7 @@ Font::Font(QString fontPath
     loadFont(fontPath);
 
     scale = new QVector3D(1.0f, 1.0f, 1.0f);
+    cPoint = new QVector3D(0.0f, 0.0f, 0.0f);
 }
 
 Font::~Font()
@@ -24,7 +25,7 @@ void Font::update()
 {
 
 }
-void Font::render(QOpenGLFunctions *gl, float aspectRatio)
+void Font::render(QOpenGLFunctions *gl, QMatrix4x4* orthographicMatrix, float width, float height, float aspectRatio)
 {
     for(size_t i=0; i < strSets.size(); i++)
     {
@@ -38,10 +39,21 @@ void Font::render(QOpenGLFunctions *gl, float aspectRatio)
 
         //Transformation
         transformationMatrix.setToIdentity();
-        transformationMatrix.scale(scale->x(), scale->y() * aspectRatio, scale->z());
-        transformationMatrix.translate(strSets.at(i)->xPos - (strSets.at(i)->width / 2.0f), strSets.at(i)->yPos - (strSets.at(i)->height / 2.0f), 0.0f);
+
+        transformationMatrix.scale(scale->x() * (1.0f/aspectRatio), scale->y(), scale->z());
+
+        //Centered
+        cPoint->setX(strSets.at(i)->width / 2.0f);
+        cPoint->setY(strSets.at(i)->height / 2.0f);
+        //Left Top
+        //cPoint->setX(0.0f);
+        //cPoint->setY(0.0f);
+
+        transformationMatrix.translate((strSets.at(i)->xPos - cPoint->x()), (strSets.at(i)->yPos - cPoint->y()), 0.0f);
 
         //Uniforms
+
+        materials->getShader(shaderID)->getShader()->setUniformValue("orthographicMatrix", *orthographicMatrix);
         materials->getShader(shaderID)->getShader()->setUniformValue("transformationMatrix", transformationMatrix);
         materials->getShader(shaderID)->getShader()->setUniformValue("texture", 0);
 

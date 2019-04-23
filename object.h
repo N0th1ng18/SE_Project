@@ -21,6 +21,7 @@ public:
     ~Object();
     void update();
     void render(QOpenGLFunctions *gl);
+    void setScale(QVector3D* s);
 protected:
 
 private:
@@ -34,6 +35,8 @@ private:
     QVector3D *pos = nullptr;
     QVector3D *vel = nullptr;
     QVector3D *acc = nullptr;
+
+    QVector3D *oScale = nullptr;
 };
 
 #endif // OBJECT_H

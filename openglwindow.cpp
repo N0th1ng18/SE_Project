@@ -55,7 +55,7 @@ void OpenGLWindow::loadMaterials()
     texture0->setWrapMode(QOpenGLTexture::Repeat);
     materials->addTexture(texture0);
 
-    Texture *texture1 = new Texture(":guy2.png", false, true);
+    Texture *texture1 = new Texture(":Map1.png", false, true);
     texture1->setMiniFilter(QOpenGLTexture::Nearest);
     texture1->setMagFilter(QOpenGLTexture::Linear);
     texture1->setWrapMode(QOpenGLTexture::Repeat);
@@ -146,8 +146,8 @@ void OpenGLWindow::loadEntities()
 
     //Text
     Font* arial = new Font(":/Fonts/Fonts/Arial/Arial.fnt", materials, 2, 1, 0.5f);
-    arial->addString("What Up!", 0.0f, 0.0f);
-    arial->addString("Text!", 0.0f, 0.5f);
+    arial->addString("What Up!", -0.5f, -0.5f);
+    arial->addString("Text!", 0.5f, 0.5f);
     clientState->addText(arial);
 
     //Cameras
@@ -156,10 +156,12 @@ void OpenGLWindow::loadEntities()
     clientState->setActiveCamera(0);
 
     //Objects
-    Object* obj = new Object(materials, 0, 0, 1, new QVector3D(-1.0f, 0.0f, 0.0f));
-    clientState->addObject(obj);
     Object* obj2 = new Object(materials, 0, 0, 0, new QVector3D(1.0f, 0.0f, 0.0f));
     clientState->addObject(obj2);
+
+    Object* obj = new Object(materials, 0, 0, 1, new QVector3D(0.0f, 0.0f, 0.0f));
+    obj->setScale(new QVector3D(20.0f, 20.0f, 1.0f));
+    clientState->addObject(obj);
 }
 
 void OpenGLWindow::timerEvent(QTimerEvent *)
@@ -177,17 +179,25 @@ void OpenGLWindow::resizeGL(int w, int h)
     g_width = w;
     g_height = h;
 
+
     float width = static_cast<float>(w);
     float height = static_cast<float>(h);
     g_aspectRatio = width/height;
 
+    //glViewport(0.0f, 0.0f, width, height);
+
     //set Aspect Ratio
+    clientState->setWidth(width);
+    clientState->setHeight(height);
     clientState->setAspectRatio(g_aspectRatio);
 
     //set Projection Matrix
     clientState->getProjection()->setToIdentity();
     clientState->getProjection()->perspective(90.0f, g_aspectRatio, 0.1f, 100.0f);
 
+    //set Orthographic Matrix
+    clientState->getOrthographic()->setToIdentity();
+    clientState->getOrthographic()->ortho( 0.f, width, height, 0.f, -1.f, 1.f );
 
 }
 

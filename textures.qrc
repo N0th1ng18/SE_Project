@@ -4,5 +4,6 @@
         <file>test.png</file>
         <file>guy1.png</file>
         <file>guy2.png</file>
+        <file>Map1.png</file>
     </qresource>
 </RCC>

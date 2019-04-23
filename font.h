@@ -22,7 +22,7 @@ public:
          , float fontSize);
     ~Font();
     void update();
-    void render(QOpenGLFunctions *gl, float aspectRatio);
+    void render(QOpenGLFunctions *gl, QMatrix4x4* orthographicMatrix, float width, float height, float aspectRatio);
     void addString(QString str, float xPos, float yPos);
 
 private:
@@ -71,6 +71,8 @@ private:
     float fontScale;
 
     QVector3D *scale;
+    //Control Point
+    QVector3D *cPoint;
 };
 
 #endif // TEXT_H

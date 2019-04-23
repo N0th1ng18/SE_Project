@@ -13,6 +13,7 @@ Object::Object(Materials *materials
     this->textureID = textureID;
     this->pos = pos;
     this->vel = new QVector3D(0.0f, 0.0f, 0.0f);
+    this->oScale = new QVector3D(1.0f, 1.0f, 1.0f);
 }
 
 Object::~Object()
@@ -42,6 +43,7 @@ void Object::render(QOpenGLFunctions *gl)
 
     //Transformation
     transformationMatrix.setToIdentity();
+    transformationMatrix.scale(oScale->x(), oScale->y(), oScale->z());
     transformationMatrix.translate(pos->x(), pos->y(), pos->z());
 
     //Uniforms
@@ -56,4 +58,11 @@ void Object::render(QOpenGLFunctions *gl)
     materials->getShader(shaderID)->unbind();
     /*******************************************************************/
 
+}
+
+void Object::setScale(QVector3D* s)
+{
+    oScale->setX(s->x());
+    oScale->setY(s->y());
+    oScale->setZ(s->z());
 }
