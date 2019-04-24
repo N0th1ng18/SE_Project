@@ -161,7 +161,7 @@ void OpenGLWindow::loadEntities()
 
     Object* obj = new Object(materials, 0, 0, 1, new QVector3D(0.0f, 0.0f, 0.0f));
     obj->setScale(new QVector3D(20.0f, 20.0f, 1.0f));
-    clientState->addObject(obj);
+    //clientState->addObject(obj);
 }
 
 void OpenGLWindow::timerEvent(QTimerEvent *)

@@ -6,17 +6,17 @@
 #include <QTcpSocket>
 
 
-class ClientProtocol : public QTcpSocket
+class ClientProtocol
 {
 
 public:
     ClientProtocol();
     ~ClientProtocol();
-    static void connectMainServer(QObject *parent = nullptr);
-    static void disconnectMainServer();
+    QTcpSocket* connectMainServer(QObject *parent = nullptr);
+    void disconnectMainServer();
 
 private:
-
+    QTcpSocket* socket = nullptr;
 
 };
 
