@@ -7,7 +7,7 @@ Item {
 
 
     id: menuPg
-
+    anchors.fill: parent
 
 
     ToolBar{
@@ -201,9 +201,6 @@ Item {
                    menuConn.clear()
 
                    homeConn.push();
-
-
-
                }
 
            }
@@ -211,8 +208,6 @@ Item {
        }
 
     }
-
-
 
     StackView{
 

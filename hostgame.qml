@@ -7,10 +7,7 @@ import QtQuick.Controls 2.5
 Item {
 
     id: hostGamePg
-
-
-
-
+    anchors.fill: parent;
 
      Column{
 

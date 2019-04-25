@@ -3,20 +3,36 @@
 
 #include <QDebug>
 #include <QObject>
+#include <QString>
 #include <QTcpSocket>
+#include<QTcpServer>
 
 
-class ClientProtocol : public QTcpSocket
+class ClientProtocol: public QObject
 {
 
+    enum Msg
+    {
+        CreateAccount,
+        UserLogin,
+        CreateGame,
+        JoinGame,
+        UserData
+    };
+    Q_OBJECT
 public:
     ClientProtocol();
-    ~ClientProtocol();
-    static void connectMainServer(QObject *parent = nullptr);
-    static void disconnectMainServer();
+    QTcpSocket* connectMainServer(QObject *parent = nullptr);
+    void disconnectMainServer();
+
+public slots:
+    bool connectToServer();
+    void sendUserLogin(QString name, QString pass);
+    void sendCreateAccount(QString name, QString pass);
+    void sendJoinGame(int roomId);
 
 private:
-
+    QTcpSocket* socket = nullptr;
 
 };
 

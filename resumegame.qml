@@ -7,8 +7,7 @@ import QtQuick.Controls 2.5
 Item {
 
     id: resumeGamePg
-
-
+    anchors.fill: parent
 
 
 

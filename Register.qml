@@ -9,12 +9,7 @@ import QtQuick.Controls 2.5
 Item {
 
     id: createAccountPg
-
-
-
-
-
-
+    anchors.fill: parent
 
     ToolBar{
 
@@ -35,9 +30,6 @@ Item {
 
 
           }
-
-
-
 
 
           ToolButton{
