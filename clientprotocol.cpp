@@ -18,7 +18,7 @@ QTcpSocket* ClientProtocol::connectMainServer(QObject *parent)
 {
     qDebug() << "connectMainServer()";
     socket = new QTcpSocket(parent);
-    socket->connectToHost("192.168.1.3", 5555);
+    socket->connectToHost("192.168.1.2", 5555);
 
     if (!socket->waitForConnected(3000))
     {
