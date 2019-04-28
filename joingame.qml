@@ -7,16 +7,13 @@ import QtQuick.Controls 2.5
 Item {
 
     id: joinGamePg
-    anchors.fill: parent
+
 
     Column{
-
-
 
         anchors.centerIn: parent
 
         spacing: 40
-
 
 
         Label{
@@ -25,7 +22,7 @@ Item {
 
             anchors.horizontalCenter: parent.horizontalCenter
 
-            font.pixelSize: 30 + (15 * joinGamePg.width/ joinGamePg.height)
+            font.pointSize: fontSize
 
         }
 
@@ -35,15 +32,15 @@ Item {
 
             anchors.horizontalCenter: parent.horizontalCenter
 
-            width: implicitWidth + (implicitWidth * joinGamePg.width/ joinGamePg.height)
+            width:textFieldWidth
 
-            height: implicitHeight + (implicitHeight * joinGamePg.height/joinGamePg.width)
+            height: textFieldHeight
+
+            font.pointSize: fontSize + (height * .07)
 
             placeholderText: "Room Code"
 
             maximumLength: 4
-
-
 
         }
 
@@ -53,9 +50,11 @@ Item {
 
             anchors.horizontalCenter: parent.horizontalCenter
 
-            width: implicitWidth + (implicitWidth * joinGamePg.width/ joinGamePg.height)
+            width: buttonWidth
 
-            height: implicitHeight + (implicitHeight * joinGamePg.height/joinGamePg.width)
+            height: buttonHeight
+
+            font.pointSize: fontSize
 
             text: qsTr("Join")
 

@@ -47,7 +47,7 @@ void ClientState::render(QOpenGLFunctions* gl)
 
     //Text
     for(size_t i=0; i < texts.size(); i++){
-        (*texts.at(i)).render(gl);
+        (*texts.at(i)).render(gl, this->getOrthographic(), width, height, getAspectRatio());
     }
 }
 
@@ -76,5 +76,32 @@ void ClientState::addText(Font* font)
 QMatrix4x4* ClientState::getProjection()
 {
     return &projectionMatrix;
+}
+
+/************Orthographic**************/
+QMatrix4x4* ClientState::getOrthographic()
+{
+    return &orthographicMatrix;
+}
+
+/************AspectRatio**************/
+void ClientState::setAspectRatio(float aspectRatio)
+{
+    this->aspectRatio = aspectRatio;
+}
+
+float ClientState::getAspectRatio()
+{
+    return this->aspectRatio;
+}
+
+void ClientState::setWidth(float width)
+{
+    this->width = width;
+}
+
+void ClientState::setHeight(float height)
+{
+    this->height = height;
 }
 

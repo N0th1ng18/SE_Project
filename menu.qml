@@ -4,11 +4,7 @@ import QtQuick.Controls 2.5
 
 Item {
 
-
-
     id: menuPg
-    anchors.fill: parent
-
 
     ToolBar{
 
@@ -18,30 +14,22 @@ Item {
 
         height: contentHeight
 
-
-
         Rectangle{
 
             anchors.fill: parent
-
-
-
         }
-
-
 
         ToolButton{
 
             id: toolbutton
 
-            width: implicitWidth + (implicitWidth * menuPg.width/ menuPg.height)
+            width: toolButtonWidth
 
-            height: implicitHeight + (implicitHeight * menuPg.width/menuPg.height)
+            height: toolButtonHeight
 
             text: "\u2630"
 
-            font.pixelSize: Qt.application.font.pixelSize * 1.6
-
+            font.pointSize: fontSize
 
 
             onClicked: {
@@ -60,15 +48,12 @@ Item {
 
                 }
 
-
-
             }
 
         }
 
+     }
 
-
-    }
 
 
 
@@ -83,13 +68,9 @@ Item {
          height: menuPg.height * 0.80
 
 
-
-
-
        Column{
 
            anchors.fill: parent
-
 
 
            ItemDelegate{
@@ -98,8 +79,7 @@ Item {
 
                text: qsTr("Host Game")
 
-               font.pixelSize: 12 + (menuPg.height * 0.0275)
-
+               font.pointSize: fontSize
 
 
                onClicked: {
@@ -113,15 +93,13 @@ Item {
            }
 
 
-
            ItemDelegate{
 
                width: parent.width
 
                text: qsTr("Join Game")
 
-               font.pixelSize: 12 + (menuPg.height * 0.0275)
-
+               font.pointSize: fontSize
 
 
                onClicked: {
@@ -132,34 +110,23 @@ Item {
 
                }
 
-
-
            }
-
-
 
            ItemDelegate{
 
                width: parent.width
 
-               text: qsTr("Resume Session")
+               text: qsTr("User Lobby")
 
-               font.pixelSize: 12 + (menuPg.height * 0.0275)
-
-
+               font.pointSize: fontSize
 
                onClicked: {
 
                     menuStack.push("resumegame.qml")
 
-                   optionsPanel.close()
-
                }
 
            }
-
-
-
 
 
            ItemDelegate{
@@ -168,9 +135,7 @@ Item {
 
                text: qsTr("Settings")
 
-               font.pixelSize: 12 + (menuPg.height * 0.0275)
-
-
+               font.pointSize: fontSize
 
                onClicked: {
 
@@ -181,16 +146,13 @@ Item {
            }
 
 
-
            ItemDelegate{
 
                width: parent.width
 
                text: qsTr("Logout")
 
-               font.pixelSize: 12 + (menuPg.height * 0.0275)
-
-
+               font.pointSize: fontSize
 
                onClicked: {
 
@@ -212,13 +174,8 @@ Item {
     StackView{
 
         id: menuStack
-
         anchors.fill: parent
-
+        initialItem: "resumegame.qml"
     }
-
-
-
-
 
  }

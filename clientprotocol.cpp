@@ -8,7 +8,6 @@ ClientProtocol::ClientProtocol()
 
 }
 
-
 QTcpSocket* ClientProtocol::connectMainServer(QObject *parent)
 {
     qDebug() << "connectMainServer()";
@@ -47,40 +46,166 @@ bool ClientProtocol::connectToServer(){
         qDebug()<< "Connected to host" << endl;
         return true;
     }
-
 }
 
-void ClientProtocol::sendUserLogin(QString name, QString pass){
-    QByteArray data;
-    QString s;
-    s = QString::number(Msg::UserLogin);
-    s.append('|' + name + '|' + pass + "||");
-    data.append(s);
-    socket->write(data);
+bool ClientProtocol::sendUserLogin(QString username, QString password){
 
-    qDebug() << "Sending UserLogin" << endl;
-}
-
-void ClientProtocol::sendCreateAccount(QString name, QString pass){
+    if(!isStringValid(username) || !isStringValid(password)){
+        qDebug() << "Failed to send PlayerInfo: invalid string" << endl;
+        return false;
+    }
 
     QByteArray data;
-    QString s;
-    s = QString::number(Msg::CreateGame);
-    s.append('|' + name + '|' + pass + "||");
-    data.append(s);
+    data.setNum(Msg::UserLogin);
+    data.append('|' + username + '|' + password + "||");
     socket->write(data);
     socket->flush();
-    qDebug() << "Sending CreateAccount" << endl;
+
+    if(socket->waitForReadyRead()){
+        QString received = socket->readAll();
+        QStringList message = splitMessage(received);
+
+        if(Msg(message[0].toInt()) != UserLogin){
+            return false;
+        }else{
+            if(bool(message[1].toInt())){
+                for(int j = 3; j < message.length(); j++){
+                    qDebug() << message[j] << ' ';
+                }
+                qDebug() << endl;
+            }else{
+                return false;
+            }
+        }
+    }
+    return true;
 }
 
-void ClientProtocol::sendJoinGame(int roomId){
+bool ClientProtocol::sendCreateAccount(QString username, QString password){
+    if(!isStringValid(username) || !isStringValid(password)){
+        qDebug() << "Failed to send PlayerInfo: invalid string" << endl;
+        return false;
+    }
+
     QByteArray data;
-    QString s;
-
-    s = QString::number(Msg::JoinGame);
-    data.setNum(roomId);
-    s.append('|' + data);
-
+    data.setNum(Msg::CreateAccount);
+    data.append('|' + username + '|' + password + "||");
     socket->write(data);
+    socket->flush();
+
+    if(socket->waitForReadyRead()){
+        QString received = socket->readAll();
+        QStringList message = splitMessage(received);
+
+        if(Msg(message[0].toInt()) != CreateAccount){
+            return false;
+        }else{
+            return bool(message[1].toInt());
+        }
+    }
+    return true;
+}
+
+bool ClientProtocol::sendCreateGame(){
+       QByteArray data;
+       data.setNum(Msg::CreateGame);
+       data.append("||");
+       socket->write(data);
+       socket->flush();
+
+       if(socket->waitForReadyRead()){
+           QString received = socket->readAll();
+           QStringList message = splitMessage(received);
+
+           if (Msg(message[0].toInt()) != CreateGame){
+                return false;
+           }else{
+               if(!bool(message[1].toInt())){
+                    return false;
+               }else{
+                    qDebug() << message[2] << ' ' << message[3] << endl;
+               }
+           }
+       }
+       return true;
+}
+
+bool ClientProtocol::sendJoinGame(int roomId){
+    QByteArray data;
+    data.setNum(Msg::JoinGame);
+    data.append('|' + QString::number(roomId) + "||");
+    socket->write(data);
+    socket->flush();
+
+    if(socket->waitForBytesWritten()){
+        socket->flush();
+        QString received = socket->readAll();
+        QList<QString> messages = received.split("|", QString::SkipEmptyParts);
+
+
+        if(socket->waitForReadyRead()){
+            QString received = socket->readAll();
+            QStringList message = splitMessage(received);
+
+            if(Msg(message[0].toInt()) != JoinGame){
+                if(message[1].toInt() == 0){
+                    qDebug() << "Invalid room code" << endl;
+                    return false;
+                }else if(message[1].toInt() == 2){
+                    qDebug() << "No server available" << endl;
+                    return false;
+                }else if(message[1].toInt() == 1){
+                    qDebug() << message[2] << ' ' << message[3] << endl;
+
+                }
+            }
+        }
+    }
+    return true;
+}
+
+bool ClientProtocol::sendGetGameList(){
+    QByteArray data;
+    data.setNum(Msg::GameList);// Send username
+    data.append("||");
+    socket->write(data);
+    socket->flush();
+
+    if(socket->waitForBytesWritten()){
+        socket->flush();
+        QString received = socket->readAll();
+        QList<QString> messages = received.split("|", QString::SkipEmptyParts);
+
+
+        if(Msg(messages[0].toInt()) != Msg::GameList){
+            return false;
+        }else{
+            int size = messages[1].toInt();
+            for(int i = 0; i < size; i++){
+                qDebug() << messages[i].toInt() << endl;
+            }
+        }
+    }
+    return true;
+}
+
+bool ClientProtocol::isStringValid(QString str){
+    if(str.contains('|'))
+        return false;
+    if(str.contains('*'))
+        return false;
+    if(str.contains('.'))
+        return false;
+    if(str.contains('-'))
+        return false;
+
+    return true;
 
 }
+
+QStringList splitMessage(QString message){
+    message = message.section("||",0,0,QString::SectionSkipEmpty);
+    return message.split('|', QString::SkipEmptyParts);
+}
+
+

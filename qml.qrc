@@ -8,5 +8,6 @@
         <file>hostgame.qml</file>
         <file>joingame.qml</file>
         <file>resumegame.qml</file>
+        <file>The_Jungle_Book.jpg</file>
     </qresource>
 </RCC>

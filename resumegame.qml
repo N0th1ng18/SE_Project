@@ -1,48 +1,42 @@
 import QtQuick 2.0
-
 import QtQuick.Controls 2.5
-
-
 
 Item {
 
-    id: resumeGamePg
-    anchors.fill: parent
-
-
-
     Column{
-
-        id: roomCodeContainer
-
+        id: prevSessions
         anchors.centerIn: parent
-
-        spacing: 20
-
-
+        spacing: 30
 
         Repeater{
+            model: 3
+            Row{
 
-            id: loop
+               anchors.horizontalCenter: parent.horizontalCenter
+               spacing: 15
+               Label{
+                   text: qsTr("room code")
+                   font.pointSize: fontSize
+                   anchors.verticalCenter: parent.verticalCenter
 
-            model: 5
+               }
 
+               Button{
+                   text: qsTr("resume")
+                   font.pointSize: fontSize
+                   width: buttonWidth * .8
+                   height: buttonHeight * .8
 
+               }
 
-            Label{
-
-                anchors.horizontalCenter: roomCodeContainer.horizontalCenter
-
-                text:  qsTr("Fetched room code")
-
-                font.pixelSize: 30 + (15 * resumeGamePg.width/ resumeGamePg.height)
-
+               Button{
+                   text: qsTr("delete")
+                   font.pointSize: fontSize
+                   width: buttonWidth * .8
+                   height: buttonHeight *.8
+               }
             }
-
         }
 
-
-
     }
-
 }

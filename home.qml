@@ -8,8 +8,6 @@ Item {
 
     id: homePg
 
-
-
     Column{
 
         id: homeFocus
@@ -26,8 +24,6 @@ Item {
 
         Label{
 
-
-
             anchors.horizontalCenter: parent.horizontalCenter
 
             text: "Home Screen"
@@ -35,26 +31,16 @@ Item {
             font.bold: true
 
             font.pixelSize: 30 + (15 * homePg.width/ homePg.height)
-
         }
-
 
 
         Row{
 
-
-
             spacing: 10
-
-
-
-
 
             Button{
 
                 id: loginButton
-
-
 
                 width: implicitWidth + (implicitWidth * homePg.width/ homePg.height)
 
@@ -64,25 +50,17 @@ Item {
 
                 font.pixelSize: 20
 
-
-
                 onClicked: {
 
                     loginConn.push()
 
                 }
 
-
-
             }
-
-
 
             Button{
 
                 id: gameButton
-
-
 
                 width: loginButton.width
 
@@ -91,8 +69,6 @@ Item {
                 text: "Game Menu"
 
                 font.pixelSize: 20
-
-
 
                 onClicked: {
 

@@ -9,6 +9,14 @@ ApplicationWindow{
     width: 720
     height: 1080
 
+    property real buttonWidth: Screen.desktopAvailableWidth * .3
+    property real buttonHeight: Screen.desktopAvailableHeight * .2
+    property real toolButtonWidth: Screen.desktopAvailableWidth * .2
+    property real toolButtonHeight: Screen.desktopAvailableHeight * .15
+    property real textFieldWidth: Screen.desktopAvailableWidth * .4
+    property real textFieldHeight: Screen.desktopAvailableHeight * .25
+    property real fontSize: 20 + Screen.desktopAvailableHeight/Screen.desktopAvailableWidth
+
     /******************
 
         The following connections are a means of communications
@@ -107,19 +115,18 @@ ApplicationWindow{
         }
     }
 
-    Rectangle{
-        // background color
-        id: background
-        color: "#f5e6ae"
-        anchors.fill: parent
+    Image{
+        width: Screen.desktopAvailableWidth
+        height: Screen.desktopAvailableHeight
+        fillMode: Image.PreserveAspectCrop
+       source: "qrc:/The_Jungle_Book.jpg"
     }
-
 
 
 
     StackView{
         id: stack
-        initialItem: "home.qml"
+        initialItem: "loginpage.qml"
         anchors.fill: parent
 
     }

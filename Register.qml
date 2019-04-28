@@ -1,5 +1,5 @@
 import QtQuick 2.0
-
+import QtQuick.Dialogs 1.2
 import QtQuick.Controls 2.5
 
 
@@ -9,13 +9,10 @@ import QtQuick.Controls 2.5
 Item {
 
     id: createAccountPg
-    anchors.fill: parent
 
     ToolBar{
 
           id: createAccountPageToolBar
-
-
 
           width: createAccountPg.width
 
@@ -34,9 +31,11 @@ Item {
 
           ToolButton{
 
-              width: implicitWidth + (implicitWidth * createAccountPg.width * .001)
+              width: toolButtonWidth
 
-              height: implicitHeight + (implicitHeight * createAccountPg.height * .001)
+              height: toolButtonHeight
+
+              font.pointSize: fontSize
 
               anchors.left: parent.left
 
@@ -62,11 +61,7 @@ Item {
 
         height: implicitHeight
 
-
-
         spacing: 20
-
-
 
         Label{
 
@@ -74,51 +69,42 @@ Item {
 
             text: qsTr("Enter your desired username and password")
 
-            font.pixelSize: 30 + ( createAccountPg.width/ createAccountPg.height)
+            font.pointSize: fontSize
 
         }
-
 
 
         TextField{
 
             id: usernameField
 
-
-
             anchors.horizontalCenter: parent.horizontalCenter
 
-            width: implicitWidth + (implicitWidth * createAccountPg.width/createAccountPg.height)
+            width: textFieldWidth
 
-            height: implicitHeight + (implicitHeight * createAccountPg.height/createAccountPg.width)
+            height: textFieldHeight
+
+           font.pointSize: fontSize + (height * .07)
 
             maximumLength: 20
 
             placeholderText: "Username"
 
-            property bool nameStatus
-
-
 
           }
-
-
-
-
-
 
 
         TextField{
 
             id: passwordField
 
-
-
             anchors.horizontalCenter: parent.horizontalCenter
 
-            width: implicitWidth + (implicitWidth * createAccountPg.width/createAccountPg.height)
+            width: textFieldWidth
 
-            height: implicitHeight + (implicitHeight * createAccountPg.height/createAccountPg.width)
+            height: textFieldHeight
+
+            font.pointSize: fontSize + (height * .07)
 
             maximumLength: 20
 
@@ -127,49 +113,53 @@ Item {
         }
 
 
-
-
-
         Button{
 
             anchors.horizontalCenter: parent.horizontalCenter
 
-            width: usernameField.width * .67
+            width: buttonWidth
 
-            height: usernameField.height * 0.65
+            height: buttonHeight
 
             text: "Create Account"
 
-
+            font.pointSize: fontSize
 
             onClicked: {
 
-                /*
+                if(usernameField.text == ""){
+                    playerInfoError.text = "You must enter at username"
+                    playerInfoError.open()
+                    return
+                }
 
-                   Funtionality incomplete
+                if(passwordField.text == ""){
+                    playerInfo.text = "You must enter a password"
+                    playerInfo.open()
+                    return
+                }
 
-
-
-                   if playerinfo exists then
-
-                        inform user/ try again
-
-                   else
-
-                        update database
-
-                        return to login page
-
-                   end if
-
-                */
-
-                createAccountConn.pop()
+                if(clientprotocol.sendPlayerInfo(0,usernameField.text,passwordField.text)){
+                    createAccountConn.pop()
+                }else{
+                    playerInfoError.open()
+                }
 
             }
 
         }
 
+        MessageDialog{
+             id: playerInfoError
+             icon: StandardIcon.Warning
+
+             title: qsTr("Login Error")
+             text:  qsTr("Your username and password may contain invalid chararacter")
+             onButtonClicked: {
+                 usernameField.color = "red"
+                 passwordField.color = "red"
+             }
+        }
     }
 
 }

@@ -13,12 +13,14 @@ class ClientProtocol: public QObject
 
     enum Msg
     {
+        BlackMessage,
         CreateAccount,
         UserLogin,
         CreateGame,
         JoinGame,
-        UserData
+        GameList
     };
+
     Q_OBJECT
 public:
     ClientProtocol();
@@ -27,11 +29,16 @@ public:
 
 public slots:
     bool connectToServer();
-    void sendUserLogin(QString name, QString pass);
-    void sendCreateAccount(QString name, QString pass);
-    void sendJoinGame(int roomId);
+    bool sendUserLogin(QString username, QString password);
+    bool sendCreateAccount(QString username, QString password);
+    bool sendCreateGame();
+    bool sendJoinGame(int roomId);
+    bool sendGetGameList();
+
 
 private:
+    bool isStringValid(QString str);
+    QStringList &splitMessage(QString message);
     QTcpSocket* socket = nullptr;
 
 };

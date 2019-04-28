@@ -8,6 +8,7 @@
 #include <QtDebug>
 #include <QSurfaceFormat>
 #include <QScreen>
+
 #include "playerinfo.h"
 #include "clientprotocol.h"
 #include "openglwindow.h"
@@ -30,6 +31,7 @@ int main(int argc, char *argv[])
     PlayerInfo player;
     //OpenGL Window
     OpenGLWindow glWindow;
+    ClientProtocol client;
 
     QQmlEngine engine;
     QQmlComponent *component = new QQmlComponent(&engine);
@@ -38,6 +40,7 @@ int main(int argc, char *argv[])
     GameRenderer *gameView = new GameRenderer(&glWindow);
     ctx->setContextProperty("playerinfo", &player);
     ctx->setContextProperty("GameRenderer", gameView);
+    ctx->setContextProperty("clientprotocol", &client);
 
     component->loadUrl(QStringLiteral("qrc:/main.qml"));
 
@@ -49,8 +52,6 @@ int main(int argc, char *argv[])
 
     /*************************************************************************/
 
-
-    //ClientProtocol::connectMainServer();
 
     return 0;
 }

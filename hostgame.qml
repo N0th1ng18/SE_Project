@@ -7,7 +7,7 @@ import QtQuick.Controls 2.5
 Item {
 
     id: hostGamePg
-    anchors.fill: parent;
+
 
      Column{
 
@@ -15,11 +15,7 @@ Item {
 
          spacing: 30
 
-
-
          //Extremely minimal
-
-
 
          Label{
 
@@ -27,7 +23,7 @@ Item {
 
              text: qsTr("XXXX")
 
-             font.pixelSize: 30 + (15 * hostGamePg.width/ hostGamePg.height)
+             font.pointSize: fontSize * (height * .07)
 
              font.bold: true
 

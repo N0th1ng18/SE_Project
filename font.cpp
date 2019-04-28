@@ -11,6 +11,9 @@ Font::Font(QString fontPath
     this->shaderID = shaderID;
     this->fontScale = fontScale;
     loadFont(fontPath);
+
+    scale = new QVector3D(1.0f, 1.0f, 1.0f);
+    cPoint = new QVector3D(0.0f, 0.0f, 0.0f);
 }
 
 Font::~Font()
@@ -22,7 +25,7 @@ void Font::update()
 {
 
 }
-void Font::render(QOpenGLFunctions *gl)
+void Font::render(QOpenGLFunctions *gl, QMatrix4x4* orthographicMatrix, float width, float height, float aspectRatio)
 {
     for(size_t i=0; i < strSets.size(); i++)
     {
@@ -36,10 +39,21 @@ void Font::render(QOpenGLFunctions *gl)
 
         //Transformation
         transformationMatrix.setToIdentity();
-        transformationMatrix.scale(fontScale, fontScale, 1.0f);
-        transformationMatrix.translate(strSets.at(i)->xPos, strSets.at(i)->yPos, 0.0f);
+
+        transformationMatrix.scale(scale->x() * (1.0f/aspectRatio), scale->y(), scale->z());
+
+        //Centered
+        cPoint->setX(strSets.at(i)->width / 2.0f);
+        cPoint->setY(strSets.at(i)->height / 2.0f);
+        //Left Top
+        //cPoint->setX(0.0f);
+        //cPoint->setY(0.0f);
+
+        transformationMatrix.translate((strSets.at(i)->xPos - cPoint->x()), (strSets.at(i)->yPos - cPoint->y()), 0.0f);
 
         //Uniforms
+
+        materials->getShader(shaderID)->getShader()->setUniformValue("orthographicMatrix", *orthographicMatrix);
         materials->getShader(shaderID)->getShader()->setUniformValue("transformationMatrix", transformationMatrix);
         materials->getShader(shaderID)->getShader()->setUniformValue("texture", 0);
 
@@ -58,6 +72,9 @@ void Font::addString(QString str, float xPos, float yPos)
     //Converts string to verticies and texture coordinates.
     float cursorX = 0;
     float cursorY = 0;
+
+    //Max Height
+    float maxHeight = 0;
 
     vector<GLfloat> vertices;
     vector<GLfloat> texCoords;
@@ -87,37 +104,40 @@ void Font::addString(QString str, float xPos, float yPos)
                 //Top Left Vertex
                 vertices.push_back(cursorX + chars[j].xoffset_vert);
                 vertices.push_back(cursorY - chars[j].yoffset_vert);
-                texCoords.push_back(chars[j].x_tex + padX);
-                texCoords.push_back(chars[j].y_tex + padY);
+                texCoords.push_back(chars[j].x_tex + padX/2.0f);
+                texCoords.push_back(chars[j].y_tex + padY/2.0f);
                 //Bottom Left Vertex
                 vertices.push_back(cursorX + chars[j].xoffset_vert);
                 vertices.push_back(cursorY - chars[j].yoffset_vert - chars[j].char_height_vert);
-                texCoords.push_back(chars[j].x_tex + padX);
-                texCoords.push_back(chars[j].y_tex + padY + chars[j].char_height_tex);
+                texCoords.push_back(chars[j].x_tex + padX/2.0f);
+                texCoords.push_back(chars[j].y_tex + padY/2.0f + chars[j].char_height_tex);
                 //Top Right Vertex
                 vertices.push_back(cursorX + chars[j].xoffset_vert + chars[j].char_width_vert);
                 vertices.push_back(cursorY - chars[j].yoffset_vert);
-                texCoords.push_back(chars[j].x_tex + padX + chars[j].char_width_tex);
-                texCoords.push_back(chars[j].y_tex + padY);
+                texCoords.push_back(chars[j].x_tex + padX/2.0f + chars[j].char_width_tex);
+                texCoords.push_back(chars[j].y_tex + padY/2.0f);
 
                 //Top Right Vertex
                 vertices.push_back(cursorX + chars[j].xoffset_vert + chars[j].char_width_vert);
                 vertices.push_back(cursorY - chars[j].yoffset_vert);
-                texCoords.push_back(chars[j].x_tex + padX + chars[j].char_width_tex);
-                texCoords.push_back(chars[j].y_tex + padY);
+                texCoords.push_back(chars[j].x_tex + padX/2.0f + chars[j].char_width_tex);
+                texCoords.push_back(chars[j].y_tex + padY/2.0f);
                 //Bottom Left Vertex
                 vertices.push_back(cursorX + chars[j].xoffset_vert);
                 vertices.push_back(cursorY - chars[j].yoffset_vert - chars[j].char_height_vert);
-                texCoords.push_back(chars[j].x_tex + padX);
-                texCoords.push_back(chars[j].y_tex + padY + chars[j].char_height_tex);
+                texCoords.push_back(chars[j].x_tex + padX/2.0f);
+                texCoords.push_back(chars[j].y_tex + padY/2.0f + chars[j].char_height_tex);
                 //Bottom Right Vertex
                 vertices.push_back(cursorX + chars[j].xoffset_vert + chars[j].char_width_vert);
                 vertices.push_back(cursorY - chars[j].yoffset_vert - chars[j].char_height_vert);
-                texCoords.push_back(chars[j].x_tex + padX + chars[j].char_width_tex);
-                texCoords.push_back(chars[j].y_tex + padY + chars[j].char_height_tex);
+                texCoords.push_back(chars[j].x_tex + padX/2.0f + chars[j].char_width_tex);
+                texCoords.push_back(chars[j].y_tex + padY/2.0f + chars[j].char_height_tex);
 
                 numVertices += 12;
                 cursorX = cursorX + chars[j].xadvance_vert;
+
+                //Max Height
+                maxHeight = max(maxHeight, chars[j].char_height_vert);
 
                 //break out of for loop to go to next character
                 break;
@@ -162,6 +182,8 @@ void Font::addString(QString str, float xPos, float yPos)
     set->numVertices = numVertices;
     set->xPos = xPos;
     set->yPos = yPos;
+    set->width = cursorX;
+    set->height = maxHeight;
 
     //Add to strSets to be ready for rendering
     strSets.push_back(set);

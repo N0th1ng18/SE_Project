@@ -1,9 +1,10 @@
 import QtQuick 2.0
+import QtQuick.Dialogs 1.2
 import QtQuick.Controls 2.5
 
 Item{
     id: loginPg
-    enabled: false
+    //enabled: false
 
   ToolBar{
         id: loginPageToolBar
@@ -18,49 +19,47 @@ Item{
 
         ToolButton{
             anchors.right: parent.right
-            width: implicitWidth + (implicitWidth * loginPg.width * .001)
-            height: implicitHeight + (implicitHeight * loginPg.height * .001)
+            font.pointSize: fontSize
+            width: toolButtonWidth
+            height: toolButtonHeight
             text: "Create Account"
             onClicked: {
                 createAccountConn.push()
             }
         }
 
-        ToolButton{
-            anchors.left: parent.left
-            width: implicitWidth + (implicitWidth * loginPg.width * .001)
-            height: implicitHeight + (implicitHeight * loginPg.height * .001)
-            text: "Previous"
-            onClicked: {
-                loginConn.pop()
-            }
-        }
   }
 
    Column{
         id: column
-        width: implicitWidth
-        height: implicitHeight
+
         spacing: 20
         anchors.centerIn: parent
 
        TextField{
            id: usernameField
            anchors.horizontalCenter: parent.horizontalCenter
-           width: implicitWidth + (implicitWidth * loginPg.width/loginPg.height)
-           height: implicitHeight + (implicitHeight * loginPg.height/loginPg.width)
+           font.pointSize: fontSize + (height * .07)
+           width: textFieldWidth
+           height: textFieldHeight
            maximumLength: 20
            placeholderText: "Username"
+           onFocusChanged: {
+               color = "black"
+           }
+
        }
 
        TextField{
            id: passwordField
-
+           font.pointSize: fontSize + (height * .07)
            anchors.horizontalCenter: parent.horizontalCenter
-           width: implicitWidth + (implicitWidth * loginPg.width/loginPg.height)
-           height: implicitHeight + (implicitHeight * loginPg.height/loginPg.width)
+           echoMode: TextInput.PasswordEchoOnEdit
+           width: textFieldWidth
+           height: textFieldHeight
            maximumLength: 20
            placeholderText: "Password"
+           onFocusChanged: color = "black"
        }
     }
 
@@ -69,26 +68,29 @@ Item{
 
            anchors.horizontalCenter: parent.horizontalCenter
            anchors.top: column.bottom
-           anchors.left: column.left
-           width: implicitWidth + (implicitWidth * loginPg.height/loginPg.width)
-           height: implicitHeight + (implicitHeight * loginPg.height/loginPg.width)
+           font.pointSize: fontSize
+           width: buttonWidth
+           height: buttonHeight
            anchors.topMargin: 25
-           text: "Submit"
+           text: "Login"
 
            onClicked: {
-              /* Functionality Incomplete
-                  must query database for
-                  playerinfo
+                if(usernameField.text == ""){
+                    playerInfoError.text = "Enter a username!"
+                    playerInfoError.open()
+                    return
+                }
+                if(passwordField.text == ""){
+                    playerInfoError.text = "Enter a password!"
+                    playerInfoError.open();
+                    return
+                }
 
-                  if user found then
-                    login
-                  else
-                    inform user of erro
-                  end if
-              */
-               clientprotocol.sendUserLogin(usernameField.text,passwordField.text)
-              // clientprotocol.sendJoinGame(29)
-              menuConn.push()
+                if(clientprotocol.sendUserLogin(usernameField.text,passwordField.text)){
+                    menuConn.push()
+                }else{
+                    playerInfoError.open()
+                }
            }
        }
 
@@ -97,7 +99,7 @@ Item{
 
        anchors.bottom: parent.bottom;
        text: qsTr("Connecting to server...");
-       font.pixelSize: 15 + (15 + parent.height/parent.width * .33);
+       font.pointSize: fontSize
 
        Component.onCompleted: {
            if(clientprotocol.connectToServer()){
@@ -110,6 +112,18 @@ Item{
            }
        }
 
+   }
+
+   MessageDialog{
+        id: playerInfoError
+        icon: StandardIcon.Warning
+
+        title: qsTr("Login Error")
+        text:  qsTr("Your username and password may contain invalid chararacter")
+        onButtonClicked: {
+            usernameField.color = "red"
+            passwordField.color = "red"
+        }
    }
 }
 
