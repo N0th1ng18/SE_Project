@@ -31,6 +31,10 @@ Item {
 
          }
 
+         Component.onCompleted: {
+             clientprotocol.sendCreateGame();
+         }
+
      }
 
 }

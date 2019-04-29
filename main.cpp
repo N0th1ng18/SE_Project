@@ -30,21 +30,21 @@ int main(int argc, char *argv[])
 
     PlayerInfo player;
     //OpenGL Window
-    OpenGLWindow glWindow;
-    ClientProtocol client;
+    //OpenGLWindow glWindow;
 
     QQmlEngine engine;
     QQmlComponent *component = new QQmlComponent(&engine);
     QQmlContext *ctx = engine.rootContext();
     QObject * topLevel;
-    GameRenderer *gameView = new GameRenderer(&glWindow);
+    ClientProtocol client;
+    //GameRenderer *gameView = new GameRenderer(&glWindow);
     ctx->setContextProperty("playerinfo", &player);
-    ctx->setContextProperty("GameRenderer", gameView);
+    //ctx->setContextProperty("GameRenderer", gameView);
     ctx->setContextProperty("clientprotocol", &client);
 
     component->loadUrl(QStringLiteral("qrc:/main.qml"));
-
     topLevel = component->create();
+
 
     app.exec();
     qDebug() << player.getUsername() << " " << player.getPassword() << endl;

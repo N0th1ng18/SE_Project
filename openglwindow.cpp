@@ -1,10 +1,13 @@
 #include "openglwindow.h"
 
 
-OpenGLWindow::OpenGLWindow(QWidget *parent) :
+OpenGLWindow::OpenGLWindow(QString userName, QString address, quint16 port, QWidget *parent) :
     QOpenGLWidget(parent)
 {
-    //qDebug("OpenGLWindow Constructor");
+    this->userName = userName;
+    this->address = address;
+    this->port = port;
+    qDebug() << "OpenGLConstructor";
 }
 
 OpenGLWindow::~OpenGLWindow()
@@ -27,21 +30,32 @@ void OpenGLWindow::initializeGL()
     //qDebug() << "initializeGL";
     initializeOpenGLFunctions();
     gl = QOpenGLContext::currentContext()->functions();
-
     //OpenGL Settings
-    glClearColor(0, 0, 1, 1);
+    glClearColor(0, 0, 0, 1);
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_CULL_FACE);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glEnable(GL_BLEND);
+    qDebug() << "OpenGLinitialized";
 
-
-
-    //Load Materials
+    connectToServer();
     loadMaterials();
     loadEntities();
 
     timer.start(12, this);
+}
+
+void OpenGLWindow::connectToServer()
+{
+    //Use Address and password to connect
+    qDebug() << "Pre socketP creation";
+    socketP = new ClientGameProtocol(this->userName);
+    //socketP->connect(socketP, SIGNAL(started()), socketP, SLOT(setup()));
+    socketP->setup();
+    socketP->connectGameServer(this->address, this->port);
+    qDebug() << "Post socketP Connect to Server";
+
+
 }
 
 void OpenGLWindow::loadMaterials()
@@ -169,11 +183,14 @@ void OpenGLWindow::loadEntities()
 void OpenGLWindow::timerEvent(QTimerEvent *)
 {
 
+    //Check for messages
+    //Process message
     clientState->update();
+
+
 
     //Request an update
     update();
-
 }
 
 void OpenGLWindow::resizeGL(int w, int h)

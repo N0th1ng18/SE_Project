@@ -23,6 +23,7 @@
 #include "clientstate.h"
 #include "sound.h"
 #include "font.h"
+#include "clientgameprotocol.h"
 
 
 
@@ -32,7 +33,7 @@ class OpenGLWindow : public QOpenGLWidget, protected QOpenGLFunctions
 
 
 public:
-    OpenGLWindow(QWidget *parent = nullptr);
+    OpenGLWindow(QString userName, QString address, quint16 port, QWidget *parent = nullptr);
     ~OpenGLWindow() override;
 
 protected:
@@ -42,6 +43,7 @@ protected:
     void resizeGL(int w, int h) override;
     void paintGL() override;
 
+    void connectToServer();
     void loadMaterials();
     void loadEntities();
 
@@ -57,6 +59,11 @@ private:
     enum Shaders{
 
     };
+
+    ClientGameProtocol* socketP = nullptr;
+    QString userName;
+    QString address;
+    quint16 port;
 
     QOpenGLFunctions *gl = nullptr;
     int g_width, g_height;

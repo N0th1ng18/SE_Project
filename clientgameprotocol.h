@@ -11,16 +11,18 @@ public:
     explicit ClientGameProtocol(QString userName, QObject *parent = nullptr);
     ~ClientGameProtocol();
 
+    void connectGameServer(QString gameAddress, quint16 gamePort);
+    void disconnectGameServer();
+
 signals:
 
 public slots:
+    void setup();
 
 private:
     QUdpSocket *gameSocket;
     QString userName;
-    void setup();
-    void connectGameServer(QString gameAddress, quint16 gamePort);
-    void disconnectGameServer();
+
     void sendMessage(QByteArray message);
 };
 
