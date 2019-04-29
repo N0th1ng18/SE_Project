@@ -38,7 +38,7 @@ public slots:
 
 private:
     bool isStringValid(QString str);
-    QStringList &splitMessage(QString message);
+    QStringList splitMessage(QString message);
     QTcpSocket* socket = nullptr;
 
 };

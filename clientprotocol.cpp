@@ -203,7 +203,7 @@ bool ClientProtocol::isStringValid(QString str){
 
 }
 
-QStringList splitMessage(QString message){
+QStringList ClientProtocol::splitMessage(QString message){
     message = message.section("||",0,0,QString::SectionSkipEmpty);
     return message.split('|', QString::SkipEmptyParts);
 }
