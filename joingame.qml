@@ -15,59 +15,74 @@ Item {
 
         spacing: 40
 
-
         Label{
 
             text:  qsTr("Enter Room Code")
 
+            color: "whitesmoke"
+
             anchors.horizontalCenter: parent.horizontalCenter
 
-            font.pointSize: fontSize
+            font.pixelSize: menuConn.getLbFontSize()
 
         }
 
-
-
         TextField{
+            id: room
 
             anchors.horizontalCenter: parent.horizontalCenter
 
-            width:textFieldWidth
+            width: menuConn.getTextFieldWidth()
 
-            height: textFieldHeight
+            height: menuConn.getTextFieldHeight()
 
-            font.pointSize: fontSize + (height * .07)
+            font.pixelSize: menuConn.getTfFontSize()
 
             placeholderText: "Room Code"
 
-            maximumLength: 4
-
         }
 
-
-
         Button{
-
+            property int status: 0
             anchors.horizontalCenter: parent.horizontalCenter
 
-            width: buttonWidth
+            width: menuConn.getBtnWidth()
 
-            height: buttonHeight
+            height: menuConn.getBtnHeight()
 
-            font.pointSize: fontSize
+            font.pixelSize: menuConn.getBtnFontSize()
 
             text: qsTr("Join")
 
             onClicked: {
+                status = clientprotocol.sendJoinGame(room.text);
 
-                mainConn.hide()
-
-                GameRenderer.launchGame()
-
+                switch(status){
+                case 0:
+                   joinStatusReport.text = "Invalid room code"
+                    joinStatusReport.visible = true
+                    break;
+                case 1:
+                    // pass address and port to GameRenderer
+                    break;
+                case 2:
+                    joinStatusReport.text = "No server available"
+                    joinStatusReport.visible = true
+                }
             }
 
         }
 
+        Label{
+            id: joinStatusReport
+            visible: false
+            anchors.horizontalCenter: parent.horizontalCenter
+            color: "red"
+            font.pixelSize: menuConn.getLbFontSize()
+            onFocusChanged: {
+                visible = false
+            }
+        }
     }
 
 }

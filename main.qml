@@ -1,7 +1,7 @@
 import QtQuick 2.9
 import QtQuick.Window 2.2
 import QtQuick.Controls 2.5
-//import "loginpage.qml"
+
 
 ApplicationWindow{
     id: mainView
@@ -9,13 +9,21 @@ ApplicationWindow{
     width: 720
     height: 1080
 
-    property real buttonWidth: Screen.desktopAvailableWidth * .3
-    property real buttonHeight: Screen.desktopAvailableHeight * .2
-    property real toolButtonWidth: Screen.desktopAvailableWidth * .2
-    property real toolButtonHeight: Screen.desktopAvailableHeight * .15
-    property real textFieldWidth: Screen.desktopAvailableWidth * .4
-    property real textFieldHeight: Screen.desktopAvailableHeight * .25
+
+
+    property real buttonWidth: Screen.desktopAvailableWidth * .125
+    property real buttonHeight: Screen.desktopAvailableHeight * .085
+    property real toolButtonWidth: Screen.desktopAvailableWidth * .125
+    property real toolButtonHeight: Screen.desktopAvailableHeight * .085
+    property real textFieldWidth: Screen.desktopAvailableWidth * .15
+    property real textFieldHeight: Screen.desktopAvailableHeight * .085
+
+
     property real fontSize: 20 + Screen.desktopAvailableHeight/Screen.desktopAvailableWidth
+    property real tfFontSize: fontSize + 15
+    property real btnFontSize: fontSize + 10
+    property real lbFontSize: fontSize + 18
+    property real delFontSize: fontSize + 12
 
     /******************
 
@@ -27,9 +35,11 @@ ApplicationWindow{
 
     // Abstact Data Type Connections
 
+
     Connections{
         id: clientConn
         target: clientprotocol
+        property int size
     }
 
     Connections{
@@ -38,15 +48,6 @@ ApplicationWindow{
         target: playerinfo
     }
 
-    Connections{
-        // Connects GameRenderer Class
-        id: gameRendererConn
-        target: GameRenderer
-
-        onBeginExit:{
-            mainConn.visible = true
-        }
-    }
 
     // Connects Qml files
 
@@ -55,6 +56,10 @@ ApplicationWindow{
 
         function hide(){
             mainView.visible = false
+        }
+
+        function errMsg(msg){
+
         }
     }
 
@@ -68,6 +73,10 @@ ApplicationWindow{
 
         function pop(){
             stack.pop()
+        }
+
+        function getFontSize(){
+            return fontSize
         }
     }
 
@@ -100,6 +109,50 @@ ApplicationWindow{
         function clear(){
             stack.clear()
         }
+
+        function getFontSize(){
+            return fontSize
+        }
+
+        function getBtnWidth(){
+            return buttonWidth
+        }
+
+        function getBtnHeight(){
+            return buttonHeight
+        }
+
+        function getToolBtnWidth(){
+            return toolButtonWidth
+        }
+
+        function getToolBtnHeight(){
+            return toolButtonHeight
+        }
+
+        function getTextFieldWidth(){
+            return textFieldWidth
+        }
+
+        function getTextFieldHeight(){
+            return textFieldHeight
+        }
+
+        function getTfFontSize(){
+            return tfFontSize
+        }
+
+        function getBtnFontSize(){
+            return btnFontSize
+        }
+
+        function getLbFontSize(){
+           return lbFontSize
+        }
+
+        function getDelFontSize(){
+            return delFontSize
+        }
     }
 
     Connections{
@@ -115,6 +168,8 @@ ApplicationWindow{
         }
     }
 
+
+/*
     Image{
         width: Screen.desktopAvailableWidth
         height: Screen.desktopAvailableHeight
@@ -122,7 +177,13 @@ ApplicationWindow{
        source: "qrc:/The_Jungle_Book.jpg"
     }
 
+*/
 
+    Rectangle{
+        color: "#586f47"
+        anchors.fill: parent
+        border.color: "#00e48c8c"
+    }
 
     StackView{
         id: stack

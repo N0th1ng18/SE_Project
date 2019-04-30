@@ -35,7 +35,7 @@ Item {
 
               height: toolButtonHeight
 
-              font.pointSize: fontSize
+              font.pixelSize: btnFontSize
 
               anchors.left: parent.left
 
@@ -64,12 +64,17 @@ Item {
         spacing: 20
 
         Label{
-
+            width: implicitWidth
+            height: implicitHeight
             anchors.horizontalCenter: parent.horizontalCenter
 
             text: qsTr("Enter your desired username and password")
 
-            font.pointSize: fontSize
+            textFormat: Text.WordWrap
+
+            font.pixelSize: lbFontSize
+
+            color: "whitesmoke"
 
         }
 
@@ -84,14 +89,17 @@ Item {
 
             height: textFieldHeight
 
-           font.pointSize: fontSize + (height * .07)
+           font.pixelSize: tfFontSize
 
             maximumLength: 20
 
             placeholderText: "Username"
 
+            onFocusChanged: {
+                color = "black"
+            }
 
-          }
+        }
 
 
         TextField{
@@ -104,11 +112,15 @@ Item {
 
             height: textFieldHeight
 
-            font.pointSize: fontSize + (height * .07)
+            font.pixelSize: tfFontSize
 
             maximumLength: 20
 
             placeholderText: "Password"
+
+            onFocusChanged: {
+                color = "black"
+            }
 
         }
 
@@ -123,42 +135,18 @@ Item {
 
             text: "Create Account"
 
-            font.pointSize: fontSize
+            font.pixelSize: btnFontSize
 
             onClicked: {
 
-                if(usernameField.text == ""){
-                    playerInfoError.text = "You must enter at username"
-                    playerInfoError.open()
-                    return
-                }
-
-                if(passwordField.text == ""){
-                    playerInfo.text = "You must enter a password"
-                    playerInfo.open()
-                    return
-                }
-
-                if(clientprotocol.sendPlayerInfo(0,usernameField.text,passwordField.text)){
+                if(clientprotocol.sendCreateAccount(usernameField.text,passwordField.text)){
                     createAccountConn.pop()
                 }else{
-                    playerInfoError.open()
+                    usernameField.color = "red"
+                    passwordField.color = "red"
                 }
-
             }
 
-        }
-
-        MessageDialog{
-             id: playerInfoError
-             icon: StandardIcon.Warning
-
-             title: qsTr("Login Error")
-             text:  qsTr("Your username and password may contain invalid chararacter")
-             onButtonClicked: {
-                 usernameField.color = "red"
-                 passwordField.color = "red"
-             }
         }
     }
 

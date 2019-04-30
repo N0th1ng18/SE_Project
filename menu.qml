@@ -6,6 +6,7 @@ Item {
 
     id: menuPg
 
+
     ToolBar{
 
         id: tbar
@@ -23,13 +24,13 @@ Item {
 
             id: toolbutton
 
-            width: toolButtonWidth
+            width: menuConn.getToolBtnWidth()
 
-            height: toolButtonHeight
+            height: menuConn.getToolBtnHeight()
 
             text: "\u2630"
 
-            font.pointSize: fontSize
+            font.pixelSize: menuConn.getBtnFontSize()
 
 
             onClicked: {
@@ -55,8 +56,6 @@ Item {
      }
 
 
-
-
     Drawer{
 
         id: optionsPanel
@@ -79,15 +78,15 @@ Item {
 
                text: qsTr("Host Game")
 
-               font.pointSize: fontSize
+               font.pixelSize: menuConn.getDelFontSize()
 
 
                onClicked: {
+                  if(menuStack.depth > 1)
+                      stack.pop()
 
                    menuStack.push("hostgame.qml")
-
-                   optionsPanel.close()
-
+                   optionsPanel.close();
                }
 
            }
@@ -99,15 +98,15 @@ Item {
 
                text: qsTr("Join Game")
 
-               font.pointSize: fontSize
+               font.pixelSize: menuConn.getDelFontSize()
 
 
                onClicked: {
+                   if(menuStack.depth > 1)
+                       stack.pop()
 
-                   menuStack.push("joingame.qml")
-
-                   optionsPanel.close()
-
+                    menuStack.push("joingame.qml")
+                    optionsPanel.close()
                }
 
            }
@@ -118,13 +117,15 @@ Item {
 
                text: qsTr("User Lobby")
 
-               font.pointSize: fontSize
+               font.pixelSize: menuConn.getDelFontSize()
 
-               onClicked: {
+              onClicked: {
+                  if(menuStack.depth > 1)
+                      stack.pop()
 
                     menuStack.push("resumegame.qml")
-
-               }
+                    optionsPanel.close()
+              }
 
            }
 
@@ -135,13 +136,9 @@ Item {
 
                text: qsTr("Settings")
 
-               font.pointSize: fontSize
+               font.pixelSize: menuConn.getDelFontSize()
 
-               onClicked: {
-
-                    // yet to be implemented
-
-               }
+              // onClicked: {}
 
            }
 
@@ -152,7 +149,7 @@ Item {
 
                text: qsTr("Logout")
 
-               font.pointSize: fontSize
+               font.pixelSize: menuConn.getDelFontSize()
 
                onClicked: {
 
@@ -162,7 +159,7 @@ Item {
 
                    menuConn.clear()
 
-                   homeConn.push();
+                   loginConn.push();
                }
 
            }
@@ -174,8 +171,10 @@ Item {
     StackView{
 
         id: menuStack
+         initialItem: "resumegame.qml"
         anchors.fill: parent
-        initialItem: "resumegame.qml"
+
     }
 
  }
+

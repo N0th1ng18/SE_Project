@@ -14,15 +14,15 @@ Item{
         Rectangle{
             anchors.fill: parent
             color: "whitesmoke"
-
         }
 
         ToolButton{
             anchors.right: parent.right
-            font.pointSize: fontSize
+            font.pixelSize: btnFontSize
             width: toolButtonWidth
             height: toolButtonHeight
             text: "Create Account"
+
             onClicked: {
                 createAccountConn.push()
             }
@@ -39,57 +39,58 @@ Item{
        TextField{
            id: usernameField
            anchors.horizontalCenter: parent.horizontalCenter
-           font.pointSize: fontSize + (height * .07)
+           font.pixelSize: tfFontSize
            width: textFieldWidth
            height: textFieldHeight
            maximumLength: 20
            placeholderText: "Username"
-           onFocusChanged: {
-               color = "black"
-           }
 
+           onFocusChanged:{
+
+               color = "black"
+            }
        }
 
        TextField{
            id: passwordField
-           font.pointSize: fontSize + (height * .07)
+           font.pixelSize: tfFontSize
            anchors.horizontalCenter: parent.horizontalCenter
            echoMode: TextInput.PasswordEchoOnEdit
            width: textFieldWidth
            height: textFieldHeight
            maximumLength: 20
            placeholderText: "Password"
-           onFocusChanged: color = "black"
+
+
+           onFocusChanged:{
+
+               color = "black"
+          }
        }
     }
 
    Button{
            id: submit
-
            anchors.horizontalCenter: parent.horizontalCenter
            anchors.top: column.bottom
-           font.pointSize: fontSize
+           font.pixelSize: btnFontSize
            width: buttonWidth
            height: buttonHeight
            anchors.topMargin: 25
            text: "Login"
 
            onClicked: {
-                if(usernameField.text == ""){
-                    playerInfoError.text = "Enter a username!"
-                    playerInfoError.open()
-                    return
-                }
-                if(passwordField.text == ""){
-                    playerInfoError.text = "Enter a password!"
-                    playerInfoError.open();
-                    return
-                }
-
-                if(clientprotocol.sendUserLogin(usernameField.text,passwordField.text)){
+               clientprotocol.size = clientprotocol.sendUserLogin(usernameField.text,passwordField.text)
+                if(clientprotocol.size !== 0){
                     menuConn.push()
                 }else{
-                    playerInfoError.open()
+                    mainConn.errMsg("hello");
+
+                    usernameField.color = "red"
+                    passwordField.color = "red"
+
+                    // The user login has failed
+                    // implement error handling message
                 }
            }
        }
@@ -99,31 +100,22 @@ Item{
 
        anchors.bottom: parent.bottom;
        text: qsTr("Connecting to server...");
-       font.pointSize: fontSize
+       font.pixelSize: lbFontSize
 
        Component.onCompleted: {
            if(clientprotocol.connectToServer()){
                text = qsTr("Connection Successful")
-               connStatus.color = "green"
+
                loginPg.enabled = true;
            }else{
+
                text = qsTr("Failed to connect to server")
-                connStatus.color = "red"
+               connStatus.color = "red"
            }
        }
 
    }
 
-   MessageDialog{
-        id: playerInfoError
-        icon: StandardIcon.Warning
 
-        title: qsTr("Login Error")
-        text:  qsTr("Your username and password may contain invalid chararacter")
-        onButtonClicked: {
-            usernameField.color = "red"
-            passwordField.color = "red"
-        }
-   }
 }
 

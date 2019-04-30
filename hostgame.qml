@@ -11,28 +11,37 @@ Item {
 
      Column{
 
-         anchors.centerIn: parent
 
+         anchors.centerIn: parent
          spacing: 30
 
-         //Extremely minimal
-
          Label{
+             id: hostCode       
+            // Will receive a valid room code from database
+            text: qsTr("Get Room Code")
+            color: "whitesmoke"
+            font.pixelSize: menuConn.getLbFontSize()
+            anchors.horizontalCenter: parent.horizontalCenter
 
-             // Will receive a valid room code from database
+            MouseArea{
+                anchors.fill: parent
+                onClicked: {
+                    if(clientprotocol.sendCreateGame()){
+                       // On success will set labels text to
+                       // to given room code create label
+                       // with room code
+                       hostCode.text = clientprotocol.showRoomCode();
+                    }else{
+                       hostCode.text = qsTr("Error failed to create game")
+                       hostCode.color = "red"
+                    }
+                }
+                onFocusChanged: {
+                    hostCode.text = qsTr("Get Room Code")
+                    hostCode.color = "whitesmoke"
+                }
+            }
 
-             text: qsTr("XXXX")
-
-             font.pointSize: fontSize * (height * .07)
-
-             font.bold: true
-
-             anchors.horizontalCenter: parent.horizontalCenter
-
-         }
-
-         Component.onCompleted: {
-             clientprotocol.sendCreateGame();
          }
 
      }

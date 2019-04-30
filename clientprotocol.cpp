@@ -1,16 +1,12 @@
 #include "clientprotocol.h"
 
-ClientProtocol::ClientProtocol(QObject * parent, OpenGLWindow * gameView)
+ClientProtocol::ClientProtocol(OpenGLWindow * gameView)
 {
-    //QByteArray data;
-    //data = "Message";
-    //tcpSocket->write(data);
-    topLevel = parent;
+    socket = nullptr;
     game = gameView;
-
+    username = "";
+    bufferList.clear();
 }
-
-
 
 QTcpSocket* ClientProtocol::connectMainServer(QObject *parent)
 {
@@ -39,7 +35,7 @@ void ClientProtocol::disconnectMainServer()
 bool ClientProtocol::connectToServer(){
     qDebug() << "connectMainServer()";
     socket = new QTcpSocket(nullptr);
-    socket->connectToHost("192.168.1.2" , 5555);
+    socket->connectToHost("192.168.1.2" , 1234);
 
     if (!socket->waitForConnected(3000))
     {
@@ -52,7 +48,7 @@ bool ClientProtocol::connectToServer(){
     }
 }
 
-bool ClientProtocol::sendUserLogin(QString username, QString password){
+int ClientProtocol::sendUserLogin(QString username, QString password){
 
     if(!isStringValid(username) || !isStringValid(password)){
         qDebug() << "Failed to send PlayerInfo: invalid string" << endl;
@@ -67,23 +63,24 @@ bool ClientProtocol::sendUserLogin(QString username, QString password){
 
     if(socket->waitForReadyRead()){
         QString received = socket->readAll();
-        qDebug() << "Received Message Back From UserLogin.";
-        QStringList message = splitMessage(received);
-        if(Msg(message[0].toInt()) != UserLogin){
+        bufferList.clear();
+        bufferList = splitMessage(received);
+
+        if(Msg(bufferList[0].toInt()) != UserLogin){
+            qDebug()<< "User Login does not exist" << endl;
             return false;
         }else{
-            if(bool(message[1].toInt())){
+            if(bool(bufferList[1].toInt())){
+                userGames = bufferList.mid(2);
                 this->username = username;
-                for(int j = message[2].toInt(); j < message.length(); j++){
-                    qDebug() << message[j] << ' ';
-                }
-                qDebug() << endl;
-            }else{
+                return userGames[0].toInt();
+            }
+            else {
                 return false;
             }
         }
     }
-    return true;
+    return 0;
 }
 
 bool ClientProtocol::sendCreateAccount(QString username, QString password){
@@ -93,19 +90,19 @@ bool ClientProtocol::sendCreateAccount(QString username, QString password){
     }
 
     QByteArray data;
-    data.setNum(Msg::CreateAccount);
+    data.setNum(CreateAccount);
     data.append('|' + username + '|' + password + "||");
     socket->write(data);
     socket->flush();
 
     if(socket->waitForReadyRead()){
         QString received = socket->readAll();
-        QStringList message = splitMessage(received);
-
-        if(Msg(message[0].toInt()) != CreateAccount){
+        bufferList.clear();
+         bufferList = splitMessage(received);
+        if(Msg(bufferList[0].toInt()) != CreateAccount){
             return false;
         }else{
-            return bool(message[1].toInt());
+            return bool(bufferList[1].toInt());
         }
     }
     return true;
@@ -120,63 +117,44 @@ bool ClientProtocol::sendCreateGame(){
 
        if(socket->waitForReadyRead()){
            QString received = socket->readAll();
-           QStringList message = splitMessage(received);
-            qDebug() << message << endl;
-           if (Msg(message[0].toInt()) != CreateGame){
+           bufferList.clear();
+           bufferList = splitMessage(received);
+
+           if (Msg(bufferList[0].toInt()) != CreateGame){
                 return false;
            }else{
-               if(!bool(message[1].toInt())){
+               if(!bool(bufferList[1].toInt())){
                     return false;
                }else{
-                   //Create Game to connect to Server
-                   if(game != nullptr)
-                   {
-                       qDebug() << "game!=nullptr";
-                       //Delete Game Instance
-                       game->~OpenGLWindow();
+                   if(game != nullptr){
+                       delete game;
                    }
-                   qDebug()<< "pre OpenGLWindow";
-                   game = new OpenGLWindow(this->username, message[2], static_cast<quint16>(message[3].toInt()));
-                   game->show();
-                   qDebug() << "post OpenGLWindow";
+                  // game = new OpenGLWindow(this->username,bufferList[2],quint16(bufferList[3].toInt()));
+                   // game->show();
+                    qDebug() << "post OpenGlWindow " << endl;
                }
            }
        }
        return true;
 }
 
-bool ClientProtocol::sendJoinGame(int roomId){
+int ClientProtocol::sendJoinGame(QString roomId){
     QByteArray data;
     data.setNum(Msg::JoinGame);
-    data.append('|' + QString::number(roomId) + "||");
+    data.append('|' + roomId + "||");
     socket->write(data);
     socket->flush();
 
-    if(socket->waitForBytesWritten()){
-        socket->flush();
+    if(socket->waitForReadyRead()){
         QString received = socket->readAll();
-        QList<QString> messages = received.split("|", QString::SkipEmptyParts);
-
-
-        if(socket->waitForReadyRead()){
-            QString received = socket->readAll();
-            QStringList message = splitMessage(received);
-
-            if(Msg(message[0].toInt()) != JoinGame){
-                if(message[1].toInt() == 0){
-                    qDebug() << "Invalid room code" << endl;
-                    return false;
-                }else if(message[1].toInt() == 2){
-                    qDebug() << "No server available" << endl;
-                    return false;
-                }else if(message[1].toInt() == 1){
-                    qDebug() << message[2] << ' ' << message[3] << endl;
-
-                }
-            }
-        }
-    }
-    return true;
+        bufferList.clear();
+        bufferList = splitMessage(received);
+        if(Msg(bufferList[0].toInt()) != JoinGame)
+            return false;
+        else
+            return  bufferList[1].toInt();
+     }
+    return false;
 }
 
 bool ClientProtocol::sendGetGameList(){
@@ -189,15 +167,16 @@ bool ClientProtocol::sendGetGameList(){
     if(socket->waitForBytesWritten()){
         socket->flush();
         QString received = socket->readAll();
-        QList<QString> messages = received.split("|", QString::SkipEmptyParts);
+        bufferList.clear();
+        bufferList = received.split("|", QString::SkipEmptyParts);
 
 
-        if(Msg(messages[0].toInt()) != Msg::GameList){
+        if(Msg(bufferList[0].toInt()) != GameList){
             return false;
         }else{
-            int size = messages[1].toInt();
+            int size = bufferList[1].toInt();
             for(int i = 0; i < size; i++){
-                qDebug() << messages[i].toInt() << endl;
+                qDebug() << bufferList[i].toInt() << endl;
             }
         }
     }
@@ -213,15 +192,26 @@ bool ClientProtocol::isStringValid(QString str){
         return false;
     if(str.contains('-'))
         return false;
+    if(str == "")
+        return false;
 
     return true;
 
 }
 
 QStringList ClientProtocol::splitMessage(QString message){
-    //qDebug() << "SplitMessage: " << message;
     message = message.section("||",0,0,QString::SectionSkipEmpty);
     return message.split('|', QString::SkipEmptyParts);
 }
 
+QString ClientProtocol::loginDataProcess(int index){
+    return userGames[index+1];
+}
 
+void ClientProtocol::launchJoinGame(){
+    //game = new OpenGLWindow(this->username,bufferList[2],bufferList[3]);
+}
+
+QString ClientProtocol::showRoomCode(){
+    return bufferList[4];
+}

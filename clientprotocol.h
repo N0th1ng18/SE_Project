@@ -5,9 +5,10 @@
 #include <QObject>
 #include <QString>
 #include <QTcpSocket>
-#include <QTcpServer>
+#include<QTcpServer>
 #include <QQmlComponent>
 #include "openglwindow.h"
+
 
 
 class ClientProtocol: public QObject
@@ -23,30 +24,33 @@ class ClientProtocol: public QObject
         GameList
     };
 
+
     Q_OBJECT
 public:
-    explicit ClientProtocol(QObject* parent = nullptr, OpenGLWindow * gameView = nullptr);
+    explicit ClientProtocol(OpenGLWindow * gameView = nullptr);
     QTcpSocket* connectMainServer(QObject *parent = nullptr);
     void disconnectMainServer();
 
-
 public slots:
     bool connectToServer();
-    bool sendUserLogin(QString username, QString password);
+    int sendUserLogin(QString username, QString password);
     bool sendCreateAccount(QString username, QString password);
     bool sendCreateGame();
-    bool sendJoinGame(int roomId);
+    int sendJoinGame(QString roomId);
     bool sendGetGameList();
-
+    QString loginDataProcess(int index);
+    QString showRoomCode();
+    void launchJoinGame();
+    bool isStringValid(QString str);
 
 private:
-    bool isStringValid(QString str);
+    //bool isStringValid(QString str);
     QStringList splitMessage(QString message);
-    QObject* topLevel;
-    QTcpSocket* socket = nullptr;
-    OpenGLWindow* game = nullptr;
-
-    QString username = "";
+    QTcpSocket* socket;
+    QStringList bufferList;
+    QStringList userGames;
+    OpenGLWindow* game;
+    QString username;
 
 };
 
