@@ -1,8 +1,10 @@
 #include "clientprotocol.h"
 
-ClientProtocol::ClientProtocol()
+ClientProtocol::ClientProtocol(OpenGLWindow * gameView)
 {
     socket = nullptr;
+    game = gameView;
+    username = "";
     bufferList.clear();
 }
 
@@ -33,7 +35,7 @@ void ClientProtocol::disconnectMainServer()
 bool ClientProtocol::connectToServer(){
     qDebug() << "connectMainServer()";
     socket = new QTcpSocket(nullptr);
-    socket->connectToHost(QHostAddress::LocalHost , 1234);
+    socket->connectToHost("192.168.1.2" , 1234);
 
     if (!socket->waitForConnected(3000))
     {
@@ -70,6 +72,7 @@ int ClientProtocol::sendUserLogin(QString username, QString password){
         }else{
             if(bool(bufferList[1].toInt())){
                 userGames = bufferList.mid(2);
+                this->username = username;
                 return userGames[0].toInt();
             }
             else {
@@ -123,7 +126,12 @@ bool ClientProtocol::sendCreateGame(){
                if(!bool(bufferList[1].toInt())){
                     return false;
                }else{
-                    qDebug() << bufferList[2] << ' ' << bufferList[3] <<' ' <<  bufferList[4] << endl;
+                   if(game != nullptr){
+                       delete game;
+                   }
+                   game = new OpenGLWindow(this->username,bufferList[2],quint16(bufferList[3].toInt()));
+                   // game->show();
+                    qDebug() << "post OpenGlWindow " << endl;
                }
            }
        }
@@ -198,6 +206,10 @@ QStringList ClientProtocol::splitMessage(QString message){
 
 QString ClientProtocol::loginDataProcess(int index){
     return userGames[index+1];
+}
+
+void ClientProtocol::launchJoinGame(){
+    game = new OpenGLWindow(this->username,bufferList[2],bufferList[3]);
 }
 
 QString ClientProtocol::showRoomCode(){
