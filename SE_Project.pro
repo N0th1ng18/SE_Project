@@ -47,7 +47,8 @@ SOURCES += \
     font.cpp \
     clientgameprotocol.cpp \
     player.cpp \
-    button.cpp
+    button.cpp \
+    input.cpp
     gamerenderer.cpp
 
 HEADERS += \
@@ -69,7 +70,8 @@ HEADERS += \
     font.h \
     clientgameprotocol.h \
     player.h \
-    button.h
+    button.h \
+    input.h
 
 FORMS +=
 

@@ -8,13 +8,14 @@
 #include "font.h"
 #include "player.h"
 #include "button.h"
+#include "input.h"
 
 using namespace std;
 
 class ClientState
 {
 public:
-    ClientState();
+    ClientState(Input* input);
     ~ClientState();
 
     void update();
@@ -57,6 +58,7 @@ public:
 protected:
 
 private:
+    Input* input;
     QMatrix4x4 projectionMatrix;
     QMatrix4x4 orthographicMatrix;
 

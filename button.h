@@ -9,6 +9,7 @@
 #include <QOpenGLTexture>
 
 #include "materials.h"
+#include "input.h"
 
 class Button
 {
@@ -20,11 +21,12 @@ public:
            , unsigned int textureID2
            , QVector3D *pos);
     ~Button();
-    void update();
+    void update(Input* input, float width, float height);
     void render(QOpenGLFunctions *gl);
     void setScale(QVector3D* s);
     QVector3D* getPos();
     void setPos(QVector3D* p);
+    void setBounds(float xoff, float yoff);
 
 private:
     Materials *materials = nullptr;
@@ -37,6 +39,11 @@ private:
 
     QVector3D *pos = nullptr;
     QVector3D *oScale = nullptr;
+
+    //Bounds
+    float xoff = 0.0f;
+    float yoff = 0.0f;
+
 
     bool clicked;
 };

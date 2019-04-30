@@ -244,6 +244,16 @@ void OpenGLWindow::loadEntities()
     */
 }
 
+void OpenGLWindow::mousePressEvent(QMouseEvent *e)
+{
+    input->setPos(new QVector3D(static_cast<float>(e->localPos().x()), static_cast<float>(e->localPos().y()), 0.0f));
+    input->setPressed(true);
+}
+void OpenGLWindow::mouseReleaseEvent(QMouseEvent *e)
+{
+    input->setPressed(false);
+}
+
 void OpenGLWindow::timerEvent(QTimerEvent *)
 {
 

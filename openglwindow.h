@@ -13,6 +13,7 @@
 #include <QFontMetrics>
 #include <vector>
 #include <QSysInfo>
+#include <QMouseEvent>
 
 #include "materials.h"
 #include "texture.h"
@@ -24,8 +25,7 @@
 #include "sound.h"
 #include "font.h"
 #include "clientgameprotocol.h"
-
-
+#include "input.h"
 
 
 class OpenGLWindow : public QOpenGLWidget, protected QOpenGLFunctions
@@ -37,6 +37,8 @@ public:
     ~OpenGLWindow() override;
 
 protected:
+    void mousePressEvent(QMouseEvent *e) override;
+    void mouseReleaseEvent(QMouseEvent *e) override;
     void timerEvent(QTimerEvent *e) override;
 
     void initializeGL() override;
@@ -71,8 +73,10 @@ private:
 
     QBasicTimer timer;
 
-    ClientState *clientState = new ClientState();
+    Input* input = new Input();
+    ClientState *clientState = new ClientState(input);
     Materials *materials = new Materials();
+
 
     //Needs to be classes
         //Holds the ServerState that is sent to the renderer

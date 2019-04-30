@@ -23,12 +23,14 @@ Button::~Button()
     delete oScale;
 }
 
-void Button::update()
+void Button::update(Input* input, float width, float height)
 {
-
-    //Input -> change clicked and do action
-
-
+    if(input->getPressed() && input->getPos()->y() > this->yoff * height)
+    {
+        this->clicked = true;
+    }else{
+        this->clicked = false;
+    }
 }
 void Button::render(QOpenGLFunctions *gl)
 {
@@ -80,4 +82,10 @@ QVector3D* Button::getPos()
 void Button::setPos(QVector3D* p)
 {
     this->pos = p;
+}
+
+void Button::setBounds(float xoff, float yoff)
+{
+    this->xoff = xoff;
+    this->yoff = yoff;
 }

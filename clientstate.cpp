@@ -1,8 +1,8 @@
 #include "clientstate.h"
 
-ClientState::ClientState()
+ClientState::ClientState(Input* input)
 {
-
+    this->input = input;
 }
 
 ClientState::~ClientState()
@@ -61,7 +61,7 @@ void ClientState::update()
 
     //Buttons
     for(size_t i=0; i < buttons.size(); i++){
-        (*buttons.at(i)).update();
+        (*buttons.at(i)).update(input, this->width, this->height);
     }
 
     //Texts
