@@ -45,7 +45,8 @@ SOURCES += \
     camera.cpp \
     sound.cpp \
     font.cpp \
-    clientgameprotocol.cpp
+    clientgameprotocol.cpp \
+    player.cpp
     gamerenderer.cpp
 
 HEADERS += \
@@ -65,7 +66,8 @@ HEADERS += \
     camera.h \
     sound.h \
     font.h \
-    clientgameprotocol.h
+    clientgameprotocol.h \
+    player.h
 
 FORMS +=
 

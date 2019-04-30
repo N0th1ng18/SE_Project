@@ -24,6 +24,19 @@ public:
     void removeTexture(int index);
     Texture* getTexture(unsigned int index);
 
+    enum textures{
+        map1,
+        fox,
+        bear,
+        deer,
+        butterfly,
+        owl,
+        frog,
+        rabbit,
+        squirrel,
+        font_arial,
+    };
+
 protected:
 
 private:

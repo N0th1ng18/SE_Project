@@ -5,13 +5,14 @@ Object::Object(Materials *materials
                , unsigned int shaderID
                , unsigned int vaoID
                , unsigned int textureID
-               , QVector3D *pos)
+               , QVector3D *newPos)
 {
     this->materials = materials;
     this->shaderID = shaderID;
     this->vaoID = vaoID;
     this->textureID = textureID;
-    this->pos = pos;
+    this->newPos = newPos;
+    this->pos = new QVector3D(0.0f, 0.0f, 0.0f);
     this->vel = new QVector3D(0.0f, 0.0f, 0.0f);
     this->oScale = new QVector3D(1.0f, 1.0f, 1.0f);
 }
@@ -21,6 +22,8 @@ Object::~Object()
     delete acc;
     delete vel;
     delete pos;
+    delete newPos;
+    delete oScale;
 }
 
 void Object::update()
@@ -65,4 +68,21 @@ void Object::setScale(QVector3D* s)
     oScale->setX(s->x());
     oScale->setY(s->y());
     oScale->setZ(s->z());
+}
+
+QVector3D* Object::getNewPos()
+{
+    return this->newPos;
+}
+void Object::setNewPos(QVector3D* np)
+{
+    this->newPos = np;
+}
+QVector3D* Object::getPos()
+{
+    return this->pos;
+}
+void Object::setPos(QVector3D* p)
+{
+    this->pos = p;
 }

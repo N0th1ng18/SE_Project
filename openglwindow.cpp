@@ -49,7 +49,7 @@ void OpenGLWindow::connectToServer()
 {
     //Use Address and password to connect
     qDebug() << "Pre socketP creation";
-    socketP = new ClientGameProtocol(this->userName);
+    socketP = new ClientGameProtocol(this->userName, clientState);
     //socketP->connect(socketP, SIGNAL(started()), socketP, SLOT(setup()));
     socketP->setup();
     socketP->connectGameServer(this->address, this->port);
@@ -68,23 +68,67 @@ void OpenGLWindow::loadMaterials()
 
 
     //Textures
-    Texture *texture0 = new Texture(":guy1.png", false, true);
+    Texture *texture0 = new Texture(":Map0.png", false, true);
     texture0->setMiniFilter(QOpenGLTexture::Nearest);
     texture0->setMagFilter(QOpenGLTexture::Linear);
     texture0->setWrapMode(QOpenGLTexture::Repeat);
     materials->addTexture(texture0);
 
-    Texture *texture1 = new Texture(":Map1.png", false, true);
+    Texture *texture1 = new Texture(":Fox.png", false, true);
     texture1->setMiniFilter(QOpenGLTexture::Nearest);
     texture1->setMagFilter(QOpenGLTexture::Linear);
     texture1->setWrapMode(QOpenGLTexture::Repeat);
     materials->addTexture(texture1);
 
-    Texture *texture2 = new Texture(":/Fonts/Fonts/Arial/Arial.png", false, false);
+    Texture *texture2 = new Texture(":Bear.png", false, true);
+    texture1->setMiniFilter(QOpenGLTexture::Nearest);
+    texture1->setMagFilter(QOpenGLTexture::Linear);
+    texture1->setWrapMode(QOpenGLTexture::Repeat);
+    materials->addTexture(texture2);
+
+    Texture *texture3 = new Texture(":Deer.png", false, true);
+    texture1->setMiniFilter(QOpenGLTexture::Nearest);
+    texture1->setMagFilter(QOpenGLTexture::Linear);
+    texture1->setWrapMode(QOpenGLTexture::Repeat);
+    materials->addTexture(texture3);
+
+    Texture *texture4 = new Texture(":Butterfly.png", false, true);
+    texture1->setMiniFilter(QOpenGLTexture::Nearest);
+    texture1->setMagFilter(QOpenGLTexture::Linear);
+    texture1->setWrapMode(QOpenGLTexture::Repeat);
+    materials->addTexture(texture4);
+
+    Texture *texture5 = new Texture(":Owl.png", false, true);
+    texture1->setMiniFilter(QOpenGLTexture::Nearest);
+    texture1->setMagFilter(QOpenGLTexture::Linear);
+    texture1->setWrapMode(QOpenGLTexture::Repeat);
+    materials->addTexture(texture5);
+
+    Texture *texture6 = new Texture(":Frog.png", false, true);
+    texture1->setMiniFilter(QOpenGLTexture::Nearest);
+    texture1->setMagFilter(QOpenGLTexture::Linear);
+    texture1->setWrapMode(QOpenGLTexture::Repeat);
+    materials->addTexture(texture6);
+
+    Texture *texture7 = new Texture(":Rabbit.png", false, true);
+    texture1->setMiniFilter(QOpenGLTexture::Nearest);
+    texture1->setMagFilter(QOpenGLTexture::Linear);
+    texture1->setWrapMode(QOpenGLTexture::Repeat);
+    materials->addTexture(texture7);
+
+    Texture *texture8 = new Texture(":Squirrel.png", false, true);
+    texture1->setMiniFilter(QOpenGLTexture::Nearest);
+    texture1->setMagFilter(QOpenGLTexture::Linear);
+    texture1->setWrapMode(QOpenGLTexture::Repeat);
+    materials->addTexture(texture8);
+
+    //Fonts
+
+    Texture *texture9 = new Texture(":/Fonts/Fonts/Arial/Arial.png", false, false);
     texture2->setMiniFilter(QOpenGLTexture::Nearest);
     texture2->setMagFilter(QOpenGLTexture::Linear);
     texture2->setWrapMode(QOpenGLTexture::Repeat);
-    materials->addTexture(texture2);
+    materials->addTexture(texture9);
 
 
     //Shaders
@@ -145,6 +189,9 @@ void OpenGLWindow::loadMaterials()
     //unbind Shader Program
     materials->getShader(defaultShader)->unbind();
 
+    //Add materials pointer to ClientGameProtocol
+    this->socketP->setMaterials(materials);
+
     //Clean UP
     delete vbo_Vertices;
     delete vbo_texCoords;
@@ -163,16 +210,17 @@ void OpenGLWindow::loadEntities()
     backgroundMusic->setVolume(90);
     backgroundMusic->play(0);
 
+    //Cameras
+    Camera* cam = new Camera(materials, 0, new QVector3D(0.0f, 0.0f, -2.0f));
+    clientState->addCamera(cam);
+    clientState->setActiveCamera(0);
+
+    /*
     //Text
     Font* arial = new Font(":/Fonts/Fonts/Arial/Arial.fnt", materials, 2, 1, 0.5f);
     arial->addString("What Up!", -0.5f, -0.5f);
     arial->addString("Text!", 0.5f, 0.5f);
     clientState->addText(arial);
-
-    //Cameras
-    Camera* cam = new Camera(materials, 0, new QVector3D(0.0f, 0.0f, -2.0f));
-    clientState->addCamera(cam);
-    clientState->setActiveCamera(0);
 
     //Objects
     Object* obj2 = new Object(materials, 0, 0, 0, new QVector3D(1.0f, 0.0f, 0.0f));
@@ -181,15 +229,16 @@ void OpenGLWindow::loadEntities()
     Object* obj = new Object(materials, 0, 0, 1, new QVector3D(0.0f, 0.0f, 0.0f));
     obj->setScale(new QVector3D(20.0f, 20.0f, 1.0f));
     //clientState->addObject(obj);
+    */
 }
 
 void OpenGLWindow::timerEvent(QTimerEvent *)
 {
 
-    //Check for messages
+    //Check for messages and update ServerState
     socketP->checkMessages();
 
-    //Process message
+    //Send ServerState to ClientState
     clientState->update();
 
 

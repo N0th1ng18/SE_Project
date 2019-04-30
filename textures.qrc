@@ -1,9 +1,13 @@
 <RCC>
     <qresource prefix="/">
-        <file>wood.png</file>
-        <file>test.png</file>
-        <file>guy1.png</file>
-        <file>guy2.png</file>
-        <file>Map1.png</file>
+        <file>Bear.png</file>
+        <file>Butterfly.png</file>
+        <file>Deer.png</file>
+        <file>Fox.png</file>
+        <file>Frog.png</file>
+        <file>Map0.png</file>
+        <file>Owl.png</file>
+        <file>Rabbit.png</file>
+        <file>Squirrel.png</file>
     </qresource>
 </RCC>

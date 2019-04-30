@@ -1,10 +1,12 @@
 #ifndef CLIENTSTATE_H
 #define CLIENTSTATE_H
 
+#include <QOpenGLShaderProgram>
 #include "object.h"
 #include "camera.h"
 #include "vector"
 #include "font.h"
+#include "player.h"
 
 using namespace std;
 
@@ -35,6 +37,19 @@ public:
     void setHeight(float height);
     float getAspectRatio();
 
+    int getState();
+    void setState(int state);
+    int getNumPlayers();
+    void setNumPlayers(int numPlayers);
+    void addPlayer(Player* player);
+    void removeALLPlayer();
+    int getHasTurn();
+    void setHasTurn(int hasTurn);
+    int getMapID();
+    void setMapID(int mapID);
+
+    void clear();
+
 protected:
 
 private:
@@ -46,9 +61,21 @@ private:
     vector<Object*> objects;
     vector<Font*> texts;
 
+    int state;
+    int hasTurn;
+    int mapID;
+    int numPlayers;
+    vector<Player*> players;
+
     float aspectRatio = 0.0f;
     float width = 100.0f;
     float height = 100.0f;
+
+    enum State{
+        lobby = 3,
+        game,
+        miniGame
+    };
 
 
 };

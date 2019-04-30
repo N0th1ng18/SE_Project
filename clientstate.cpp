@@ -17,6 +17,32 @@ ClientState::~ClientState()
 
 void ClientState::update()
 {
+    switch(getState())
+    {
+    case lobby:
+    {
+        for(size_t i=0; i < static_cast<size_t>(numPlayers); i++)
+        {
+            //set pos to newPos
+            this->players.at(i)->getObj()->getPos()->setX(this->players.at(i)->getObj()->getNewPos()->x());
+            this->players.at(i)->getObj()->getPos()->setY(this->players.at(i)->getObj()->getNewPos()->y());
+            this->players.at(i)->getObj()->getPos()->setZ(this->players.at(i)->getObj()->getNewPos()->z());
+        }
+        break;
+    }
+    case game:
+    {
+        //Interpolating position
+        break;
+    }
+    case miniGame:
+    {
+
+        break;
+    }
+    }
+
+
     //Cameras
     for(size_t i=0; i < cameras.size(); i++){
         (*cameras.at(i)).update();
@@ -25,6 +51,11 @@ void ClientState::update()
     //Objects
     for(size_t i=0; i < objects.size(); i++){
         (*objects.at(i)).update();
+    }
+
+    //Players
+    for(size_t i=0; i < players.size(); i++){
+        (*players.at(i)).update();
     }
 
     //Texts
@@ -43,6 +74,11 @@ void ClientState::render(QOpenGLFunctions* gl)
     //Objects
     for(size_t i=0; i < objects.size(); i++){
         (*objects.at(i)).render(gl);
+    }
+
+    //Players
+    for(size_t i=0; i < players.size(); i++){
+        (*players.at(i)).render(gl);
     }
 
     //Text
@@ -105,3 +141,58 @@ void ClientState::setHeight(float height)
     this->height = height;
 }
 
+/*************ServerState*************/
+int ClientState::getState()
+{
+    return this->state;
+}
+void ClientState::setState(int state)
+{
+    this->state = state;
+}
+
+void ClientState::addPlayer(Player* player)
+{
+    this->players.push_back(player);
+}
+
+void ClientState::removeALLPlayer()
+{
+    for(size_t i=0; i < this->players.size(); i++)
+    {
+        delete players.at(i);
+    }
+}
+
+
+int ClientState::getNumPlayers()
+{
+    return this->numPlayers;
+}
+void ClientState::setNumPlayers(int numPlayers)
+{
+    this->numPlayers = numPlayers;
+}
+int ClientState::getHasTurn()
+{
+    return hasTurn;
+}
+void ClientState::setHasTurn(int hasTurn)
+{
+    this->hasTurn = hasTurn;
+}
+int ClientState::getMapID()
+{
+    return mapID;
+}
+void ClientState::setMapID(int mapID)
+{
+    this->mapID = mapID;
+}
+
+void ClientState::clear()
+{
+    //Only need to clear players
+    removeALLPlayer();
+
+}

@@ -4,12 +4,15 @@
 #include <QObject>
 #include <QUdpSocket>
 #include <QNetworkDatagram>
+#include "clientstate.h"
+#include "materials.h"
+#include "player.h"
 
 class ClientGameProtocol : public QObject
 {
     Q_OBJECT
 public:
-    explicit ClientGameProtocol(QString userName, QObject *parent = nullptr);
+    explicit ClientGameProtocol(QString userName, ClientState* clientState, QObject *parent = nullptr);
     ~ClientGameProtocol();
 
     void connectGameServer(QString gameAddress, quint16 gamePort);
@@ -17,6 +20,7 @@ public:
     void checkMessages();
     void processMessage(QNetworkDatagram datagram);
     void sendMessage(QList<QString> tokens, QHostAddress address, quint16 port);
+    void setMaterials(Materials* materials);
 
 signals:
 
@@ -29,6 +33,9 @@ private:
 
     QHostAddress gameAddress;
     quint16 gamePort;
+
+    ClientState* clientState;
+    Materials* materials;
 
     enum clientMsg {
         client_connect = 1,
