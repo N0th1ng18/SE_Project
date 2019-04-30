@@ -6,6 +6,8 @@
 #include <QString>
 #include <QTcpSocket>
 #include<QTcpServer>
+#include "openglwindow.h"
+
 
 
 class ClientProtocol: public QObject
@@ -21,25 +23,34 @@ class ClientProtocol: public QObject
         GameList
     };
 
+    enum GameListProcess{
+        OnLogin = 1,
+        OnRequest
+    };
+
     Q_OBJECT
 public:
-    ClientProtocol();
+    explicit ClientProtocol();
     QTcpSocket* connectMainServer(QObject *parent = nullptr);
     void disconnectMainServer();
 
 public slots:
     bool connectToServer();
-    bool sendUserLogin(QString username, QString password);
+    int sendUserLogin(QString username, QString password);
     bool sendCreateAccount(QString username, QString password);
     bool sendCreateGame();
-    bool sendJoinGame(int roomId);
+    int sendJoinGame(QString roomId);
     bool sendGetGameList();
-
+    QString loginDataProcess(int index);
+    QString showRoomCode();
+    bool isStringValid(QString str);
 
 private:
-    bool isStringValid(QString str);
-    QStringList &splitMessage(QString message);
-    QTcpSocket* socket = nullptr;
+    //bool isStringValid(QString str);
+    QStringList splitMessage(QString message);
+    QTcpSocket* socket;
+    QStringList bufferList;
+    QStringList userGames;
 
 };
 
