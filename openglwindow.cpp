@@ -53,6 +53,9 @@ void OpenGLWindow::connectToServer()
     //socketP->connect(socketP, SIGNAL(started()), socketP, SLOT(setup()));
     socketP->setup();
     socketP->connectGameServer(this->address, this->port);
+
+    //Test game connected -> try again or go back to qml
+
     qDebug() << "Post socketP Connect to Server";
 
 
@@ -184,6 +187,8 @@ void OpenGLWindow::timerEvent(QTimerEvent *)
 {
 
     //Check for messages
+    socketP->checkMessages();
+
     //Process message
     clientState->update();
 
