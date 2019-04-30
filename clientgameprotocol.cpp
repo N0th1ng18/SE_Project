@@ -102,6 +102,15 @@ void ClientGameProtocol::processMessage(QNetworkDatagram datagram)
                                             , tokens[i+6].toInt()
                                             , new QVector3D(tokens[i+7].toFloat(), tokens[i+8].toFloat(), tokens[i+9].toFloat()));
                 clientState->addPlayer(player);
+
+                //Add buttons
+                Button* b1 = new Button(materials, 0, 0, 10, 11, new QVector3D(1.0f, 0.0f, 0.0f));
+                b1->setScale(new QVector3D(-0.6f, 0.6f, 0.6f));
+                clientState->addButton(b1);
+                Button* b2 = new Button(materials, 0, 0, 10, 11, new QVector3D(1.0f, 0.0f, 0.0f));
+                b2->setScale(new QVector3D(0.6f, 0.6f, 0.6f));
+                clientState->addButton(b2);
+
             }
             qDebug() << "Lobby from server ------------------------------------------------------------------------------";
             break;

@@ -9,5 +9,7 @@
         <file>Owl.png</file>
         <file>Rabbit.png</file>
         <file>Squirrel.png</file>
+        <file>arrow_clicked.png</file>
+        <file>arrow_unclicked.png</file>
     </qresource>
 </RCC>

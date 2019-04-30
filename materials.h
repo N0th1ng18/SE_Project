@@ -35,6 +35,8 @@ public:
         rabbit,
         squirrel,
         font_arial,
+        arrow_unclicked,
+        arrow_clicked
     };
 
 protected:

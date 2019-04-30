@@ -7,6 +7,7 @@
 #include "vector"
 #include "font.h"
 #include "player.h"
+#include "button.h"
 
 using namespace std;
 
@@ -28,6 +29,9 @@ public:
 
     void addObject(Object* obj);
     void removeObject(int index);
+
+    void addButton(Button* button);
+    void removeButton(int index);
 
     void addText(Font* font);
     void removeText(int index);
@@ -59,6 +63,7 @@ private:
     int activeCameraID = 0;
     vector<Camera*> cameras;
     vector<Object*> objects;
+    vector<Button*> buttons;
     vector<Font*> texts;
 
     int state;

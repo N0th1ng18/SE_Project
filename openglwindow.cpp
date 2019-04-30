@@ -33,7 +33,7 @@ void OpenGLWindow::initializeGL()
     //OpenGL Settings
     glClearColor(0, 0, 0, 1);
     glEnable(GL_DEPTH_TEST);
-    glEnable(GL_CULL_FACE);
+    //glEnable(GL_CULL_FACE);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glEnable(GL_BLEND);
     qDebug() << "OpenGLinitialized";
@@ -130,6 +130,18 @@ void OpenGLWindow::loadMaterials()
     texture2->setWrapMode(QOpenGLTexture::Repeat);
     materials->addTexture(texture9);
 
+    //Buttons
+    Texture *texture10 = new Texture(":arrow_unclicked.png", false, true);
+    texture1->setMiniFilter(QOpenGLTexture::Nearest);
+    texture1->setMagFilter(QOpenGLTexture::Linear);
+    texture1->setWrapMode(QOpenGLTexture::Repeat);
+    materials->addTexture(texture10);
+
+    Texture *texture11 = new Texture(":arrow_clicked.png", false, true);
+    texture1->setMiniFilter(QOpenGLTexture::Nearest);
+    texture1->setMagFilter(QOpenGLTexture::Linear);
+    texture1->setWrapMode(QOpenGLTexture::Repeat);
+    materials->addTexture(texture11);
 
     //Shaders
     Shader* shader0 = nullptr;

@@ -17,6 +17,7 @@ ClientState::~ClientState()
 
 void ClientState::update()
 {
+    //State specific tasks
     switch(getState())
     {
     case lobby:
@@ -58,6 +59,11 @@ void ClientState::update()
         (*players.at(i)).update();
     }
 
+    //Buttons
+    for(size_t i=0; i < buttons.size(); i++){
+        (*buttons.at(i)).update();
+    }
+
     //Texts
     for(size_t i=0; i < texts.size(); i++){
         (*texts.at(i)).update();
@@ -79,6 +85,11 @@ void ClientState::render(QOpenGLFunctions* gl)
     //Players
     for(size_t i=0; i < players.size(); i++){
         (*players.at(i)).render(gl);
+    }
+
+    //Buttons
+    for(size_t i=0; i < buttons.size(); i++){
+        (*buttons.at(i)).render(gl);
     }
 
     //Text
@@ -106,6 +117,11 @@ void ClientState::addObject(Object* obj)
 void ClientState::addText(Font* font)
 {
     texts.push_back(font);
+}
+
+void ClientState::addButton(Button* button)
+{
+    buttons.push_back(button);
 }
 
 /************Projection**************/
