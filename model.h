@@ -5,6 +5,14 @@
 
 using namespace std;
 
+/*
+ * Description: Model loads a 2D quad (2 triangles) to load our textures
+ *              for our 2d game.
+ *
+ * Author: Nick
+ *
+ */
+
 class Model
 {
 public:
