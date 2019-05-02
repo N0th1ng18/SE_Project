@@ -11,6 +11,16 @@
 #include "materials.h"
 #include "input.h"
 
+
+/*
+ * Description: A button is an object with a set boundry used for input.
+ *              It supports two textures to be switched between depending
+ *              on the mouse(touch screen).
+ *
+ * Author: Nick
+ *
+ */
+
 class Button
 {
 public:
