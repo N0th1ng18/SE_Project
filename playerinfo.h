@@ -11,6 +11,9 @@
  *  Nonfunctional
  *  yet to be implemented
  *
+ *  Author: Tyler
+ *
+ */
  */
 
 #include <QObject>
