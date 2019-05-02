@@ -4,6 +4,13 @@
 #include <QOpenGLFunctions>
 #include <QOpenGLVertexArrayObject>
 
+/*
+ * Description: VAO is a buffer that is used to store multiple VBO's.
+ *              the VAO will need to be bound before draw calls.
+ *
+ * Author: Nick
+ *
+ */
 
 class VAO
 {
