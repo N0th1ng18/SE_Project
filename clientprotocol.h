@@ -9,7 +9,13 @@
 #include <QQmlComponent>
 #include "openglwindow.h"
 
-
+/*
+ * Description: ClientProtocol uses a TCP Socket to communicate from the QML (UI)
+ *              to the Main Server.
+ *
+ * Author: Nick, Tyler, Isaac
+ *
+ */
 
 class ClientProtocol: public QObject
 {
