@@ -8,6 +8,14 @@
 
 using namespace std;
 
+/*
+ * Description: Player class contains a primitive object and is used to store
+ *              further information needed for each player.
+ *
+ * Author: Nick
+ *
+ */
+
 class Player
 {
 public:
