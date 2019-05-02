@@ -10,6 +10,16 @@
 #include "button.h"
 #include "input.h"
 
+/*
+ * Description: The ClientState Manages the rendering and removal
+ *              of all objects for the game on the client. The
+ *              Server State is converted to the client State with
+ *              conditions to simulate the turn based game.
+ *
+ * Author: Nick
+ *
+ */
+
 using namespace std;
 
 class ClientState
