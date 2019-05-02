@@ -4,6 +4,13 @@
 #include <QOpenGLFunctions>
 #include <QOpenGLTexture>
 
+/*
+ * Description: Holds images loaded from file to be stored in materials.
+ *
+ * Author: Nick
+ *
+ */
+
 class Texture
 {
 public:
