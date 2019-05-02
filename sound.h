@@ -6,7 +6,7 @@
 using namespace std;
 
 /*
- * Description: Sound is a primitive structure designed to beable to be
+ * Description: Sound is a primitive structure designed to be able to be
  *              used anywhere in the program to produce different loaded
  *              sounds.
  *
