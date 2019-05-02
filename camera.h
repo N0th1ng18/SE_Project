@@ -10,6 +10,14 @@
 
 #include "materials.h"
 
+/*
+ * Description: The Camera class constructs and passes the projection
+ *              and view matrix to a defined shader.
+ *
+ * Author: Nick
+ *
+ */
+
 class Camera
 {
 public:
