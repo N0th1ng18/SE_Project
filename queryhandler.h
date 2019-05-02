@@ -5,6 +5,13 @@
 #include <QtSql>
 #include "playerinfo.h"
 
+/*
+ * Description: Currently not used
+ *
+ * Author: Tyler
+ *
+ */
+
 class QueryHandler : public QObject
 {
     Q_OBJECT
