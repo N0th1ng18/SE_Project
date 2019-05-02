@@ -129,7 +129,7 @@ bool ClientProtocol::sendCreateGame(){
                    if(game != nullptr){
                        delete game;
                    }
-                  // game = new OpenGLWindow(this->username,bufferList[2],quint16(bufferList[3].toInt()));
+                   game = new OpenGLWindow(this->username,bufferList[2],quint16(bufferList[3].toInt()));
                    // game->show();
                     qDebug() << "post OpenGlWindow " << endl;
                }
@@ -209,7 +209,7 @@ QString ClientProtocol::loginDataProcess(int index){
 }
 
 void ClientProtocol::launchJoinGame(){
-    //game = new OpenGLWindow(this->username,bufferList[2],bufferList[3]);
+    game = new OpenGLWindow(this->username,bufferList[2],bufferList[3]);
 }
 
 QString ClientProtocol::showRoomCode(){

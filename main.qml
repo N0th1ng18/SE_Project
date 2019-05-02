@@ -48,6 +48,15 @@ ApplicationWindow{
         target: playerinfo
     }
 
+    Connections{
+        // Connects GameRenderer Class
+        id: gameRendererConn
+        target: GameRenderer
+
+        onBeginExit:{
+            mainConn.visible = true
+        }
+    }
 
     // Connects Qml files
 
