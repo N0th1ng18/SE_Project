@@ -28,6 +28,17 @@
 #include "input.h"
 
 
+/*
+ * Description: The OpenGLWindow provides the functionality to use opengl ES
+ *              on android. QT manages the game loop and calls overrided
+ *              opengl functions (initializeGL, resizeGL, paintGL) Timer Event
+ *              is used to update every 12 ms -> 60 updates a second.This allows
+ *              for movement support for anything in clientState.
+ *
+ * Author: Nick
+ *
+ */
+
 class OpenGLWindow : public QOpenGLWidget, protected QOpenGLFunctions
 {
 
