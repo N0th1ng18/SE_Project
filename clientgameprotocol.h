@@ -8,6 +8,15 @@
 #include "materials.h"
 #include "player.h"
 
+/*
+ * Description: ClientGameProtocol communicates with the game thread
+ *              through a udp socket. The Server State is converted
+ *              to the client state.
+ *
+ * Author: Nick, Isaac
+ *
+ */
+
 class ClientGameProtocol : public QObject
 {
     Q_OBJECT
