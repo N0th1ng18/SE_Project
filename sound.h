@@ -5,6 +5,15 @@
 #include <iostream>
 using namespace std;
 
+/*
+ * Description: Sound is a primitive structure designed to beable to be
+ *              used anywhere in the program to produce different loaded
+ *              sounds.
+ *
+ * Author: Nick
+ *
+ */
+
 class Sound
 {
 
