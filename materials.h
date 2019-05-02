@@ -6,6 +6,14 @@
 #include "texture.h"
 #include "vao.h"
 
+/*
+ * Description: Materials manages every VAO(vertex structure), shaders,
+ *              (GPU code), and Textures to allow for easy access program wide.
+ *
+ * Author: Nick
+ *
+ */
+
 class Materials
 {
 public:
