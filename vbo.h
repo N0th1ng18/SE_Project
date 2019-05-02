@@ -3,6 +3,12 @@
 
 #include <QOpenGLBuffer>
 
+/*
+ * Description: VBO is a buffer that stores attributes(Verts, textcoords, etc.)
+ *
+ *  Author: Nick
+*/
+
 class VBO
 {
 public:
