@@ -12,6 +12,15 @@
 
 using namespace std;
 
+/*
+ * Description: Font Renders Text.  Each character is broken up
+ *              into two triangles and rendered into the correct
+ *              position that is read in from the text file.
+ *
+ * Author: Nick
+ *
+ */
+
 class Font
 {
 public:
