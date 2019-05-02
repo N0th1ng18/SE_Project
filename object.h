@@ -10,6 +10,15 @@
 
 #include "materials.h"
 
+/*
+ * Description: Object class is a primitive structure used to update
+ *              and render seperate objects or build further complex
+ *              structures (Ex: Player has an object)
+ *
+ * Author: Nick
+ *
+ */
+
 class Object
 {
 public:
