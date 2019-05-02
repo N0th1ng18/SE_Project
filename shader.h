@@ -4,6 +4,13 @@
 #include <QOpenGLShaderProgram>
 #include <QOpenGLFunctions>
 
+/*
+ * Description: Shader is used to store the gpu programs.
+ *
+ * Author: Nick
+ *
+ */
+
 class Shader
 {
 public:
