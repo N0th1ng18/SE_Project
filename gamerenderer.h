@@ -10,6 +10,10 @@
  *
  *  Class became somewhat obsolete as
  *  the game is now rendered through other means
+ *  GamerRenderer provides the transition from
+ *  the QML(UI) to the opengl window.
+ *
+ * Author: Tyler, Nick
  *
  *
  */
