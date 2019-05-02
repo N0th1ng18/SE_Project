@@ -5,6 +5,14 @@
 #include <QOpenGLShaderProgram>
 #include <QOpenGLVertexArrayObject>
 
+/*
+ * Description: Input pulls the "mouse" / touches on the phone
+ *              and stores the values to be used for any class.
+ *
+ * Author: Nick
+ *
+ */
+
 class Input
 {
 public:
