@@ -1,6 +1,18 @@
 #ifndef PLAYERINFO_H
 #define PLAYERINFO_H
 
+/*
+ *
+ * Description
+ *
+ *  Logs the players information
+ *  scalable could container any desired player info
+ *
+ *  Nonfunctional
+ *  yet to be implemented
+ *
+ */
+
 #include <QObject>
 #include <QString>
 

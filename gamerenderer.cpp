@@ -10,13 +10,13 @@ GameRenderer::GameRenderer(OpenGLWindow *glWindow): m_gameView(glWindow)
 
 }
 
-
+// Creates a new  instance of the game
 void GameRenderer::setRenderView(OpenGLWindow * newGameView){
     m_gameView = newGameView;
 }
 
+// Renders the game on the users device
 void GameRenderer::launchGame(){
-    //m_gameView->showFullScreen();
     m_gameView->show();
 }
 

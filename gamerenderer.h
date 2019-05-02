@@ -1,6 +1,19 @@
 #ifndef GAMERENDERER_H
 #define GAMERENDERER_H
 
+
+/*
+ *
+ *  Description
+ *
+ *  Renders the OpenGLWindow.
+ *
+ *  Class became somewhat obsolete as
+ *  the game is now rendered through other means
+ *
+ *
+ */
+
 #include <QObject>
 #include "openglwindow.h"
 
